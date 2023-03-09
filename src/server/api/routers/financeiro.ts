@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { schemaFinanceiro } from "@models/financeiro/financeiroSchema_zod"
 
 import {
   createTRPCRouter,
@@ -37,7 +36,14 @@ export const financeiro = createTRPCRouter({
     .mutation(({ input, ctx }) => {
       try {
         return ctx.prisma.financeiro.create({
-          data: input
+          data: {
+            author: {
+              create: {
+                notaFiscal: 2324
+              }
+            },
+            ...input
+          }
         })
       } catch (e) {
         console.log(e)
@@ -47,6 +53,25 @@ export const financeiro = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.financeiro.findMany();
   }),
+
+  updateWhere: publicProcedure
+    .input(z.object({
+      id: z.string(),
+      dado: z.object({
+        index: z.string(),
+        value: z.string()
+      })
+    }))
+    .mutation(({ input, ctx}) => {
+      return ctx.prisma.financeiro.update({
+        where: {
+          id: input.id
+        },
+        data: {
+          [input.dado.index]: input.dado.value
+        }
+      })
+    }),
 
   deleteWhere: publicProcedure
     .input(z.string())

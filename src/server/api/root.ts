@@ -7,6 +7,8 @@ import { financeiro } from "~/server/api/routers/financeiro";
  *
  * All routers added in /api/routers should be manually added here.
  */
+
+//! para acessar rota veja pela network do devtools
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
   financeiro: financeiro

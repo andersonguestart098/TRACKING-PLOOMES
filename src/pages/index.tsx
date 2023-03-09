@@ -9,6 +9,9 @@ function index() {
   const financeiroMutate = financeiro.createNew.useMutation()
 
   const getAll = financeiro.getAll.useQuery()
+  //! o author esta sendo refenciado por ID no atributo do getAll caso queira usar o mesmo
+  //! crie uma nova instancia de banco de dados apenas para PassagemDeDados pois irá ser usada em muitos lugares
+  //! para fazer a consulta use findWhere
 
   return (
     <>
@@ -38,6 +41,14 @@ function index() {
           responsavelNotaFiscal: "abc"
         })
       }} variant="contained">Contained</Button>
+      {getAll.data?.map((item) => {
+        return (
+          <div key={item.id}>
+            <p>{item.id}</p>
+            <p>{item.cliente}</p>
+          </div>
+        )
+      })}
     </>
   )
 }
