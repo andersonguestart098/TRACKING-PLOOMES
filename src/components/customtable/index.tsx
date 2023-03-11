@@ -1,72 +1,89 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import React from 'react'
+import { Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { ModelFinanceiro } from '~/models/financeiro/financeiroSchema'
+import { useForm } from "react-hook-form";
+import { mutateData } from '@controllers/mutateData';
+import React, { Dispatch, SetStateAction } from "react"
 
-interface Props {
+type objectDataBase = {
+  result:  ModelFinanceiro[],
+  lengthDB: number
 }
 
-const Index = ({}: Props) => {
-    const rows = [
-        {nome:'Frozen yoghurt', numero: '3/3/2023 15:41', vendedor: 'marcia',
-         orcamento: 625111, cliente: 'TMJ', tipoFaturamento: 'normal', valor: '200.00',
-            formaPagamento: 'Cartão', parcelas: '5x', vendaFrete: 'Sim', retiraEntrega: 'Entrega',
-                freteConta: 'Cemear', entregaCadastro: 'Sim', localCobranca: 'Cobrar local',
-                    },
+interface Props {
+  data: objectDataBase,
+  setPagina: Dispatch<SetStateAction<number>>
+}
 
-        {nome:'Ice cream sandwich', numero: 237},
-        {nome:'Eclair', numero: 262},
-        {nome:'Cupcake', numero: 305},
-        {nome:'Gingerbread', numero: 356},
-      ];
+const Index = ({ data, setPagina }: Props) => {
+  const { register, handleSubmit, getValues, formState: { errors } } = useForm()
+
+  function onSubmit(sendThis: string, value: string) { 
+    return new mutateData("/api/methodsdatabase/editDataWhere", sendThis, value).execute()
+  }
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Id</TableCell>
-            <TableCell >Data|Hora</TableCell>
-            <TableCell>Vendedor</TableCell>
-            <TableCell>Orçamento</TableCell>
-            <TableCell>Cliente</TableCell>
-            <TableCell>Tipo|Faturamento</TableCell>
-            <TableCell>Valor</TableCell>
-            <TableCell>Forma|Pagamento</TableCell>
-            <TableCell>Parcelas</TableCell>
-            <TableCell>Venda|Frete</TableCell>
-            <TableCell>Retira|Entrega</TableCell>
-            <TableCell>Frete|Conta</TableCell>
-            <TableCell>Entrega|Cadastro</TableCell>
-            <TableCell>Local|Cobrança</TableCell>
+    <div>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell >Data|Hora</TableCell>
+              <TableCell>Vendedor</TableCell>
+              <TableCell>Orçamento</TableCell>
+              <TableCell>Cliente</TableCell>
+              <TableCell>Tipo|Faturamento</TableCell>
+              <TableCell>Valor</TableCell>
+              <TableCell>Forma|Pagamento</TableCell>
+              <TableCell>Parcelas</TableCell>
+              <TableCell>Venda|Frete</TableCell>
+              <TableCell>Retira|Entrega</TableCell>
+              <TableCell>Frete|Conta</TableCell>
+              <TableCell>Entrega|Cadastro</TableCell>
+              <TableCell>Local|Cobrança</TableCell>
+              <TableCell>Expedicao ID</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(({nome, numero, vendedor, orcamento, cliente, tipoFaturamento,
-           valor, formaPagamento, parcelas, vendaFrete, retiraEntrega, freteConta,
-            entregaCadastro, localCobranca}) => (
-            <TableRow
-              key={nome}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {nome}
-              </TableCell>
-              <TableCell>{numero}</TableCell>
-              <TableCell>{vendedor}</TableCell>
-              <TableCell>{orcamento}</TableCell>
-              <TableCell>{cliente}</TableCell>
-              <TableCell>{tipoFaturamento}</TableCell>
-              <TableCell>{valor}</TableCell>
-              <TableCell>{formaPagamento}</TableCell>
-              <TableCell>{parcelas}</TableCell>
-              <TableCell>{vendaFrete}</TableCell>
-              <TableCell>{retiraEntrega}</TableCell>
-              <TableCell>{freteConta}</TableCell>
-              <TableCell>{entregaCadastro}</TableCell>
-              <TableCell>{localCobranca}</TableCell>
-            </TableRow>
-          ))}
+          {data?.result.map((item: ModelFinanceiro) => {
+            return (
+              <TableRow
+                  key={item.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell>{item.id}</TableCell>
+                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{item.vendedor}</TableCell>
+                  <TableCell>{item.orcamento}</TableCell>
+                  <TableCell>
+                  <form onSubmit={handleSubmit(event => onSubmit(item.id+"_cliente", getValues(item.id+"_cliente")))}>
+                  <input style={{border: "none"}} defaultValue={item.cliente} {...register(item.id+"_cliente", {required: true})} />
+                  </form>
+                  </TableCell>
+                  <TableCell>
+                    <form onSubmit={handleSubmit(event => onSubmit(item.id+"_tipoFaturamento", getValues(item.id+"_tipoFaturamento")))}>
+                      <input style={{border: "none"}} defaultValue={item.tipoFaturamento} {...register(item.id+"_tipoFaturamento", {required: true})} />
+                    </form>
+                  </TableCell>
+                  <TableCell>{item.valor}</TableCell>
+                  <TableCell>{item.formaPagamento}</TableCell>
+                  <TableCell>{item.parcelas}</TableCell>
+                  <TableCell>{item.vendaFrete ? "Sim" : "Não"}</TableCell>
+                  <TableCell>{item.retiraEntrega}</TableCell>
+                  <TableCell>{item.freteConta}</TableCell>
+                  <TableCell>{item.entregaCadastro ? "Sim" : "Não"}</TableCell>
+                  <TableCell>{item.localCobranca}</TableCell>
+                </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
-    </TableContainer>
+      </TableContainer>
+      <Pagination onChange={(_, value) => { 
+        value = value -1
+        setPagina(value)
+      }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={data.lengthDB/3} />
+    </div>
   )
 }
 

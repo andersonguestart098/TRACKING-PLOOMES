@@ -1,4 +1,7 @@
 export interface ModelFinanceiro {
+    id: string
+    authorId: string
+    createdAt: string
     vendedor: string 
     orcamento: string 
     cliente: string 

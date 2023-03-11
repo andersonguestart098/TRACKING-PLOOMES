@@ -23,6 +23,10 @@
       "@pages/*": ["./src/pages/*"],
       "@style/*": ["./src/style/*"],
       "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@services/*": ["./src/services/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@controllers/*": ["./src/controllers/*"],
     }
   },
   "include": [

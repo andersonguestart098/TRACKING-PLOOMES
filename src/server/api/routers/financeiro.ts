@@ -50,8 +50,9 @@ export const financeiro = createTRPCRouter({
       }
     }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.financeiro.findMany();
+  getAll: publicProcedure
+  .query(async ({ ctx }) => {
+    return await ctx.prisma.financeiro.findMany();
   }),
 
   updateWhere: publicProcedure

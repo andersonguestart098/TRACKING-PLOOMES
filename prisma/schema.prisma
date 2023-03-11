@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["orderByNulls"]
 }
 
 datasource db {
@@ -17,7 +18,7 @@ model Example {
 }
 
 model PassagemDados {
-  id         String   @id @default(cuid())
+  id         Int      @id @default(autoincrement())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   notaFiscal Int
@@ -26,12 +27,12 @@ model PassagemDados {
 }
 
 model Financeiro {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   author   PassagemDados @relation(fields: [authorId], references: [id])
-  authorId String
+  authorId Int
 
   vendedor              String
   orcamento             Int
