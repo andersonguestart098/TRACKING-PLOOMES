@@ -1,8 +1,9 @@
 import { Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { ModelFinanceiro } from '~/models/financeiro/financeiroSchema'
 import { useForm } from "react-hook-form";
-import { mutateData } from '@controllers/mutateData';
 import React, { Dispatch, SetStateAction } from "react"
+import { editDataController } from '@services/prisma/editData';
+import { databaseRepository } from '~/repositories/mutateData';
 
 type objectDataBase = {
   result:  ModelFinanceiro[],
@@ -18,7 +19,13 @@ const Index = ({ data, setPagina }: Props) => {
   const { register, handleSubmit, getValues, formState: { errors } } = useForm()
 
   function onSubmit(sendThis: string, value: string) { 
-    return new mutateData("/api/methodsdatabase/editDataWhere", sendThis, value).execute()
+    return new editDataController(
+      new databaseRepository
+    ).execute({
+      router: "/api/methodsdatabase/editDataWhere", 
+      metadata: sendThis, 
+      value: value
+    })
   }
 
   return (

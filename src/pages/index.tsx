@@ -1,29 +1,18 @@
-import { api } from "~/utils/api";
-import React, { useState } from 'react'
+import React from 'react'
 import { ModelFinanceiro } from "@models/financeiro/financeiroSchema";
-import { useFetch } from "@hooks/useFetch";
-import { Button, CircularProgress } from "@mui/material";
+import { Button } from "@mui/material";
 import CustomTable from "@components/customtable"
+import { createDataController } from '~/services/prisma/createData';
+import { databaseRepository } from '~/repositories/mutateData';
 
 function index() {
-  const financeiroMutate = api.financeiro.createNew.useMutation()
-  const [pagina, setPagina ] = useState(0)
-
-  const { data, mutate, isLoading } = useFetch("/api/methodsdatabase/getall", pagina)
-
-
-  if(isLoading) {
-    return <div style={{display: "flex", flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-      <CircularProgress disableShrink />
-    </div>
-  }
 
   return (
     <>
       <Button onClick={() => {
-        financeiroMutate.mutate({
+        const newData: ModelFinanceiro = {
           vendedor: "abc",
-          orcamento: 2323,
+          orcamento: "2323",
           cliente: "abc",
           tipoFaturamento: "abc",
           valor: "abc",
@@ -44,9 +33,25 @@ function index() {
           operadorNotaFiscal: "abc",
           expedicaoLog: "abc",
           responsavelNotaFiscal: "abc"
-        })
-        
-        const newData: ModelFinanceiro = {
+        }
+
+        return new createDataController(
+          new databaseRepository
+        ).execute(
+          "/api/methodsdatabase/create", 
+          newData,
+          "financeiro"
+        )
+
+      }} variant="contained">Contained</Button>
+    </>
+  )
+}
+
+export default index
+
+/**
+ * const newData: ModelFinanceiro = {
           id: "pendente",
           createdAt: "pendente",
           authorId: "pendente",
@@ -73,16 +78,4 @@ function index() {
           expedicaoLog: "abc",
           responsavelNotaFiscal: "abc"
         }
-
-        const updatedData = data.reverse()
-        updatedData[updatedData.length] = newData
-        updatedData.reverse()
-
-        mutate(updatedData, false)
-      }} variant="contained">Contained</Button>
-      <CustomTable data={data} setPagina={setPagina} />
-    </>
-  )
-}
-
-export default index
+ */
