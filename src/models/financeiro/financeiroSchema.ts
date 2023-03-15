@@ -1,5 +1,14 @@
+interface Passagem {
+    createdAt: string,
+    id: number,
+    notaFiscal: number,
+    updatedAt: string,
+}
+
 export interface ModelFinanceiro {
+    author?: Passagem
     id?: string
+    setor?: string
     authorId?: string
     createdAt?: string
     vendedor: string 

@@ -5,6 +5,7 @@ import React, { Dispatch, SetStateAction } from "react"
 import { editDataController } from '@services/prisma/editData';
 import { databaseRepository } from '~/repositories/mutateData';
 
+
 type objectDataBase = {
   result:  ModelFinanceiro[],
   lengthDB: number
@@ -80,6 +81,7 @@ const Index = ({ data, setPagina }: Props) => {
                   <TableCell>{item.freteConta}</TableCell>
                   <TableCell>{item.entregaCadastro ? "Sim" : "Não"}</TableCell>
                   <TableCell>{item.localCobranca}</TableCell>
+                  <TableCell>{item.author?.notaFiscal}</TableCell>
                 </TableRow>
             )
           })}
@@ -89,7 +91,7 @@ const Index = ({ data, setPagina }: Props) => {
       <Pagination onChange={(_, value) => { 
         value = value -1
         setPagina(value)
-      }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={data.lengthDB/3} />
+      }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
     </div>
   )
 }

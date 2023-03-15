@@ -1,13 +1,35 @@
 import React, { useState } from 'react'
-import { ModelFinanceiro } from "@models/financeiro/financeiroSchema";
 import { useFetch } from "@hooks/useFetch";
-import { Button, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import CustomTable from "@components/customtable"
+import { getSession, useSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next/types';
+import CustomNavBar from "@components/customAppBar"
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx)
+
+  if(!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props:{
+      session
+    }
+  }
+}
 
 function index() {
+  const { data: dataAuth } = useSession()
   const [pagina, setPagina ] = useState(0)
 
-  const { data, mutate, isLoading } = useFetch("/api/methodsdatabase/getall", pagina)
+  const { data, isLoading } = useFetch("/api/methodsdatabase/getall", pagina)
 
 
   if(isLoading) {
@@ -18,6 +40,7 @@ function index() {
 
   return (
     <>
+      <CustomNavBar setData={setPagina} dados={dataAuth} />
       <CustomTable data={data} setPagina={setPagina} />
     </>
   )

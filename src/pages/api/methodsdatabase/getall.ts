@@ -15,12 +15,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).json({ 
     result: await prisma.financeiro.findMany({
+        include: {
+            author: true
+        },
         take: 3,
         skip: pagina == 0 ? 0 : pagina * 3,
         orderBy: {
             id: "desc"
         }
     }),
-    lengthDB: (await prisma.financeiro.findMany()).length
+    lengthDB: ((await prisma.financeiro.findMany()).length)
 })
 }

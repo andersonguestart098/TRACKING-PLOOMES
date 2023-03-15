@@ -6,6 +6,7 @@ export class databaseRepository implements databaseRepositoryImpl {
 
     create(router: string, data: ModelFinanceiro, setor: string): void {
         try {
+            data.setor = setor
             sendThisToDatabase(router, data)
         } catch (error) {
             console.log(error)
