@@ -32,6 +32,7 @@ function index() {
   const { data, isLoading } = useFetch("/api/methodsdatabase/getall", pagina)
 
 
+
   if(isLoading) {
     return <div style={{display: "flex", flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
       <CircularProgress disableShrink />

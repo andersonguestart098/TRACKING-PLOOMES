@@ -1,7 +1,7 @@
 import { Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { ModelFinanceiro } from '~/models/financeiro/financeiroSchema'
 import { useForm } from "react-hook-form";
-import React, { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { editDataController } from '@services/prisma/editData';
 import { databaseRepository } from '~/repositories/mutateData';
 
@@ -17,7 +17,8 @@ interface Props {
 }
 
 const Index = ({ data, setPagina }: Props) => {
-  const { register, handleSubmit, getValues, formState: { errors } } = useForm()
+  const { register, reset, handleSubmit, getValues, formState: { errors } } = useForm()
+  const [ refresh, setRefresh ] = useState(0)
 
   function onSubmit(sendThis: string, value: string) { 
     return new editDataController(
@@ -28,6 +29,10 @@ const Index = ({ data, setPagina }: Props) => {
       value: value
     })
   }
+
+  useEffect(() => {
+    setRefresh(0)
+  }, [data]);
 
   return (
     <div>
@@ -60,12 +65,12 @@ const Index = ({ data, setPagina }: Props) => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{item.cliente}</TableCell>
                   <TableCell>{item.vendedor}</TableCell>
                   <TableCell>{item.orcamento}</TableCell>
                   <TableCell>
                   <form onSubmit={handleSubmit(event => onSubmit(item.id+"_cliente", getValues(item.id+"_cliente")))}>
-                  <input style={{border: "none"}} defaultValue={item.cliente} {...register(item.id+"_cliente", {required: true})} />
+                    <input style={{border: "none"}} defaultValue={item.cliente} {...register(item.id+"_cliente", {required: true})} />
                   </form>
                   </TableCell>
                   <TableCell>

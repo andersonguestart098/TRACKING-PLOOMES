@@ -12,12 +12,21 @@ datasource db {
 }
 
 model PassagemDados {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  notaFiscal Int
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  passagem Financeiro[]
+  notaFiscal Int
+  expedicao  String
+
+  financeiroPassagem         Financeiro[]
+  expedicaoPassagem          Expedicao[]
+  expedicao2Passagem         Expedicao2[]
+  logisticaPassagem          Logistica[]
+  saidaPassagem              Saida[]
+  confirmacaoEntregaPassagem ConfirmacaoEntrega[]
+  retornoPassagem            Retorno[]
+  canhotoPassagem            Canhoto[]
 }
 
 model Financeiro {
@@ -52,19 +61,120 @@ model Financeiro {
   responsavelNotaFiscal String
 }
 
+model Expedicao {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   PassagemDados @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  notaFiscal    Int
+  responsavelNf String
+  statusNf      String
+}
+
+model Expedicao2 {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   PassagemDados @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  notaFiscal    Int
+  responsavelNf String
+  statusNf      String
+}
+
+model Logistica {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   PassagemDados @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  notaFiscal    Int
+  responsavelNf String
+  statusNf      String
+}
+
+model Saida {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   PassagemDados @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  notaFiscal     Int
+  nomeConferente String
+  placa          String
+  motorista      String
+  cidadeDestino  String
+  hodometro      Int
+  dataHoraSaida  String
+  obs            String
+}
+
+model ConfirmacaoEntrega {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   PassagemDados @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  motorista        String
+  codigoEntrega    Int
+  cidade           String
+  entregaConcluida String
+  obs              String
+}
+
+model Retorno {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   PassagemDados @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  codigoEntrega Int
+  placa         String
+  hodometro     Int
+  data          String
+  obs           String
+}
+
+model Canhoto {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   PassagemDados @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  notaFiscal         Int
+  motorista          Int
+  statusCanhoto      String
+  responsavelCanhoto Int
+}
+
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?   
-  access_token       String?   
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?   
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
