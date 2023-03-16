@@ -38,8 +38,10 @@ export class FinanceiroController {
                 ...this.data,
                 author: {
                     create: {
-                        notaFiscal: 123123
+                        expedicao: "",
+                        notaFiscal: 23233
                     }
+                    
                 }
             }
         })

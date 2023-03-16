@@ -1,21 +1,41 @@
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import React, { Dispatch, SetStateAction } from 'react'
+import { MenuItem, Select, SelectChangeEvent, InputLabel, FormControl } from '@mui/material'
+import React, { Dispatch, SetStateAction, useEffect } from 'react'
+import { databaseRepository } from '@repositories/mutateData'
+import { editDataController } from '@services/prisma/editData'
+import { ModelFinanceiro } from '@models/financeiro/financeiroSchema';
+import { useForm } from 'react-hook-form';
 
-type Props = {
-    setValue(value: boolean): void
+interface Props {
+    valor: boolean
+    routerEdit: string
+    item: ModelFinanceiro | any
+    metadata: string
 }
 
-const Index = ({setValue}: Props) => {
+const Index = ({valor, routerEdit, item, metadata}: Props) => {
+
+  function onSubmit(sendThis: string, value: string | boolean) { 
+    if(value == "true") {
+      value = true
+    } else {
+      value = false
+    }
+
+    return new editDataController(
+      new databaseRepository
+    ).execute({
+      router: routerEdit, 
+      metadata: sendThis, 
+      value: value
+    })
+  }
+
   return (
-    <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    label="Age"
-    onChange={(event: SelectChangeEvent) => setValue(JSON.parse(event.target.value))}
-  >
-    <MenuItem value={"true"}>Sim</MenuItem>
-    <MenuItem value={"false"}>Não</MenuItem>
-  </Select>
+      <select style={{border: "none"}} onChange={(e) => onSubmit(item.id+metadata, e.target.value)}>
+        <option value="false" selected disabled>{item.vendaFrete ? 'Sim' : "Não"}</option>
+        <option value="true">Sim</option>
+        <option value="false">Não</option>
+      </select>
   )
 }
 

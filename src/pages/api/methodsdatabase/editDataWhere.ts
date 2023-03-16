@@ -18,7 +18,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).send({ result: "DADOS em falta" })  
     }
 
-    return  res.status(201).send({ result: await prisma.financeiro.update({
+    console.log(req.body)
+
+    return res.status(201).send({ result: await prisma.financeiro.update({
             where: {
                 id: Number(id)
             },
