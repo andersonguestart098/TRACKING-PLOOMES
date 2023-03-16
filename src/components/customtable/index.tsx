@@ -1,9 +1,8 @@
-import { Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Zoom } from '@mui/material'
 import { ModelFinanceiro } from '~/models/financeiro/financeiroSchema'
-import { useForm } from "react-hook-form";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { editDataController } from '@services/prisma/editData';
-import { databaseRepository } from '~/repositories/mutateData';
+import CustomInput from "../customInput"
+
 
 
 type objectDataBase = {
@@ -16,23 +15,7 @@ interface Props {
   setPagina: Dispatch<SetStateAction<number>>
 }
 
-const Index = ({ data, setPagina }: Props) => {
-  const { register, reset, handleSubmit, getValues, formState: { errors } } = useForm()
-  const [ refresh, setRefresh ] = useState(0)
-
-  function onSubmit(sendThis: string, value: string) { 
-    return new editDataController(
-      new databaseRepository
-    ).execute({
-      router: "/api/methodsdatabase/editDataWhere", 
-      metadata: sendThis, 
-      value: value
-    })
-  }
-
-  useEffect(() => {
-    setRefresh(0)
-  }, [data]);
+const Index = ({ data, setPagina }: Props) => {  
 
   return (
     <div>
@@ -65,18 +48,24 @@ const Index = ({ data, setPagina }: Props) => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.cliente}</TableCell>
+                  <TableCell>{item.createdAt}</TableCell>
                   <TableCell>{item.vendedor}</TableCell>
                   <TableCell>{item.orcamento}</TableCell>
                   <TableCell>
-                  <form onSubmit={handleSubmit(event => onSubmit(item.id+"_cliente", getValues(item.id+"_cliente")))}>
-                    <input style={{border: "none"}} defaultValue={item.cliente} {...register(item.id+"_cliente", {required: true})} />
-                  </form>
+                  <CustomInput 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_cliente"
+                    />
                   </TableCell>
                   <TableCell>
-                    <form onSubmit={handleSubmit(event => onSubmit(item.id+"_tipoFaturamento", getValues(item.id+"_tipoFaturamento")))}>
-                      <input style={{border: "none"}} defaultValue={item.tipoFaturamento} {...register(item.id+"_tipoFaturamento", {required: true})} />
-                    </form>
+                    <CustomInput 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_tipoFaturamento"
+                    />
                   </TableCell>
                   <TableCell>{item.valor}</TableCell>
                   <TableCell>{item.formaPagamento}</TableCell>
