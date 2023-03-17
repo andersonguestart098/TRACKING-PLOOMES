@@ -2,7 +2,7 @@ import { MenuItem, Select, SelectChangeEvent, InputLabel, FormControl } from '@m
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import { databaseRepository } from '@repositories/mutateData'
 import { editDataController } from '@services/prisma/editData'
-import { ModelFinanceiro } from '@models/financeiro/financeiroSchema';
+import { ModelFinanceiro } from '@models/setoresInterface';
 import { useForm } from 'react-hook-form';
 
 interface Props {

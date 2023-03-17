@@ -6,28 +6,42 @@ import React from 'react'
 interface Props {
   dados: any,
   setData: React.Dispatch<React.SetStateAction<number>>
+  setor: string
 }
 
-const Index = ({dados, setData}: Props) => {
+const Index = ({setor, dados, setData}: Props) => {
   return (
-      <AppBar position="static">
+      <AppBar
+      style={{
+        background: "0094ff"
+      }}
+      position="static">
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
+            style={{
+              color: "white"
+            }}
             aria-label="menu"
             href="/home"
             sx={{ mr: 2 }}
           >
             <ArrowBackIcon />
           </IconButton>
-          <Typography variant="h6" component="div">
+          <div style={{marginTop: 10, marginBottom: 10}}>
+            <Typography variant="h5" component="h2">
+              {setor}
+            </Typography>
             {dados.user.name}
-          </Typography>
+          </div>
           <TextField
+            style={{
+              background: "white",
+              borderRadius: 8
+            }}
             sx={{ flexGrow: 1, mx: 5 }}
-            placeholder="Pesquisar"
+            placeholder="Pesquisar..."
             hiddenLabel
             id="filled-hidden-label-small"
             variant="filled"

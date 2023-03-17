@@ -1,10 +1,11 @@
 import React from 'react'
-import { ModelFinanceiro } from "@models/financeiro/financeiroSchema";
+import { ModelFinanceiro } from "@models/setoresInterface";
 import { Button } from "@mui/material";
 import { createDataController } from '~/services/prisma/createData';
 import { databaseRepository } from '~/repositories/mutateData';
 import { getSession, signIn, signOut } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
+import "@styles/spinner.css"
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 

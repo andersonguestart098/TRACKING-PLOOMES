@@ -1,12 +1,12 @@
 import useSWR from "swr";
 import requestApi from "@services/requestApi";
 
-export function useFetch<Type = any>(url: string, paginate=0) {
+export function useFetch<Type = any>(url: string, paginate=0, setorID: string) {
     const { data, error, isLoading } = useSWR<Type>(url, async url => {
         const response: any = await requestApi.post(url, {
-            pagina: paginate
+            pagina: paginate,
+            setor: setorID
         })    
-        console.log(response.data)
         return response.data
     }, { refreshInterval: 1000 })
 

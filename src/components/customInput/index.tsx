@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { editDataController } from '@services/prisma/editData';
 import { databaseRepository } from '@repositories/mutateData';
 import { useForm } from "react-hook-form";
-import { ModelFinanceiro } from '@models/financeiro/financeiroSchema';
+import { ModelFinanceiro } from '@models/setoresInterface';
 
 interface Props {
     routerEdit: string
