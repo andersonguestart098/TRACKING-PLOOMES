@@ -13,7 +13,7 @@ const Index = ({setor, dados, setData}: Props) => {
   return (
       <AppBar
       style={{
-        background: "0094ff"
+        background: "#003d4c"
       }}
       position="static">
         <Toolbar>
@@ -38,7 +38,8 @@ const Index = ({setor, dados, setData}: Props) => {
           <TextField
             style={{
               background: "white",
-              borderRadius: 8
+              borderRadius: 8,
+              margin: 25
             }}
             sx={{ flexGrow: 1, mx: 5 }}
             placeholder="Pesquisar..."
