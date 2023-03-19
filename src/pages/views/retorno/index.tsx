@@ -44,8 +44,8 @@ function index() {
 
 
   if(isLoading) {
-    return <div style={{display: "flex", flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-      <CircularProgress disableShrink />
+    return <div style={{display: "flex", height: "100vh", justifyContent: 'center', alignItems: 'center'}}>
+      <CircularProgress />
     </div>
   }
 

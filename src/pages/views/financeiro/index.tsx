@@ -42,8 +42,8 @@ function index() {
 
 
   if(isLoading) {
-    return <div style={{display: "flex", flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-      <CircularProgress disableShrink />
+    return <div style={{display: "flex", height: "100vh", justifyContent: 'center', alignItems: 'center'}}>
+      <CircularProgress />
     </div>
   }
 
@@ -115,7 +115,8 @@ function index() {
                       item={item}
                       routerEdit="/api/methodsdatabase/editDataWhere"
                       metadata="_vendaFrete"
-                      valor={item.vendaFrete}
+                      value="vendaFrete"
+                      tags={["boolean"]}
                       />
                   </TableCell>
                   <TableCell>{item.retiraEntrega}</TableCell>
@@ -126,10 +127,19 @@ function index() {
                   <TableCell>{item.tipoFrete}</TableCell>
                   <TableCell>{item.valorFrete}</TableCell>
                   <TableCell>{item.dataEntrega}</TableCell>
-                  <TableCell>{item.numeroNotaFiscal}</TableCell>
+                  <TableCell>{item.author?.notaFiscal}</TableCell>
                   <TableCell>{item.operadorNotaFiscal}</TableCell>
-                  <TableCell>{item.expedicaoLog}</TableCell>
-                  <TableCell>{item.responsavelNotaFiscal}</TableCell>
+                  <TableCell>{item.operadorNotaFiscal}</TableCell>
+                  <TableCell>
+                    <CustomSelect 
+                      key={item.id}
+                      item={item.author}
+                      routerEdit="/api/methodsdatabase/mudancaPassagem"
+                      metadata={"_"+item.author?.expedicao}
+                      value="expedicao"
+                      tags={["expedicao", "expedicao2", "logistica"]}
+                      />
+                  </TableCell>
                   <TableCell>{item.observacaoFinanceiro}</TableCell>
                   <TableCell>{item.vendedor}</TableCell>
                 </TableRow>

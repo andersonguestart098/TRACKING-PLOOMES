@@ -1,24 +1,25 @@
-import { MenuItem, Select, SelectChangeEvent, InputLabel, FormControl } from '@mui/material'
-import React, { Dispatch, SetStateAction, useEffect } from 'react'
+import React from 'react'
 import { databaseRepository } from '@repositories/mutateData'
 import { editDataController } from '@services/prisma/editData'
 import { ModelFinanceiro } from '@models/setoresInterface';
-import { useForm } from 'react-hook-form';
 
 interface Props {
-    valor: boolean
+    value: string
+    tags: string[]
     routerEdit: string
     item: ModelFinanceiro | any
     metadata: string
 }
 
-const Index = ({valor, routerEdit, item, metadata}: Props) => {
+const Index = ({routerEdit, item, metadata, value, tags}: Props) => {
 
   function onSubmit(sendThis: string, value: string | boolean) { 
-    if(value == "true") {
-      value = true
-    } else {
-      value = false
+    if(tags[0] == "boolean"){
+      if(value == "true") {
+        value = true
+      } else {
+        value = false
+      }
     }
 
     return new editDataController(
@@ -32,9 +33,14 @@ const Index = ({valor, routerEdit, item, metadata}: Props) => {
 
   return (
       <select style={{border: "none"}} onChange={(e) => onSubmit(item.id+metadata, e.target.value)}>
-        <option value="false" selected disabled>{item.vendaFrete ? 'Sim' : "Não"}</option>
-        <option value="true">Sim</option>
-        <option value="false">Não</option>
+        <option value="false" selected disabled>{typeof item[value] ==  "boolean" ? item[value] ? 'Sim' : "Não" : item[value]}</option>
+        {tags[0] == "boolean" ? (
+          <>
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+          </>
+        ) : tags.map(item => <option value={item}>{item}</option>
+        )}
       </select>
   )
 }

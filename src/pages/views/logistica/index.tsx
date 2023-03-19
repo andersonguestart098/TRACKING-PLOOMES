@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { useFetch } from "@hooks/useFetch";
-import { ModelExpedicao2 } from '@models/setoresInterface';
+import { ModelLogistica } from '@models/setoresInterface';
 import CustomTable from "@components/customtable"
 import CustomNavBar from "@components/customAppBar"
 import CustomInput from '@components/customInput';
@@ -12,7 +12,7 @@ import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 
 interface typeDB {
-    result: ModelExpedicao2[]
+    result: ModelLogistica[]
     lengthDB: number
 }
 
@@ -39,19 +39,19 @@ function index() {
   const { data: dataAuth } = useSession()
   const [pagina, setPagina ] = useState(0)
 
-  const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "expedicao2")
+  const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "logistica")
 
 
 
   if(isLoading) {
-    return <div style={{display: "flex", flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-      <CircularProgress disableShrink />
+    return <div style={{display: "flex", height: "100vh", justifyContent: 'center', alignItems: 'center'}}>
+      <CircularProgress />
     </div>
   }
 
   return (
     <>
-      <CustomNavBar setor="EXPEDICAO 2" setData={setPagina} dados={dataAuth} />
+      <CustomNavBar setor="LOGISTICA" setData={setPagina} dados={dataAuth} />
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
@@ -64,7 +64,7 @@ function index() {
           </TableRow>
       }
       childrenRowTable={
-        data!.result.map((item: ModelExpedicao2) => {
+        data!.result.map((item: ModelLogistica) => {
             return (
               <TableRow
                   key={item.id}
@@ -72,9 +72,9 @@ function index() {
                 >
                   <TableCell>{item.id}</TableCell>
                   <TableCell>{item.createdAt}</TableCell>
-                  <TableCell>{item.numeroNotaFiscal}</TableCell>
-                  <TableCell>{item.responsavelNotaFiscal}</TableCell>
-                  <TableCell>{item.statusNotaFiscal}</TableCell>
+                  <TableCell>{item.author?.notaFiscal}</TableCell>
+                  <TableCell>{item.responsavelNf}</TableCell>
+                  <TableCell>{item.statusNf}</TableCell>
 
                 </TableRow>
             )

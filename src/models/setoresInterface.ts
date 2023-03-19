@@ -2,6 +2,7 @@ interface Passagem {
     createdAt: string,
     id: number,
     notaFiscal: number,
+    expedicao: string,
     updatedAt: string,
 }
 
@@ -65,9 +66,9 @@ export interface ModelLogistica {
     setor?: string
     authorId?: string
     createdAt?: string
-    numeroNotaFiscal: number
+    responsavelNf: number
     responsavelNotaFiscal: string 
-    statusNotaFiscal: string 
+    statusNf: string 
     
 }
 

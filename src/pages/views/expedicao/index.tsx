@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { useFetch } from "@hooks/useFetch";
-import { ModelCanhoto} from '@models/setoresInterface';
+import { ModelExpedicao } from '@models/setoresInterface';
 import CustomTable from "@components/customtable"
 import CustomNavBar from "@components/customAppBar"
 import CustomInput from '@components/customInput';
@@ -12,7 +12,7 @@ import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 
 interface typeDB {
-    result: ModelCanhoto[]
+    result: ModelExpedicao[]
     lengthDB: number
 }
 
@@ -39,40 +39,32 @@ function index() {
   const { data: dataAuth } = useSession()
   const [pagina, setPagina ] = useState(0)
 
-  const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "canhoto")
+  const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "expedicao")
 
 
 
-  //if(isLoading) {
+  if(isLoading) {
     return <div style={{display: "flex", height: "100vh", justifyContent: 'center', alignItems: 'center'}}>
-      <div className="spinner">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        </div>
+      <CircularProgress />
     </div>
-  //}
+  }
 
-  /*return (
+  return (
     <>
-      <CustomNavBar setor="CANHOTO" setData={setPagina} dados={dataAuth} />
+      <CustomNavBar setor='EXPEDICAO' setData={setPagina} dados={dataAuth} />
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
               <TableCell>Id</TableCell>
               <TableCell >Data|Hora</TableCell>
-              <TableCell>Motorista</TableCell>
-              <TableCell>Status|Canhoto</TableCell>
-              <TableCell>Hodometro</TableCell>
-              <TableCell>Responsável|Canhoto</TableCell>
+              <TableCell>Número|NF</TableCell>
+              <TableCell>Responsável|NF</TableCell>
+              <TableCell>Status|NF</TableCell>
               
           </TableRow>
       }
       childrenRowTable={
-        data!.result.map((item: ModelCanhoto) => {
+        data!.result.map((item: ModelExpedicao) => {
             return (
               <TableRow
                   key={item.id}
@@ -80,9 +72,9 @@ function index() {
                 >
                   <TableCell>{item.id}</TableCell>
                   <TableCell>{item.createdAt}</TableCell>
-                  <TableCell>{item.motorista}</TableCell>
-                  <TableCell>{item.statusCanhoto}</TableCell>
-                  <TableCell>{item.responsavelCanhoto}</TableCell>
+                  <TableCell>{item.numeroNotaFiscal}</TableCell>
+                  <TableCell>{item.responsavelNotaFiscal}</TableCell>
+                  <TableCell>{item.statusNotaFiscal}</TableCell>
 
                 </TableRow>
             )
@@ -94,7 +86,7 @@ function index() {
           }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
       }/>
     </>
-  )*/
+  )
 }
 
 export default index
