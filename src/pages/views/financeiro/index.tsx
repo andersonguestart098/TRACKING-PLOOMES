@@ -36,6 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 function index() {
   const { data: dataAuth } = useSession()
   const [pagina, setPagina ] = useState(0)
+  const [travarAuto, setTravarAuto ] = useState(0)
 
   const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro")
 
@@ -54,7 +55,7 @@ function index() {
       childrenCabecarioTable={
         <TableRow>
               <TableCell>Id</TableCell>
-              <TableCell >Data|Hora</TableCell>
+              <TableCell>Data|Hora</TableCell>
               <TableCell>Vendedor</TableCell>
               <TableCell>Orçamento</TableCell>
               <TableCell>Cliente</TableCell>
@@ -77,7 +78,7 @@ function index() {
               <TableCell>Exped|Log</TableCell>
               <TableCell>Responsável|NF</TableCell>
               <TableCell>Observação</TableCell>
-          </TableRow>
+        </TableRow>
       }
       childrenRowTable={
         data!.result.map((item: ModelFinanceiro) => {
@@ -144,7 +145,7 @@ function index() {
                   <TableCell>{item.vendedor}</TableCell>
                 </TableRow>
             )
-          })
+        })
       } paginacao={
         <Pagination onChange={(_, value) => { 
             value = value -1

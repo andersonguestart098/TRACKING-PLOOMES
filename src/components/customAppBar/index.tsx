@@ -1,7 +1,9 @@
 import { AppBar, Button, IconButton, Toolbar, Typography, Avatar, TextField } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SearchIcon from '@mui/icons-material/Search';
 import { signOut } from 'next-auth/react'
 import React from 'react'
+import style from "@styles/button.module.css"
 
 interface Props {
   dados: any,
@@ -48,6 +50,7 @@ const Index = ({setor, dados, setData}: Props) => {
             variant="filled"
             size="small"
           />
+          <SearchIcon className={style.icon} />
           <IconButton onClick={() => {}} sx={{ p: 0 }}>
             <Avatar alt="Remy Sharp" src={dados.user.image} />
           </IconButton>

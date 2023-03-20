@@ -21,7 +21,6 @@ const Index = ({routerEdit, item, metadata, value, tags}: Props) => {
         value = false
       }
     }
-
     return new editDataController(
       new databaseRepository
     ).execute({

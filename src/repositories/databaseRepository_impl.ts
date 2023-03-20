@@ -1,4 +1,4 @@
-import { ModelFinanceiro } from "@models/financeiro/financeiroSchema"
+import { ModelFinanceiro } from "@models/setoresInterface"
 
 export interface databaseRepositoryImpl {
     edit(router: string, metadata: string, value: string | number | boolean): void

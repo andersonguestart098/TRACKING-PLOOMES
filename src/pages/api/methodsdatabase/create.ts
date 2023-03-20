@@ -13,7 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     switch (setor) {
         case "financeiro":
-            res.status(201).send({result: (new FinanceiroController(req.body).execute())})
+            await new FinanceiroController(req.body).execute()
+            res.status(201).send({result: "criado dado em financeiro"})
             break;
         
         default:
