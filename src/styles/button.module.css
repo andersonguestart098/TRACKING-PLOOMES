@@ -1,0 +1,14 @@
+.icon {
+   margin-right: 20px;
+   background: #FFFFFF;
+   color: #003d4c;
+   height: 40px;
+   width: 40px;
+   border-radius: 10px;
+   transition: .5s;
+}
+
+.icon:hover{
+   background: #01232c;
+   color: #fff;
+}
