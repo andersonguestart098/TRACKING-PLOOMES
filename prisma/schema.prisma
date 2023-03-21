@@ -54,10 +54,8 @@ model Financeiro {
   tipoFrete             String
   valorFrete            String
   dataEntrega           String
-  numeroNotaFiscal      Int
   statusNotaFiscal      String
   operadorNotaFiscal    String
-  expedicaoLog          String
   responsavelNotaFiscal String
 }
 
@@ -69,9 +67,8 @@ model Expedicao {
   author   PassagemDados @relation(fields: [authorId], references: [id])
   authorId Int
 
-  notaFiscal    Int
-  responsavelNf String
-  statusNf      String
+  responsavelNotaFiscal String
+  statusNotaFiscal      String
 }
 
 model Expedicao2 {
@@ -82,9 +79,8 @@ model Expedicao2 {
   author   PassagemDados @relation(fields: [authorId], references: [id])
   authorId Int
 
-  notaFiscal    Int
-  responsavelNf String
-  statusNf      String
+  responsavelNotaFiscal String
+  statusNotaFiscal      String
 }
 
 model Logistica {
@@ -95,9 +91,8 @@ model Logistica {
   author   PassagemDados @relation(fields: [authorId], references: [id])
   authorId Int
 
-  notaFiscal    Int
-  responsavelNf String
-  statusNf      String
+  responsavelNotaFiscal String
+  statusNotaFiscal      String
 }
 
 model Saida {

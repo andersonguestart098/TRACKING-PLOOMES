@@ -29,10 +29,8 @@ export interface ModelFinanceiro {
     tipoFrete: string 
     valorFrete: string 
     dataEntrega: string 
-    numeroNotaFiscal: number 
     statusNotaFiscal: string 
     operadorNotaFiscal: string 
-    expedicaoLog: string 
     responsavelNotaFiscal: string 
 }
 
@@ -42,7 +40,6 @@ export interface ModelExpedicao {
     setor?: string
     authorId?: string
     createdAt?: string
-    numeroNotaFiscal: number
     responsavelNotaFiscal: string 
     statusNotaFiscal: string 
     
@@ -54,7 +51,6 @@ export interface ModelExpedicao2 {
     setor?: string
     authorId?: string
     createdAt?: string
-    numeroNotaFiscal: number
     responsavelNotaFiscal: string 
     statusNotaFiscal: string 
     
@@ -66,9 +62,8 @@ export interface ModelLogistica {
     setor?: string
     authorId?: string
     createdAt?: string
-    responsavelNf: number
     responsavelNotaFiscal: string 
-    statusNf: string 
+    statusNotaFiscal: string 
     
 }
 

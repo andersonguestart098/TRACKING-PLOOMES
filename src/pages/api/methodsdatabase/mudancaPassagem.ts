@@ -25,9 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 })
                 await prisma.expedicao.create({
                     data: {
-                        notaFiscal: 123,
-                        responsavelNf: "a definir",
-                        statusNf: "a definir",
+                        statusNotaFiscal: "a definir",
+                        responsavelNotaFiscal: "a definir",
+
                         author: {
                             connect: {
                                 id: Number(id)
@@ -49,9 +49,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     })
                     await prisma.expedicao2.create({
                         data: {
-                            notaFiscal: 123,
-                            responsavelNf: "a definir",
-                            statusNf: "a definir",
+
+                            responsavelNotaFiscal: "a definir",
+                            statusNotaFiscal: "a definir",
                             author: {
                                 connect: {
                                     id: Number(id)
@@ -73,9 +73,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 })
                 await prisma.logistica.create({
                     data: {
-                        notaFiscal: 123,
-                        responsavelNf: "a definir",
-                        statusNf: "a definir",
+
+                        responsavelNotaFiscal: "a definir",
+                        statusNotaFiscal: "a definir",
                         author: {
                             connect: {
                                 id: Number(id)
@@ -159,9 +159,9 @@ async function CreateWhere(novoSetor=dado.value, idCriacao: number) {
         case "expedicao":
             await prisma.expedicao.create({
                 data: {
-                    notaFiscal: 0,
-                    responsavelNf: "não definido",
-                    statusNf: "não definido",
+
+                    responsavelNotaFiscal: "não definido",
+                    statusNotaFiscal: "não definido",
                     author: {
                         connect: {
                             id: Number(idCriacao)
@@ -174,9 +174,9 @@ async function CreateWhere(novoSetor=dado.value, idCriacao: number) {
         case "expedicao2":
             await prisma.expedicao2.create({
                 data: {
-                    notaFiscal: 0,
-                    responsavelNf: "não definido",
-                    statusNf: "não definido",
+
+                    responsavelNotaFiscal: "não definido",
+                    statusNotaFiscal: "não definido",
                     author: {
                         connect: {
                             id: Number(idCriacao)
@@ -189,9 +189,9 @@ async function CreateWhere(novoSetor=dado.value, idCriacao: number) {
         case "logistica":
             await prisma.logistica.create({
                 data: {
-                    notaFiscal: 0,
-                    responsavelNf: "não definido",
-                    statusNf: "não definido",
+
+                    responsavelNotaFiscal: "não definido",
+                    statusNotaFiscal: "não definido",
                     author: {
                         connect: {
                             id: Number(idCriacao)

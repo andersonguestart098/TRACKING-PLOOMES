@@ -72,7 +72,7 @@ function index() {
                 >
                   <TableCell>{item.id}</TableCell>
                   <TableCell>{item.createdAt}</TableCell>
-                  <TableCell>{item.numeroNotaFiscal}</TableCell>
+                  <TableCell>{item.author?.notaFiscal}</TableCell>
                   <TableCell>{item.responsavelNotaFiscal}</TableCell>
                   <TableCell>{item.statusNotaFiscal}</TableCell>
 
