@@ -31,7 +31,7 @@ const Index = ({routerEdit, item, metadata, value, tags}: Props) => {
   }
 
   return (
-      <select style={{border: "none"}} onChange={(e) => onSubmit(item.id+metadata, e.target.value)}>
+      <select style={{border: "none", background: "transparent"}} onChange={(e) => onSubmit(item.id+metadata, e.target.value)}>
         <option value="false" selected disabled>{typeof item[value] ==  "boolean" ? item[value] ? 'Sim' : "Não" : item[value]}</option>
         {tags[0] == "boolean" ? (
           <>

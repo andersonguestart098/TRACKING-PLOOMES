@@ -10,7 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const { id, dado } = req.body
-    console.log(req.body)
 
     if(dado.index == "ainda não definido") {
         switch (dado.value) {

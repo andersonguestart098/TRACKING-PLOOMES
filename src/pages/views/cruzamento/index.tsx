@@ -5,12 +5,12 @@ import CustomTable from "@components/customtable"
 import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 import CustomNavBar from "@components/customAppBar"
-import { ModelFinanceiro } from '~/models/setoresInterface';
+import { ModelCruzamento } from '~/models/setoresInterface';
 import CustomInput from '~/components/customInput';
 import CustomSelect from '~/components/customSelect';
 
 interface typeDB {
-    result: ModelFinanceiro[]
+    result: ModelCruzamento[]
     lengthDB: number
 }
 
@@ -38,7 +38,7 @@ function index() {
   const [pagina, setPagina ] = useState(0)
   const [travarAuto, setTravarAuto ] = useState(0)
 
-  const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro")
+  const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "cruzamento")
 
 
 
@@ -59,7 +59,7 @@ function index() {
         </TableRow>
       }
       childrenRowTable={
-        data!.result.map((item: ModelFinanceiro) => {
+        data!.result.map((item: ModelCruzamento) => {
             return (
               <TableRow
                   key={item.id}

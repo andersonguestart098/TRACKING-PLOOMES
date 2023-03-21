@@ -85,6 +85,14 @@ function index() {
             return (
               <TableRow
                   key={item.id}
+                  style={
+                    item.statusNotaFiscal == "Cancelada"? {background: "#d62013"} : 
+                    item.statusNotaFiscal ==  "Emitida" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Retornou" ? {background: "#d851f0"} :
+                    item.statusNotaFiscal ==  "Boleto em aberto" ? {background: "#eb8c34"} : 
+                    item.statusNotaFiscal ==  "Aguardando deposito" ? {background: "#cc34eb"} : 
+                    item.statusNotaFiscal ==  "Pendente" ? {background: "#f28538"} : {}
+                  }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
@@ -122,14 +130,40 @@ function index() {
                   </TableCell>
                   <TableCell>{item.retiraEntrega}</TableCell>
                   <TableCell>{item.freteConta}</TableCell>
-                  <TableCell>{item.entregaCadastro ? "Sim" : "Não"}</TableCell>
+                  <TableCell>
+                    <CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_entregaCadastro"
+                      value="entregaCadastro"
+                      tags={["boolean"]}
+                      />
+                  </TableCell>
                   <TableCell>{item.localCobranca}</TableCell>
                   <TableCell>{item.observacao}</TableCell>
                   <TableCell>{item.tipoFrete}</TableCell>
                   <TableCell>{item.valorFrete}</TableCell>
                   <TableCell>{item.dataEntrega}</TableCell>
-                  <TableCell>{item.author?.notaFiscal}</TableCell>
-                  <TableCell>{item.operadorNotaFiscal}</TableCell>
+                  <TableCell>
+                    <CustomInput 
+                      key={item.id}
+                      typeInput="number"
+                      item={item.author}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_notaFiscal"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_statusNotaFiscal"
+                      value="statusNotaFiscal"
+                      tags={["Pendente","Emitida", "Cancelada", "Retornou", "Boleto em aberto", "Aguardando deposito"]}
+                      />
+                  </TableCell>
                   <TableCell>{item.operadorNotaFiscal}</TableCell>
                   <TableCell>
                     <CustomSelect 
@@ -141,8 +175,15 @@ function index() {
                       tags={["expedicao", "expedicao2", "logistica"]}
                       />
                   </TableCell>
-                  <TableCell>{item.observacaoFinanceiro}</TableCell>
-                  <TableCell>{item.vendedor}</TableCell>
+                  <TableCell>{item.responsavelNotaFiscal}</TableCell>
+                  <TableCell>
+                    <CustomInput 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_observacaoFinanceiro"
+                    />
+                  </TableCell>
                 </TableRow>
             )
         })

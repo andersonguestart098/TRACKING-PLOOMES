@@ -11,6 +11,10 @@ export class findAllData {
     
         const { pagina, setor } = req.body
         let operator: any
+
+        if(Object.keys(req.body).length === 0) {
+            return res.status(400).send({result: "pagina em falta"})
+        }
     
         switch (setor) {
             case "financeiro":
@@ -44,15 +48,29 @@ export class findAllData {
             case "canhoto":
                 operator = prisma.canhoto
                 break;
+
+            case "cruzamento": 
+                res.status(200).json({ 
+                    result: await prisma.passagemDados.findMany({
+                        include: {
+                            expedicaoPassagem: true,
+                            expedicao2Passagem: true,
+                            logisticaPassagem: true
+                        },
+                        take: 3,
+                        skip: pagina == 0 ? 0 : pagina * 3,
+                        orderBy: {
+                            id: "desc"
+                        }
+                    }),
+                    lengthDB: ((await operator.findMany()).length)
+                })
+                break;
             
             default:
                 res.status(400).send({result: "setor em falta"})
                 break;
         }
-    
-            if(Object.keys(req.body).length === 0) {
-                return res.status(400).send({result: "pagina em falta"})
-            }
         
             res.status(200).json({ 
             result: await operator.findMany({

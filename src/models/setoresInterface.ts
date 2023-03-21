@@ -6,6 +6,13 @@ interface Passagem {
     updatedAt: string,
 }
 
+export interface ModelCruzamento {
+    id?: string
+    expedicaoPassagem: ModelExpedicao[],
+    expedicao2Passagem: ModelExpedicao2[],
+    logisticaPassagem: ModelLogistica[],
+}
+
 export interface ModelFinanceiro {
     author?: Passagem
     id?: string

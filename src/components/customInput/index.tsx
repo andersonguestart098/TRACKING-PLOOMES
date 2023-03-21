@@ -8,9 +8,10 @@ interface Props {
     routerEdit: string
     item: ModelFinanceiro | any
     metadata: string
+    typeInput?: React.HTMLInputTypeAttribute
 }
 
-const Index = ({routerEdit, item, metadata}: Props) => {
+const Index = ({routerEdit, item, metadata, typeInput}: Props) => {
     const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm({
         defaultValues: {
             [item.id+metadata]: item[metadata.replace("_", "")].toString()
@@ -36,7 +37,7 @@ const Index = ({routerEdit, item, metadata}: Props) => {
 
   return (
     <form onSubmit={handleSubmit(event => onSubmit(item.id+metadata, getValues(item.id+metadata)))}>
-        <input style={{border: "none"}} {...register(item.id+metadata, {required: true})} />
+        <input type={typeInput ?? "text"} style={{border: "none", background: "transparent"}} {...register(item.id+metadata, {required: true})} />
     </form>
   )
 }
