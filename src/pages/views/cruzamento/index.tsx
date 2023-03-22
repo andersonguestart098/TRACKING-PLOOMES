@@ -59,16 +59,9 @@ function index() {
         </TableRow>
       }
       childrenRowTable={
-        data!.result.map((item: ModelCruzamento) => {
-            return (
-              <TableRow
-                  key={item.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell>{item.id}</TableCell>
-                </TableRow>
-            )
-        })
+        <>
+          {dado}
+        </>
       } paginacao={
         <Pagination onChange={(_, value) => { 
             value = value -1
