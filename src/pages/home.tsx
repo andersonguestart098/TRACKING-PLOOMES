@@ -12,6 +12,8 @@ import { useSession } from 'next-auth/react';
 import CustomCard from "@components/customCard"
 
 import { AccountTree, Backup, BarChart } from '@mui/icons-material';
+import { useFetch } from '@hooks/useFetch';
+import Swal from 'sweetalert2';
 
 
 const drawerWidth = 270;
@@ -21,6 +23,7 @@ interface Props {
 }
 
 export default function ResponsiveDrawer({window}: Props) {
+  const { data, isLoading } = useFetch("/api/methodsdatabase/getall", 0, "home")
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { data: dataAuth } = useSession()
 
@@ -71,7 +74,16 @@ export default function ResponsiveDrawer({window}: Props) {
         {[['Dashboard', <DashboardIcon />], ['Usuarios', <GroupIcon />],
           ['Tabelas', <BackupTableIcon />], ['Formularios', <DesignServicesIcon />],].map((text, index) => (
           <ListItem key={Number(index)} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => {
+              Swal.fire({
+                title: 'Setores disponiveis',
+                width: 600,
+                padding: '3em',
+                html:
+                  'Click nos setores disponiveis abaixo: <br/><br/>'+
+                  '<a target="_blank" href="/views/expedicao">Expedicao</a>'
+              })
+            }}>
               <ListItemIcon>
                 {text[1]}
               </ListItemIcon>
@@ -109,7 +121,7 @@ export default function ResponsiveDrawer({window}: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            SETOR
+            EXPEDICAO
           </Typography>
         </Toolbar>
       </AppBar>
@@ -149,7 +161,7 @@ export default function ResponsiveDrawer({window}: Props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <h2>Ola novamente, NOME</h2>
+        <h2>Ola novamente, {dataAuth?.user?.name}</h2>
         <div style={{
             display: "flex",
             flexDirection: "row",
@@ -158,13 +170,22 @@ export default function ResponsiveDrawer({window}: Props) {
         }}>
             <CustomCard icon={
                 <AccountTree sx={{fontSize: 50}} />
-            } />
+            } 
+              valor={data?.result[0]}
+              titulo="Pendente"  
+            />
             <CustomCard icon={
                 <Backup sx={{fontSize: 50}} />
-            } />
+            }
+              valor={data?.result[1]} 
+              titulo="Emitida" 
+            />
             <CustomCard icon={
                 <BarChart sx={{fontSize: 50}} />
-            } />
+            }
+              valor={data?.result[2]} 
+              titulo="Total" 
+            />
         </div>
       </Box>
     </Box>

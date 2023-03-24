@@ -1,5 +1,5 @@
 import { sendThisToDatabase } from "@services/sendData"
-import { ModelFinanceiro } from "~/models/financeiro/financeiroSchema"
+import { ModelFinanceiro } from "@models/setoresInterface"
 import { databaseRepositoryImpl } from "./databaseRepository_impl"
 
 export class databaseRepository implements databaseRepositoryImpl {

@@ -74,16 +74,15 @@ CREATE TABLE "Saida" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "authorId" INTEGER NOT NULL,
     "notaFiscal" INTEGER NOT NULL,
+    "codigoEntrega" INTEGER NOT NULL,
     "nomeConferente" TEXT NOT NULL,
     "placa" TEXT NOT NULL,
     "motorista" TEXT NOT NULL,
     "cidadeDestino" TEXT NOT NULL,
     "hodometro" INTEGER NOT NULL,
     "dataHoraSaida" TEXT NOT NULL,
-    "obs" TEXT NOT NULL,
-    CONSTRAINT "Saida_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "PassagemDados" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "obs" TEXT NOT NULL
 );
 
 -- CreateTable
@@ -91,13 +90,11 @@ CREATE TABLE "ConfirmacaoEntrega" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "authorId" INTEGER NOT NULL,
     "motorista" TEXT NOT NULL,
     "codigoEntrega" INTEGER NOT NULL,
     "cidade" TEXT NOT NULL,
     "entregaConcluida" TEXT NOT NULL,
-    "obs" TEXT NOT NULL,
-    CONSTRAINT "ConfirmacaoEntrega_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "PassagemDados" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "obs" TEXT NOT NULL
 );
 
 -- CreateTable
@@ -105,13 +102,11 @@ CREATE TABLE "Retorno" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "authorId" INTEGER NOT NULL,
     "codigoEntrega" INTEGER NOT NULL,
     "placa" TEXT NOT NULL,
     "hodometro" INTEGER NOT NULL,
     "data" TEXT NOT NULL,
-    "obs" TEXT NOT NULL,
-    CONSTRAINT "Retorno_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "PassagemDados" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "obs" TEXT NOT NULL
 );
 
 -- CreateTable
@@ -119,12 +114,10 @@ CREATE TABLE "Canhoto" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "authorId" INTEGER NOT NULL,
     "notaFiscal" INTEGER NOT NULL,
-    "motorista" INTEGER NOT NULL,
+    "motorista" TEXT NOT NULL,
     "statusCanhoto" TEXT NOT NULL,
-    "responsavelCanhoto" INTEGER NOT NULL,
-    CONSTRAINT "Canhoto_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "PassagemDados" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "responsavelCanhoto" TEXT NOT NULL
 );
 
 -- CreateTable

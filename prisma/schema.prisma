@@ -23,10 +23,8 @@ model PassagemDados {
   expedicaoPassagem          Expedicao[]
   expedicao2Passagem         Expedicao2[]
   logisticaPassagem          Logistica[]
-  saidaPassagem              Saida[]
-  confirmacaoEntregaPassagem ConfirmacaoEntrega[]
-  retornoPassagem            Retorno[]
-  canhotoPassagem            Canhoto[]
+
+
 }
 
 model Financeiro {
@@ -100,10 +98,8 @@ model Saida {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  author   PassagemDados @relation(fields: [authorId], references: [id])
-  authorId Int
-
   notaFiscal     Int
+  codigoEntrega  Int
   nomeConferente String
   placa          String
   motorista      String
@@ -118,9 +114,6 @@ model ConfirmacaoEntrega {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  author   PassagemDados @relation(fields: [authorId], references: [id])
-  authorId Int
-
   motorista        String
   codigoEntrega    Int
   cidade           String
@@ -132,9 +125,6 @@ model Retorno {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  author   PassagemDados @relation(fields: [authorId], references: [id])
-  authorId Int
 
   codigoEntrega Int
   placa         String
@@ -148,13 +138,10 @@ model Canhoto {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  author   PassagemDados @relation(fields: [authorId], references: [id])
-  authorId Int
-
   notaFiscal         Int
-  motorista          Int
+  motorista          String
   statusCanhoto      String
-  responsavelCanhoto Int
+  responsavelCanhoto String
 }
 
 model Account {

@@ -53,6 +53,7 @@ export class findAllData {
                 res.status(200).json({ 
                     result: await prisma.passagemDados.findMany({
                         include: {
+                            financeiroPassagem: true,
                             expedicaoPassagem: true,
                             expedicao2Passagem: true,
                             logisticaPassagem: true
@@ -65,6 +66,22 @@ export class findAllData {
                     }),
                     lengthDB: ((await operator.findMany()).length)
                 })
+                break;
+
+            case "home": 
+                const notasPendentes = await prisma.expedicao.findMany({
+                    where: {
+                        statusNotaFiscal: "Pendente"
+                    }
+                })
+                const notasEmitidas = await prisma.expedicao.findMany({
+                    where: {
+                        statusNotaFiscal: "Emitida"
+                    }
+                })
+                const notasTotais = await prisma.expedicao.findMany()
+
+                res.status(200).send({result: [notasPendentes.length, notasEmitidas.length, notasTotais.length]})
                 break;
             
             default:

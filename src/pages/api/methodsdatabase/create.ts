@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { FinanceiroController } from "~/controllers/setores/financeiro"
+import { CanhotoController } from "@controllers/setores/canhoto"
+import { FinanceiroController } from "@controllers/setores/financeiro"
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -15,7 +16,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case "financeiro":
             await new FinanceiroController(req.body).execute()
             res.status(201).send({result: "criado dado em financeiro"})
-            break;
+        break;
+
+        case "canhoto":
+            await new CanhotoController(req.body).execute()
+            res.status(201).send({result: "criado dado em canhoto"})
+        break;
         
         default:
             res.status(400).send({result: "Setor não reconhecido ou nao informado"})

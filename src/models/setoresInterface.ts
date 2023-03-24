@@ -122,13 +122,13 @@ export interface ModelRetorno {
 
 export interface ModelCanhoto {
     author?: Passagem
+    authorId?: string
     id?: string
     setor?: string
-    authorId?: string
     createdAt?: string
     numeroNotaFiscal: number
     motorista: string
-    statusCanhoto: string 
-    responsavelCanhoto: number
+    statusCanhoto: string
+    responsavelCanhoto: string
     
 }
