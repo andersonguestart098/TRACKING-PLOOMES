@@ -79,17 +79,14 @@ function index() {
                   <TableCell>{item.id}</TableCell>
                   <TableCell>{item.createdAt}</TableCell>
                   <TableCell>{item.codigoEntrega}</TableCell>
-                  <TableCell>{item.numeroNotaFiscal}</TableCell>
+                  <TableCell>{item.notaFiscal}</TableCell>
                   <TableCell>{item.nomeConferente}</TableCell>
                   <TableCell>{item.placa}</TableCell>
                   <TableCell>{item.motorista}</TableCell>
-                  <TableCell>{item.cidadesDestino}</TableCell>
+                  <TableCell>{item.cidadeDestino}</TableCell>
                   <TableCell>{item.hodometro}</TableCell>
                   <TableCell>{item.dataHoraSaida}</TableCell>
                   <TableCell>{item.obs}</TableCell>
-
-
-
                 </TableRow>
             )
           })

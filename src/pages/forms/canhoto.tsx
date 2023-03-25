@@ -3,13 +3,18 @@ import React from 'react'
 import { useForm } from "react-hook-form";
 import { sendThisToDatabase } from '@services/sendData';
 import { ModelCanhoto } from '@models/setoresInterface';
+import CustomSelect_Widget from '@components/customSelect_widget';
 
 type Props = {}
 
 const retorno = (props: Props) => {
-  const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm()
+  const { register, handleSubmit, reset, formState: { errors } } = useForm()
 
-  function onSubmit(e: any) {
+  const defaultValues = {
+    activitiesbefore: "",
+  }
+
+  async function onSubmit(e: any) {
     const dadosCanhoto: ModelCanhoto = {
       motorista: e.motorista,
       numeroNotaFiscal: e.numeroNotaFiscal,
@@ -17,7 +22,8 @@ const retorno = (props: Props) => {
       statusCanhoto: "Concluido",
       setor: "canhoto"
     }
-    sendThisToDatabase("/api/methodsdatabase/create", dadosCanhoto)
+    await sendThisToDatabase("/api/methodsdatabase/create", dadosCanhoto)
+    window.location.reload()
   }
 
   return (
@@ -26,21 +32,16 @@ const retorno = (props: Props) => {
       <form 
       onSubmit={handleSubmit(onSubmit)}
       style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "80vh"}}>          
-              <InputLabel id="quemRecebeu">Quem Recebeu</InputLabel>
-              <Select
-                required
-                {...register("quemRecebeu")}
-                labelId="quemRecebeu"
-                id="demo-simple-select"
-                label="Quem Recebeu"
-                sx={{width: 250}}
-              >
-                <MenuItem disabled value=" "></MenuItem>
-                <MenuItem value="MARCIA">MARCIA</MenuItem>
-                <MenuItem value="JULIA">JULIA</MenuItem>
-                <MenuItem value="RENITA">RENITA</MenuItem>
-                <MenuItem value="NADIA">NADIA</MenuItem>
-              </Select>
+              <CustomSelect_Widget
+               labelText={'Quem Recebeu:'} 
+               register={register("quemRecebeu")}
+               itens={[
+                {value: "MARCIA", visualValue: "MARCIA"},
+                {value: "JULIA", visualValue: "JULIA"},
+                {value: "RENITA", visualValue: "RENITA"},
+                {value: "NADIA", visualValue: "NADIA"},
+              ]}
+               />
               <br/><br/>
               <TextField 
               {...register("numeroNotaFiscal")} 
@@ -49,30 +50,25 @@ const retorno = (props: Props) => {
               id="numeroNotaFiscal" label="Numero Nota Fiscal" 
               variant="outlined" />
               <br/><br/>
-              <InputLabel id="motorista">Motorista</InputLabel>
-                <Select
-                  required
-                  {...register("motorista")}
-                  labelId="quemRecebeu"
-                  id="demo-simple-select"
-                  label="Motorista"
-                  sx={{width: 250}}
-                >
-                  <MenuItem disabled value=" "></MenuItem>
-                  <MenuItem value="ALEXANDRE">ALEXANDRE</MenuItem>
-                  <MenuItem value="DIONATHA">DIONATHA</MenuItem>
-                  <MenuItem value="DOUGLAS">DOUGLAS</MenuItem>
-                  <MenuItem value="IGON">IGON</MenuItem>
-                  <MenuItem value="JULIANO">JULIANO</MenuItem>
-                  <MenuItem value="MATHEUS">MATHEUS</MenuItem>
-                  <MenuItem value="VANDERLEI">VANDERLEI</MenuItem>
-                  <MenuItem value="VILNEI">VILNEI</MenuItem>
-                  <MenuItem value="WILLIAM">WILLIAM</MenuItem>
-                  <MenuItem value="PAULO ALEXANDRE">PAULO ALEXANDRE</MenuItem>
-                  <MenuItem value="OUTROS">OUTROS</MenuItem>
-              </Select>
+              <CustomSelect_Widget
+               labelText={'Motorista:'} 
+               register={register("motorista")} 
+               itens={[
+                {value: "ALEXANDRE", visualValue: "ALEXANDRE"},
+                {value: "DIONATHA", visualValue: "DIONATHA"},
+                {value: "DOUGLAS", visualValue: "DOUGLAS"},
+                {value: "IGON", visualValue: "IGON"},
+                {value: "JULIANO", visualValue: "JULIANO"},
+                {value: "MATHEUS", visualValue: "MATHEUS"},
+                {value: "VANDERLEI", visualValue: "VANDERLEI"},
+                {value: "VILNEI", visualValue: "VILNEI"},
+                {value: "WILLIAM", visualValue: "WILLIAM"},
+                {value: "PAULO ALEXANDRE", visualValue: "PAULO ALEXANDRE"},
+                {value: "OUTROS", visualValue: "OUTROS"},
+               ]}  
+               />
               <br/><br/>
-              <Button type="submit" variant="contained">Enviar</Button>
+              <Button type="submit" variant="contained" sx={{width: 250, padding: 2}}>Enviar</Button>
           </form>
     </div>
   )

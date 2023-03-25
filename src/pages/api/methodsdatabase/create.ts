@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { CanhotoController } from "@controllers/setores/canhoto"
 import { FinanceiroController } from "@controllers/setores/financeiro"
+import { SaidaController } from "@controllers/setores/saida"
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -21,6 +22,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case "canhoto":
             await new CanhotoController(req.body).execute()
             res.status(201).send({result: "criado dado em canhoto"})
+        break;
+
+        case "saida":
+            await new SaidaController(req.body).execute()
+            res.status(201).send({result: "criado dado em saida"})
         break;
         
         default:

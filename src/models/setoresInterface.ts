@@ -75,17 +75,15 @@ export interface ModelLogistica {
 }
 
 export interface ModelSaida {
-    author?: Passagem
     id?: string
     setor?: string
-    authorId?: string
     createdAt?: string
     codigoEntrega: number
-    numeroNotaFiscal: number 
+    notaFiscal: number 
     nomeConferente: string
     placa: string
     motorista: string
-    cidadesDestino: string
+    cidadeDestino: string
     hodometro: number
     dataHoraSaida: string
     obs: string
@@ -130,5 +128,4 @@ export interface ModelCanhoto {
     motorista: string
     statusCanhoto: string
     responsavelCanhoto: string
-    
 }

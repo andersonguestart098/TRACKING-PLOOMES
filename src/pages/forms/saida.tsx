@@ -2,7 +2,8 @@ import { Button, InputLabel, MenuItem, Select, TextareaAutosize, TextField } fro
 import React from 'react'
 import { useForm } from "react-hook-form";
 import { sendThisToDatabase } from '@services/sendData';
-import { ModelCanhoto } from '@models/setoresInterface';
+import { ModelSaida } from '@models/setoresInterface';
+import CustomSelect_Widget from '~/components/customSelect_widget';
 
 type Props = {}
 
@@ -10,12 +11,17 @@ const retorno = (props: Props) => {
   const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm()
 
   function onSubmit(e: any) {
-    const dadosCanhoto: ModelCanhoto = {
+    const dadosCanhoto: ModelSaida = {
       motorista: e.motorista,
-      numeroNotaFiscal: e.numeroNotaFiscal,
-      responsavelCanhoto: e.quemRecebeu,
-      statusCanhoto: "Concluido",
-      setor: "canhoto"
+      notaFiscal: e.notaFiscal,
+      cidadeDestino: e.cidadeDestino,
+      codigoEntrega: e.codigoEntrega,
+      hodometro: e.hodometro,
+      nomeConferente: e.conferente,
+      dataHoraSaida: e.dataHoraSaida,
+      obs: e.obs,
+      placa: e.placa,
+      setor: "saida"
     }
     sendThisToDatabase("/api/methodsdatabase/create", dadosCanhoto)
   }
@@ -25,7 +31,7 @@ const retorno = (props: Props) => {
       <img src="/logoce (2).svg" style={{width: 70, marginLeft: 15, marginTop: 15}} />
       <form  
       onSubmit={handleSubmit(onSubmit)}
-      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "80vh"}}> 
+      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 200}}> 
               <TextField 
               {...register("codigoEntrega")} 
               sx={{width: 250}} 
@@ -40,74 +46,59 @@ const retorno = (props: Props) => {
               id="numeroNotaFiscal" label="Número Nota Fiscal" 
               variant="outlined" />
               <br/>
-              
-              <InputLabel htmlFor="conferente" id="conferente">conferente</InputLabel>
-              <Select
-                required
-                {...register("conferente")}
-                labelId="conferente"
-                id="conferente"
-                label="conferente"
-                sx={{width: 250}}
-              >
-                <MenuItem disabled value=" "></MenuItem>
-                <MenuItem value="Max">Max</MenuItem>
-                <MenuItem value="Dudu">Dudu</MenuItem>
-                <MenuItem value="Cristiano">Cristiano</MenuItem>
-                <MenuItem value="Matheus">Matheus</MenuItem>
-                <MenuItem value="Manoel">Manoel</MenuItem>
-              </Select>
-              <br/><br/>
-              <InputLabel id="placa">Placa:</InputLabel>
-                <Select
-                  required
-                  {...register("placa")}
-                  labelId="placa"
-                  id="demo-simple-select"
-                  label="placa"
-                  sx={{width: 250}}
-                >
-                  <MenuItem disabled value=" "></MenuItem>
-                  <MenuItem value="IYW-7921">IYW7921</MenuItem>
-                  <MenuItem value="IWC5261">IWC5261</MenuItem>
-                  <MenuItem value="JBD-7E59">JBD7E59</MenuItem>
-                  <MenuItem value="IZT1E84">IZT1E84</MenuItem>
-                  <MenuItem value="IWW7921">IWW7921</MenuItem>
-                  <MenuItem value="IVO1603">IVO1603</MenuItem>
-                  <MenuItem value="AZI2E30">AZI2E30</MenuItem>
-                  <MenuItem value="ITA7784">ITA7784</MenuItem>
-                  <MenuItem value="IUT9476">IUT9476</MenuItem>
-                  <MenuItem value="IST6840">IST6840</MenuItem>
-                  <MenuItem value="IVP0G05">IVP0G05</MenuItem>
-                  <MenuItem value="JBD9H36">JBD9H36</MenuItem>
-                  <MenuItem value="IXH8706">IXH8706</MenuItem>
-              </Select>
-              <br/><br/>
 
-                <Select
-                  required
-                  {...register("motorista")}
-                  labelId="motorista"
-                  id="demo-simple-select"
-                  label="motorista"
-                  sx={{width: 250}}
-                >
-                  <MenuItem disabled value=" "></MenuItem>
-                  <MenuItem value="ALEXANDRE">ALEXANDRE</MenuItem>
-                  <MenuItem value="DIONATHA">DIONATHA</MenuItem>
-                  <MenuItem value="DOUGLAS">DOUGLAS</MenuItem>
-                  <MenuItem value="IGON">IGON</MenuItem>
-                  <MenuItem value="JULIANO">JULIANO</MenuItem>
-                  <MenuItem value="MATHEUS">MATHEUS</MenuItem>
-                  <MenuItem value="PAULO">PAULO</MenuItem>
-                  <MenuItem value="VANDERLEI">VANDERLEI</MenuItem>
-                  <MenuItem value="VILNEI">VILNEI</MenuItem>
-                  <MenuItem value="MAX">MAX</MenuItem>
-                  <MenuItem value="PAULO VITOR">PAULO VITOR</MenuItem>
-                  <MenuItem value="CRISTIANO">CRISTIANO</MenuItem>
-                  <MenuItem value="WILLIAM">WILLIAM</MenuItem>
-                  <MenuItem value="PAULO ALEXANDRE">PAULO ALEXANDRE</MenuItem>
-              </Select>
+              <CustomSelect_Widget
+               labelText={'Conferente:'} 
+               register={register("conferente")} 
+               itens={[
+                {value: "Max", visualValue: "Max"},
+                {value: "Dudu", visualValue: "Dudu"},
+                {value: "Cristiano", visualValue: "Cristiano"},
+                {value: "Matheus", visualValue: "Matheus"},
+                {value: "Manoel", visualValue: "Manoel"}
+               ]}  
+               />
+              <br/><br/>
+              <CustomSelect_Widget
+               labelText={'Placa:'} 
+               register={register("placa")} 
+               itens={[
+                {value: "YW7921", visualValue: "YW7921"},
+                {value: "IWC5261", visualValue: "IWC5261"},
+                {value: "JBD7E59", visualValue: "JBD7E59"},
+                {value: "IZT1E84", visualValue: "IZT1E84"},
+                {value: "IWW7921", visualValue: "IWW7921"},
+                {value: "IVO1603", visualValue: "IVO1603"},
+                {value: "AZI2E30", visualValue: "AZI2E30"},
+                {value: "ITA7784", visualValue: "ITA7784"},
+                {value: "IUT9476", visualValue: "IUT9476"},
+                {value: "IST6840", visualValue: "IST6840"},
+                {value: "IVP0G05", visualValue: "IVP0G05"},
+                {value: "JBD9H36", visualValue: "JBD9H36"},
+                {value: "IXH8706", visualValue: "IXH8706"}
+               ]}  
+               />
+              <br/><br/>
+              <CustomSelect_Widget
+               labelText={'Motorista:'} 
+               register={register("motorista")} 
+               itens={[
+                {value: "ALEXANDRE", visualValue: "ALEXANDRE"},
+                {value: "DIONATHA", visualValue: "DIONATHA"},
+                {value: "DOUGLAS", visualValue: "DOUGLAS"},
+                {value: "IGON", visualValue: "IGON"},
+                {value: "JULIANO", visualValue: "JULIANO"},
+                {value: "MATHEUS", visualValue: "MATHEUS"},
+                {value: "PAULO", visualValue: "PAULO"},
+                {value: "VANDERLEI", visualValue: "VANDERLEI"},
+                {value: "VILNEI", visualValue: "VILNEI"},
+                {value: "MAX", visualValue: "MAX"},
+                {value: "PAULO VITOR", visualValue: "PAULO VITOR"},
+                {value: "CRISTIANO", visualValue: "CRISTIANO"},
+                {value: "WILLIAM", visualValue: "WILLIAM"},
+                {value: "PAULO ALEXANDRE", visualValue: "PAULO ALEXANDRE"}
+               ]}  
+               />
               <br/><br/>
 
                   <TextField 

@@ -34,7 +34,16 @@ export class findAllData {
                 break;
 
             case "saida":
-                operator = prisma.saida
+                res.status(200).json({ 
+                    result: await prisma.saida.findMany({
+                        take: 3,
+                        skip: pagina == 0 ? 0 : pagina * 3,
+                        orderBy: {
+                            id: "desc"
+                        }
+                    }),
+                    lengthDB: ((await prisma.saida.findMany()).length)
+                })
                 break;
 
             case "confirmacaoEntrega":
@@ -46,7 +55,16 @@ export class findAllData {
                 break;
 
             case "canhoto":
-                operator = prisma.canhoto
+                res.status(200).json({ 
+                    result: await prisma.canhoto.findMany({
+                        take: 3,
+                        skip: pagina == 0 ? 0 : pagina * 3,
+                        orderBy: {
+                            id: "desc"
+                        }
+                    }),
+                    lengthDB: ((await prisma.canhoto.findMany()).length)
+                })
                 break;
 
             case "cruzamento": 
