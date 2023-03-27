@@ -82,7 +82,7 @@ export class findAllData {
                             id: "desc"
                         }
                     }),
-                    lengthDB: ((await operator.findMany()).length)
+                    lengthDB: ((await prisma.passagemDados.findMany()).length)
                 })
                 break;
 

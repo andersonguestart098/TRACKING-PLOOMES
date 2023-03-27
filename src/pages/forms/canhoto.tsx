@@ -8,7 +8,7 @@ import CustomSelect_Widget from '@components/customSelect_widget';
 type Props = {}
 
 const retorno = (props: Props) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm()
+  const { register, handleSubmit, formState: { errors } } = useForm()
 
   const defaultValues = {
     activitiesbefore: "",

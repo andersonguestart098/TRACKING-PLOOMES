@@ -27,6 +27,8 @@
     "next": "^13.2.1",
     "next-auth": "^4.19.0",
     "react": "18.2.0",
+    "react-currency-input-field": "^3.6.10",
+    "react-currency-masked-input": "^2.5.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.5",
     "styled-components": "^5.3.8",

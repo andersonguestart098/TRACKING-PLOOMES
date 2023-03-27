@@ -39,6 +39,7 @@ function index() {
   const [travarAuto, setTravarAuto ] = useState(0)
 
   const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "cruzamento")
+  console.log(data)
 
 
 
@@ -55,13 +56,12 @@ function index() {
       childrenCabecarioTable={
         <TableRow>
               <TableCell>Id</TableCell>
-
         </TableRow>
       }
       childrenRowTable={
-        <>
-          {dado}
-        </>
+        <TableRow>
+              <TableCell>{}</TableCell>
+        </TableRow>
       } paginacao={
         <Pagination onChange={(_, value) => { 
             value = value -1
