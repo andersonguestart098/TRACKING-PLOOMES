@@ -3,7 +3,7 @@ import { Button, TextField } from '@mui/material'
 import CustomInputMask from '@components/customInputMask'
 import CustomSelect_Widget from '@components/customSelect_widget'
 import { useForm } from 'react-hook-form'
-import CustomRadio from '~/components/customRadio'
+import CustomRadio from '@components/customRadio'
 
 type Props = {}
 
@@ -11,14 +11,29 @@ const financeiro = ({}: Props) => {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const [widthScreen, setWidthScreen] = useState(0)
 
+  const [tipoFaturamentoEF , setTipoFaturamentoEF] = useState(false)
+  const [tipoFaturamentoRM , setTipoFaturamentoRM] = useState(false)
+  const [entregaRetiraEI , setEntregaRetiraEI] = useState(false)
+  const [entregaRetiraEA , setEntregaRetiraEA] = useState(false)
+  const [vendaFreteSIM , setVendaFreteSIM] = useState(false)
+  const [entregaECSIm , setEntregaECSIm] = useState(false)
+  const [agendadoDataSim , setAgendadoDataSim] = useState(false)
+  const [formaPGOAV , setFormaPGOAV] = useState(false)
+  const [formaPGOCartao , setFormaPGOCartao] = useState(false)
+
+  
   useEffect(() => {
     setWidthScreen(window.innerWidth)
   },[])
 
+  const onSubmit = (data: any) => {
+    console.log(data);
+  }
+
   return (
-    <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", background: "#053C5E"}}>
-      <form style={{background: "#F5F5F5", borderRadius: 10, padding: 10}}>
-        <h3 style={{textAlign: "center"}}>Formulario Financeiro</h3>
+    <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%", background: "#053C5E"}}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{background: "#F5F5F5", borderRadius: 10, padding: 10, marginTop: 100}}>
+        <h3 style={{textAlign: "center"}}>Solicitação de Faturamento</h3>
         <hr />
         <div style={widthScreen > 600 ? {display: "flex", flexDirection: "row", 
           justifyContent: "space-between", width: "50%"} : {}}>
@@ -53,7 +68,7 @@ const financeiro = ({}: Props) => {
                 ]}
                /> 
               <br/><br/>
-              <TextField sx={{width: 250}} label="Cliente" variant="outlined" required />
+              <TextField {...register("cliente")} sx={{width: 250}} label="Cliente" variant="outlined" required />
               <br/><br/>
               <CustomRadio 
                 register={register("tipoFaturamento")} 
@@ -62,12 +77,117 @@ const financeiro = ({}: Props) => {
                   { value: "Normal", visualValue: "Normal" },  
                   { value: "Para Futura Entrega", visualValue: "Para Futura Entrega" }  
                 ]} />
+                <br/><br/>
+                <CustomRadio 
+                    register={register("formaPagamento")} 
+                    onchange={(e) => {
+                      switch(e.target.value) {
+                        case "Cartão": 
+                          setFormaPGOCartao(true)
+                        break
+                        case "Á Vista": 
+                          setFormaPGOAV(true)
+                        break
+                        default: 
+                          setFormaPGOAV(false)
+                          setFormaPGOCartao(false)
+                        break
+                      }
+                    }}
+                    labelText={'Forma de Pagamento: '} 
+                    items={[
+                      { value: "Á Vista", visualValue: "Á vista" },  
+                      { value: "Faturado", visualValue: "Faturado" },
+                      { value: "Cartão", visualValue: "Cartão" },
+                      { value: "Sem Pagamento", visualValue: "Sem Pagamento" },
+                      { value: "Depósito Programado", visualValue: "Depósito Programado" },
+                      { value: "Cheque Programado", visualValue: "Cheque Programado" },
+                      { value: "Cartão na sala de vendas", visualValue: "Cartão na sala de vendas" }
+                    ]} />
+                    <br/><br/>
+                <CustomRadio 
+                register={register("bandeira",{required: formaPGOCartao})} 
+                    
+                labelText={'Bandeira: '} 
+                items={[
+                  { value: "Visa", visualValue: "Visa" },  
+                  { value: "Master", visualValue: "Master" },
+                  { value: "Banri", visualValue: "banri" },
+                  { value: "Elo", visualValue: "Elo" },
+                  { value: "Amex", visualValue: "Amex" },
+                  { value: "Bndes", visualValue: "Bndes" }
+                ]} />
+                <br/><br/>
+              <TextField sx={{width: 250}} type="date" variant="outlined" required />
+        
             </div>
+
+
             <div style={{margin:50}}>
               <TextField sx={{width: 250}} type="number" label="Orcamento" variant="outlined" required />
               <br/><br/>
               <CustomInputMask register={register("valorVenda")} placeHolder='Valor da Venda (incluindo frete)' />
+                <CustomRadio 
+                register={register("formaPagamentoAvista")} 
+                labelText={'Forma de Pagamento Á vista: '} 
+                items={[
+                  { value: "Depósito", visualValue: "Depósito" },  
+                  { value: "Pix", visualValue: "Pix" },
+                  { value: "Dinheiro", visualValue: "Dinheiro" },
+                  { value: "Pago com crédito", visualValue: "Pago com crédito" }
+                ]} />
+                <br/><br/>
+                <CustomSelect_Widget
+                labelText={'Número de Parcelas:'} 
+                register={register("parcelas")} 
+                itens={[
+                  { value: "...", visualValue: "..." },
+                  { value: "1x", visualValue: "1x" },
+                  { value: "2x", visualValue: "2x" },
+                  { value: "3x", visualValue: "3x" },
+                  { value: "4x", visualValue: "4x" },
+                  { value: "5x", visualValue: "5x" },
+                  { value: "6x", visualValue: "6x" },
+                  { value: "Outros", visualValue: "Outros" }
+                ]}
+               />
+               <br/><br/>
+               <CustomRadio 
+                register={register("entregaRetira")} 
+                labelText={'Entrega ou Retirada? '} 
+                items={[
+                  { value: "Entrega", visualValue: "Entrega" },  
+                  { value: "Retira", visualValue: "Retira" },
+                  { value: "Transportadora", visualValue: "Transportadora" }
+                ]} />
+                <br/><br/>
+                <CustomRadio
+                register={register("entregaCadastro")}
+                labelText={'Entrega no Endereço do Cadastro? '}
+                items={[
+                  { value: "Sim", visualValue: "Sim" },  
+                  { value: "Não", visualValue: "Não" }
+                ]} />
+                <CustomRadio
+                register={register("dataAgendada")}
+                labelText={'Foi agendado uma data? '}
+                items={[
+                  { value: "Sim", visualValue: "Sim" },  
+                  { value: "Não", visualValue: "Não" }
+                ]} />
+                <CustomRadio 
+                register={register("vendaFrete")} 
+                labelText={'Venda com Frete? '} 
+                items={[
+                  { value: "Sim", visualValue: "Sim" },  
+                  { value: "Não", visualValue: "Não" }
+                ]} />
+                <br/><br/>                  
+              
             </div>
+
+
+            
         </div>
         <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
           <Button type='submit' sx={{width: "50%"}} variant="contained">Enviar</Button>
