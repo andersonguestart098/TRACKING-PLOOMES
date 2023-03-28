@@ -6,7 +6,7 @@ export async function sendThisToDatabase(router: string, data: any) {
         const response = await requestApi.post(router, data)     
         console.log(response)
         if(response.status != 200 && response.status != 201) {
-            throw response.data.result
+            return customAlert(response.data.result, "error")
         }
         return customAlert(response.data.result, "success")
     } catch (error) {

@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { CanhotoController } from "@controllers/setores/canhoto"
 import { FinanceiroController } from "@controllers/setores/financeiro"
 import { SaidaController } from "@controllers/setores/saida"
+import { confirmacaoEntregaController } from "@controllers/confirmacaoEntrega"
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -24,13 +25,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(201).send({result: "criado dado em canhoto"})
         break;
 
+        case "confirmacao entrega":
+            await new confirmacaoEntregaController(req.body).execute()
+            res.status(201).send({result: "criado dado em confirmacão entrega"})
+        break;
+
         case "saida":
             await new SaidaController(req.body).execute()
             res.status(201).send({result: "criado dado em saida"})
         break;
         
         default:
-            res.status(400).send({result: "Setor não reconhecido ou nao informado"})
-            break;
+            res.status(400).send({result: "Setor não reconhecido ou não informado"})
+        break;
     }
 }

@@ -16,7 +16,8 @@ const confirmacaoEntrega = (props: Props) => {
       motorista: e.motorista,
       cidade: e.cidade,
       entregaConcluida: e.entregaConcluida,
-      obs: e.obs
+      obs: e.obs,
+      setor: "confirmacao entrega"
     }
     sendThisToDatabase("/api/methodsdatabase/create", dadosConfirmacaoEntrega)
   }
