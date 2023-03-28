@@ -13,6 +13,7 @@ const financeiro = ({}: Props) => {
 
   const [tipoFaturamentoOther , setTipoFaturamentoOther] = useState(false)
   const [tipoFaturamentoRM , setTipoFaturamentoRM] = useState(false)
+  const [tipoFaturamentoN , setTipoFaturamentoN] = useState(false)
 
   const [entregaRetiraEI , setEntregaRetiraEI] = useState(false)
   const [entregaRetiraEA , setEntregaRetiraEA] = useState(false)
@@ -78,17 +79,21 @@ const financeiro = ({}: Props) => {
                   switch(e.target.value) {
                     case "Para Futura Entrega": 
                       setTipoFaturamentoRM(false)
-                    break
+                      setTipoFaturamentoN(true)
+                      break
                     case "Remessa de Materiais": 
                       setTipoFaturamentoOther(true)
+                      setTipoFaturamentoN(true)
                       setTipoFaturamentoRM(true)
                       break
                     case "Bonificado": 
                       setTipoFaturamentoOther(true)
+                      setTipoFaturamentoN(true)
                       setTipoFaturamentoRM(true)
                       break
                     default:
                       setTipoFaturamentoRM(false)
+                      setTipoFaturamentoN(false)
                       setTipoFaturamentoOther(false)
                     break
                   }
@@ -142,6 +147,16 @@ const financeiro = ({}: Props) => {
                   { value: "Bndes", visualValue: "Bndes" }
                 ]} /> : <></>}
                 <br/><br/>
+                {!tipoFaturamentoRM && !tipoFaturamentoN && !tipoFaturamentoOther ? <CustomRadio 
+                    register={register("localCobranca")}
+                    labelText={'Local de Cobrança: '} 
+                    items={[
+                      { value: "Cobrar no Local", visualValue: "Cobrar no Local (Endereço de Entrega)" },  
+                      { value: "Cobrar na Empresa", visualValue: "Cobrar na Empresa (Cemear)" },
+                      { value: "Pago na sala de vendas", visualValue: "Pago na sala de vendas (Showroom)" }
+                    ]} /> : <></>}  
+              <br/><br/>
+
               <TextField sx={{width: 250}} type="date" variant="outlined" required />
         
             </div>
@@ -176,14 +191,14 @@ const financeiro = ({}: Props) => {
                 ]}
                />
                <br/><br/>
-               <CustomRadio 
+               {!tipoFaturamentoN ? <CustomRadio 
                 register={register("entregaRetira")} 
                 labelText={'Entrega ou Retirada? '} 
                 items={[
                   { value: "Entrega", visualValue: "Entrega" },  
                   { value: "Retira", visualValue: "Retira" },
                   { value: "Transportadora", visualValue: "Transportadora" }
-                ]} />
+                ]} /> : <></>}
                 <br/><br/>
                 <CustomRadio
                 register={register("entregaCadastro")}

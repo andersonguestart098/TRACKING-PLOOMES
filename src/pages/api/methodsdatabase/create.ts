@@ -3,6 +3,7 @@ import { CanhotoController } from "@controllers/setores/canhoto"
 import { FinanceiroController } from "@controllers/setores/financeiro"
 import { SaidaController } from "@controllers/setores/saida"
 import { confirmacaoEntregaController } from "@controllers/confirmacaoEntrega"
+import { retornoController } from "~/controllers/retorno"
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -33,6 +34,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case "saida":
             await new SaidaController(req.body).execute()
             res.status(201).send({result: "criado dado em saida"})
+        break;
+
+        case "retorno":
+            await new retornoController(req.body).execute()
+            res.status(201).send({result: "criado dado em retorno"})
         break;
         
         default:
