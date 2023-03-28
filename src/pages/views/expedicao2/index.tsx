@@ -68,6 +68,14 @@ function index() {
             return (
               <TableRow
                   key={item.id}
+                  style={
+                    item.statusNotaFiscal == "Cancelada" ? {background: "#d62013"} : 
+                    item.statusNotaFiscal ==  "Cliente retirou" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Aguardando cliente" ? {background: "#d851f0"} :
+                    item.statusNotaFiscal ==  "a definir" ? {background: "#eb8c34"} : 
+                    item.statusNotaFiscal ==  "" ? {background: "#cc34eb"} : 
+                    item.statusNotaFiscal ==  "" ? {background: "#f28538"} : {}
+                  }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>

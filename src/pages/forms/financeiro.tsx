@@ -11,8 +11,9 @@ const financeiro = ({}: Props) => {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const [widthScreen, setWidthScreen] = useState(0)
 
-  const [tipoFaturamentoEF , setTipoFaturamentoEF] = useState(false)
+  const [tipoFaturamentoOther , setTipoFaturamentoOther] = useState(false)
   const [tipoFaturamentoRM , setTipoFaturamentoRM] = useState(false)
+
   const [entregaRetiraEI , setEntregaRetiraEI] = useState(false)
   const [entregaRetiraEA , setEntregaRetiraEA] = useState(false)
   const [vendaFreteSIM , setVendaFreteSIM] = useState(false)
@@ -28,6 +29,7 @@ const financeiro = ({}: Props) => {
 
   const onSubmit = (data: any) => {
     console.log(data);
+    alert("oK")
   }
 
   return (
@@ -72,21 +74,44 @@ const financeiro = ({}: Props) => {
               <br/><br/>
               <CustomRadio 
                 register={register("tipoFaturamento")} 
+                onchange={(e) => {
+                  switch(e.target.value) {
+                    case "Para Futura Entrega": 
+                      setTipoFaturamentoRM(false)
+                    break
+                    case "Remessa de Materiais": 
+                      setTipoFaturamentoOther(true)
+                      setTipoFaturamentoRM(true)
+                      break
+                    case "Bonificado": 
+                      setTipoFaturamentoOther(true)
+                      setTipoFaturamentoRM(true)
+                      break
+                    default:
+                      setTipoFaturamentoRM(false)
+                      setTipoFaturamentoOther(false)
+                    break
+                  }
+                }}
                 labelText={'Tipo de Faturamento: '} 
                 items={[
                   { value: "Normal", visualValue: "Normal" },  
-                  { value: "Para Futura Entrega", visualValue: "Para Futura Entrega" }  
+                  { value: "Para Futura Entrega", visualValue: "Para Futura Entrega" }, 
+                  { value: "Remessa de Materiais", visualValue: "Remessa de Materiais" }, 
+                  { value: "Bonificado", visualValue: "Bonificado" }, 
                 ]} />
                 <br/><br/>
-                <CustomRadio 
+                {!tipoFaturamentoRM ? <CustomRadio 
                     register={register("formaPagamento")} 
                     onchange={(e) => {
                       switch(e.target.value) {
                         case "Cartão": 
                           setFormaPGOCartao(true)
+                          setFormaPGOAV(false)
                         break
                         case "Á Vista": 
                           setFormaPGOAV(true)
+                          setFormaPGOCartao(false)
                         break
                         default: 
                           setFormaPGOAV(false)
@@ -103,11 +128,10 @@ const financeiro = ({}: Props) => {
                       { value: "Depósito Programado", visualValue: "Depósito Programado" },
                       { value: "Cheque Programado", visualValue: "Cheque Programado" },
                       { value: "Cartão na sala de vendas", visualValue: "Cartão na sala de vendas" }
-                    ]} />
+                    ]} /> : <></>}
                     <br/><br/>
-                <CustomRadio 
-                register={register("bandeira",{required: formaPGOCartao})} 
-                    
+                {formaPGOCartao ? <CustomRadio 
+                register={register("bandeira")} 
                 labelText={'Bandeira: '} 
                 items={[
                   { value: "Visa", visualValue: "Visa" },  
@@ -116,7 +140,7 @@ const financeiro = ({}: Props) => {
                   { value: "Elo", visualValue: "Elo" },
                   { value: "Amex", visualValue: "Amex" },
                   { value: "Bndes", visualValue: "Bndes" }
-                ]} />
+                ]} /> : <></>}
                 <br/><br/>
               <TextField sx={{width: 250}} type="date" variant="outlined" required />
         
@@ -127,7 +151,7 @@ const financeiro = ({}: Props) => {
               <TextField sx={{width: 250}} type="number" label="Orcamento" variant="outlined" required />
               <br/><br/>
               <CustomInputMask register={register("valorVenda")} placeHolder='Valor da Venda (incluindo frete)' />
-                <CustomRadio 
+              {formaPGOAV ?<CustomRadio 
                 register={register("formaPagamentoAvista")} 
                 labelText={'Forma de Pagamento Á vista: '} 
                 items={[
@@ -135,7 +159,7 @@ const financeiro = ({}: Props) => {
                   { value: "Pix", visualValue: "Pix" },
                   { value: "Dinheiro", visualValue: "Dinheiro" },
                   { value: "Pago com crédito", visualValue: "Pago com crédito" }
-                ]} />
+                ]} /> : <></> }
                 <br/><br/>
                 <CustomSelect_Widget
                 labelText={'Número de Parcelas:'} 

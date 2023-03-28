@@ -68,6 +68,25 @@ function index() {
             return (
               <TableRow
                   key={item.id}
+                  style={
+                    item.statusNotaFiscal ==  "Alexandre" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Dionathan" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Douglas" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Igon" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Juliano" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Matheus" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Paulo Alexandre" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Vanderlei" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Vilnei" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Max" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Cristiano" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "William" ? {background: "#38f269"} :
+                    item.statusNotaFiscal ==  "Cancelada" ? {background: "#d62013"} : 
+                    item.statusNotaFiscal ==  "Aguardando rota" ? {background: "#d851f0"} :
+                    item.statusNotaFiscal ==  "a definir" ? {background: "#eb8c34"} : 
+                    item.statusNotaFiscal ==  "Aguardando vendedor" ? {background: "#cc34eb"} : 
+                    item.statusNotaFiscal ==  "" ? {background: "#f28538"} : {}
+                  }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>

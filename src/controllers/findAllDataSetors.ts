@@ -55,7 +55,7 @@ export class findAllData {
                 break;
 
             case "canhoto":
-                res.status(200).json({ 
+                return await res.status(200).json({ 
                     result: await prisma.canhoto.findMany({
                         take: 3,
                         skip: pagina == 0 ? 0 : pagina * 3,
@@ -68,7 +68,7 @@ export class findAllData {
                 break;
 
             case "cruzamento": 
-                res.status(200).json({ 
+                return await res.status(200).json({ 
                     result: await prisma.passagemDados.findMany({
                         include: {
                             financeiroPassagem: true,
@@ -99,11 +99,11 @@ export class findAllData {
                 })
                 const notasTotais = await prisma.expedicao.findMany()
 
-                res.status(200).send({result: [notasPendentes.length, notasEmitidas.length, notasTotais.length]})
+                return await res.status(200).send({result: [notasPendentes.length, notasEmitidas.length, notasTotais.length]})
                 break;
             
             default:
-                res.status(400).send({result: "setor em falta"})
+                return await res.status(400).send({result: "setor em falta"})
                 break;
         }
         

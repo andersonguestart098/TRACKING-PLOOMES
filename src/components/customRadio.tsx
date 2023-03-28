@@ -16,18 +16,21 @@ type Props = {
 
 const CustomRadio = (props: Props) => {
     const {register, items, labelText, onchange} = props
-    if(props.visible == undefined) {
-        props.visible = false
-    }
   return (
     <div>
         <br />
-        <label className={style.label}>{labelText}</label><br /><br />
+        <label 
+            className={style.label}
+            >{labelText}</label><br /><br />
         {items.map((item: itemI) => {
             return (
                 <>
-                    <input className={props.visible ? {} : style.input} {...register} type="radio" name={labelText} value={item.value} onChange={(e) => props.onchange?.(e) ?? {}} />
-                    <label style={{fontSize: "small"}} id="option">{item.visualValue}</label><br />
+                    <input 
+                        className={style.input} {...register} type="radio" 
+                        name={labelText} value={item.value} onChange={(e) => props.onchange?.(e) ?? {}} required />
+                    <label 
+                    style={{fontSize: "small"}}
+                    id="option">{item.visualValue}</label><br />
                 </>
             )
         })}

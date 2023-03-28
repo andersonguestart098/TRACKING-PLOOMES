@@ -39,7 +39,6 @@ function index() {
   const [travarAuto, setTravarAuto ] = useState(0)
 
   const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "cruzamento")
-  console.log(data)
 
 
 

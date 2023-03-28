@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from "react-hook-form";
 import { sendThisToDatabase } from '@services/sendData';
 import { ModelSaida } from '@models/setoresInterface';
-import CustomSelect_Widget from '~/components/customSelect_widget';
+import CustomSelect_Widget from '@components/customSelect_widget';
 
 type Props = {}
 
@@ -11,9 +11,9 @@ const retorno = (props: Props) => {
   const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm()
 
   function onSubmit(e: any) {
-    const dadosCanhoto: ModelSaida = {
+    const dadosSaida: ModelSaida = {
       motorista: e.motorista,
-      notaFiscal: e.notaFiscal,
+      notaFiscal: e.numeroNotaFiscal,
       cidadeDestino: e.cidadeDestino,
       codigoEntrega: e.codigoEntrega,
       hodometro: e.hodometro,
@@ -23,7 +23,7 @@ const retorno = (props: Props) => {
       placa: e.placa,
       setor: "saida"
     }
-    sendThisToDatabase("/api/methodsdatabase/create", dadosCanhoto)
+    sendThisToDatabase("/api/methodsdatabase/create", dadosSaida)
   }
 
   return (
@@ -31,7 +31,7 @@ const retorno = (props: Props) => {
       <img src="/logoce (2).svg" style={{width: 70, marginLeft: 15, marginTop: 15}} />
       <form  
       onSubmit={handleSubmit(onSubmit)}
-      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 200}}> 
+      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 15}}> 
               <TextField 
               {...register("codigoEntrega")} 
               sx={{width: 250}} 
@@ -112,7 +112,7 @@ const retorno = (props: Props) => {
                   <TextField 
                   {...register("cidadeDestino")} 
                   sx={{width: 250}} 
-                  type="number" required 
+                  required 
                   id="cidadeDestino" label="cidadeDestino" 
                   variant="outlined" />
                   <br/><br/>
