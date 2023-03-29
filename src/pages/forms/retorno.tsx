@@ -27,7 +27,8 @@ const retorno = (props: Props) => {
       <img src="/logoce (2).svg" style={{width: 70, marginLeft: 15, marginTop: 15}} />
       <form  
       onSubmit={handleSubmit(onSubmit)}
-      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 15}}> 
+      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 15}}>
+        <h3 style={{textAlign: "center", marginBottom: 30}}>Retorno da Entrega</h3>
               <TextField 
               {...register("codigoEntrega")} 
               sx={{width: 250}} 

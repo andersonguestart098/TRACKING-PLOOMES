@@ -11,7 +11,7 @@ export class confirmacaoEntregaController {
     async execute() {
         await prisma.confirmacaoEntrega.create({
             data: {
-                codigoEntrega: Number(this.data.codigoEntrega),
+                notaFiscal: Number(this.data.notaFiscal),
                 motorista: this.data.motorista,
                 cidade: this.data.cidade,
                 entregaConcluida: this.data.entregaConcluida,

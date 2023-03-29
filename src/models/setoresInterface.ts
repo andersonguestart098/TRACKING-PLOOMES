@@ -96,8 +96,8 @@ export interface ModelConfirmacaoEntrega {
     setor?: string
     authorId?: string
     createdAt?: string
+    notaFiscal: number
     motorista: string
-    codigoEntrega: number 
     cidade: string
     entregaConcluida: string
     obs: string

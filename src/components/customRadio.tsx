@@ -1,5 +1,6 @@
 import React from 'react'
 import style from "@styles/financeiroForm.module.css"
+import { ChangeHandler } from 'react-hook-form'
 
 interface itemI {
     value: string
@@ -11,7 +12,6 @@ type Props = {
     register: any
     items: itemI[]
     onchange?(e: any): any 
-    visible?: boolean
 }
 
 const CustomRadio = (props: Props) => {
@@ -26,8 +26,12 @@ const CustomRadio = (props: Props) => {
             return (
                 <>
                     <input 
-                        className={style.input} {...register} type="radio" 
-                        name={labelText} value={item.value} onChange={(e) => props.onchange?.(e) ?? {}} required />
+                        {...register}
+                        className={style.input} 
+                        onChange={(e) => props.onchange?.(e) ?? {}}  
+                        type="radio" 
+                        value={item.value} 
+                        required />
                     <label 
                     style={{fontSize: "small"}}
                     id="option">{item.visualValue}</label><br />

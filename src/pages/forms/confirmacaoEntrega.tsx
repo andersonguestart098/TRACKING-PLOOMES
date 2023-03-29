@@ -12,7 +12,7 @@ const confirmacaoEntrega = (props: Props) => {
 
   function onSubmit(e: any) {
     const dadosConfirmacaoEntrega: ModelConfirmacaoEntrega = {
-      codigoEntrega: e.codigoEntrega,
+      notaFiscal: e.notaFiscal,
       motorista: e.motorista,
       cidade: e.cidade,
       entregaConcluida: e.entregaConcluida,
@@ -27,17 +27,18 @@ const confirmacaoEntrega = (props: Props) => {
       <img src="/logoce (2).svg" style={{width: 70, marginLeft: 15, marginTop: 15}} />
       <form  
       onSubmit={handleSubmit(onSubmit)}
-      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 15}}> 
-              <TextField 
-              {...register("codigoEntrega")} 
+      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 15}}>
+        <h3 style={{textAlign: "center", marginBottom: 30}}>Confirmação de Entrega</h3> 
+              <TextField
+              {...register("notaFiscal")} 
               sx={{width: 250}} 
               type="number" required 
-              id="codigoEntrega" label="Código da entrega" 
+              id="notaFiscal" label="Número da nota"
               variant="outlined" />
               <br/><br/>
               <CustomSelect_Widget
-               labelText={'Motorista:'} 
-               register={register("motorista")} 
+               labelText={'Motorista:'}
+               register={register("motorista")}
                itens={[
                 {value: "ALEXANDRE", visualValue: "ALEXANDRE"},
                 {value: "DIONATHA", visualValue: "DIONATHA"},
@@ -53,7 +54,7 @@ const confirmacaoEntrega = (props: Props) => {
                 {value: "CRISTIANO", visualValue: "CRISTIANO"},
                 {value: "WILLIAM", visualValue: "WILLIAM"},
                 {value: "PAULO ALEXANDRE", visualValue: "PAULO ALEXANDRE"}
-               ]}  
+               ]}
                />
               <br/><br/>
               <TextField 
@@ -62,7 +63,7 @@ const confirmacaoEntrega = (props: Props) => {
               type="text" required 
               id="cidade" label="Cidade" 
               variant="outlined" />
-              <br/>
+              <br/><br/>
               <CustomSelect_Widget
                labelText={'entregaConcluida:'} 
                register={register("entregaConcluida")} 

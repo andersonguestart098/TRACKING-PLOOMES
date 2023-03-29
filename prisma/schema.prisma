@@ -115,7 +115,7 @@ model ConfirmacaoEntrega {
   updatedAt DateTime @updatedAt
 
   motorista        String
-  codigoEntrega    Int
+  notaFiscal       Int
   cidade           String
   entregaConcluida String
   obs              String

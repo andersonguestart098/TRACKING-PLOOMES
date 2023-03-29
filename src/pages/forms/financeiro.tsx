@@ -17,6 +17,8 @@ const financeiro = ({}: Props) => {
 
   const [entregaRetiraEI , setEntregaRetiraEI] = useState(false)
   const [entregaRetiraEA , setEntregaRetiraEA] = useState(false)
+  const [entregaRetiraT , setEntregaRetiraT] = useState(false)
+
   const [vendaFreteSIM , setVendaFreteSIM] = useState(false)
   const [entregaECSIm , setEntregaECSIm] = useState(false)
   const [agendadoDataSim , setAgendadoDataSim] = useState(false)
@@ -42,7 +44,7 @@ const financeiro = ({}: Props) => {
           justifyContent: "space-between", width: "50%"} : {}}>
             <div style={{margin: 50}}>
               <CustomSelect_Widget
-                labelText={'Quem Recebeu:'} 
+                labelText={'Vendedor:'}
                 register={register("quemRecebeu")} 
                 itens={[
                   { value: "BETO", visualValue: "BETO" },
@@ -72,7 +74,7 @@ const financeiro = ({}: Props) => {
                /> 
               <br/><br/>
               <TextField {...register("cliente")} sx={{width: 250}} label="Cliente" variant="outlined" required />
-              <br/><br/>
+              <br/>
               <CustomRadio 
                 register={register("tipoFaturamento")} 
                 onchange={(e) => {
@@ -105,7 +107,76 @@ const financeiro = ({}: Props) => {
                   { value: "Remessa de Materiais", visualValue: "Remessa de Materiais" }, 
                   { value: "Bonificado", visualValue: "Bonificado" }, 
                 ]} />
+                <br/>
+                {formaPGOAV ?<CustomRadio 
+                register={register("formaPagamentoAvista")} 
+                labelText={'Forma de Pagamento Á vista: '} 
+                items={[
+                  { value: "Depósito", visualValue: "Depósito" },  
+                  { value: "Pix", visualValue: "Pix" },
+                  { value: "Dinheiro", visualValue: "Dinheiro" },
+                  { value: "Pago com crédito", visualValue: "Pago com crédito" }
+                ]} /> : <></> }
+                <br/>
+                
+                {formaPGOCartao ? <CustomRadio 
+                register={register("bandeira")} 
+                labelText={'Bandeira: '} 
+                items={[
+                  { value: "Visa", visualValue: "Visa" },  
+                  { value: "Master", visualValue: "Master" },
+                  { value: "Banri", visualValue: "banri" },
+                  { value: "Elo", visualValue: "Elo" },
+                  { value: "Amex", visualValue: "Amex" },
+                  { value: "Bndes", visualValue: "Bndes" }
+                ]} /> : <></>}
+                <br/>
+                {!tipoFaturamentoRM && !tipoFaturamentoN && !tipoFaturamentoOther ? <CustomRadio 
+                    register={register("localCobranca")}
+                    labelText={'Local de Cobrança: '} 
+                    items={[
+                      { value: "Cobrar no Local", visualValue: "Cobrar no Local (Endereço de Entrega)" },  
+                      { value: "Cobrar na Empresa", visualValue: "Cobrar na Empresa (Cemear)" },
+                      { value: "Pago na sala de vendas", visualValue: "Pago na sala de vendas (Showroom)" }
+                    ]} /> : <></>}
+                <br/>
+              {entregaRetiraEI || entregaRetiraEA ? <CustomRadio 
+                register={register("vendaFrete")} 
+                labelText={'Venda com Frete? '} 
+                onchange={(e) => {
+                  switch (e.target.value) {
+                    case "Sim":
+                      setVendaFreteSIM(true)
+                      break;
+                    default:
+                      setVendaFreteSIM(false)
+                      break;
+                  }
+                }}
+                items={[
+                  { value: "Sim", visualValue: "Sim" },  
+                  { value: "Não", visualValue: "Não" }
+                ]} /> : <></>}
                 <br/><br/>
+                {vendaFreteSIM ? <CustomRadio
+                register={register("tipoFrete")}
+                labelText={'Tipo de frete: '}
+                items={[
+                  { value: "Destacado", visualValue: "Destacado" },  
+                  { value: "Diluído", visualValue: "Diluído" }
+                ]} /> : <></> }
+                <br/>
+
+              {agendadoDataSim? <TextField sx={{width: 250}} type="date" variant="outlined" required />:<></>}
+              
+            </div>
+
+
+            <div style={{margin:50}}>
+              <TextField sx={{width: 250}} type="number" label="Orcamento" variant="outlined" required />
+              <br/><br/>
+              <CustomInputMask register={register("valorVenda")} placeHolder='Valor da Venda (incluindo frete)' />
+              
                 {!tipoFaturamentoRM ? <CustomRadio 
                     register={register("formaPagamento")} 
                     onchange={(e) => {
@@ -134,49 +205,43 @@ const financeiro = ({}: Props) => {
                       { value: "Cheque Programado", visualValue: "Cheque Programado" },
                       { value: "Cartão na sala de vendas", visualValue: "Cartão na sala de vendas" }
                     ]} /> : <></>}
-                    <br/><br/>
-                {formaPGOCartao ? <CustomRadio 
-                register={register("bandeira")} 
-                labelText={'Bandeira: '} 
+                    <br/>
+               {!tipoFaturamentoN || tipoFaturamentoRM ? <CustomRadio 
+                register={register("entregaRetira")} 
+                onchange={(e) => {
+                  switch(e.target.value) {
+                    case "Entrega Imediata": 
+                      setEntregaRetiraEI(true)
+                      setEntregaRetiraT(false)
+                      setEntregaRetiraEA(false)
+                      
+                    break
+                    case "Entrega Agendada": 
+                      setEntregaRetiraEA(true)
+                      setEntregaRetiraT(false)
+                      setEntregaRetiraEI(false)
+                    break
+                    case "Transportadora": 
+                      setEntregaRetiraT(true)
+                    break
+                    default: 
+                      setEntregaRetiraEA(false)
+                      setEntregaRetiraT(false)
+                      setEntregaRetiraEI(false)
+                    break
+                  }
+                }}
+                labelText={'Entrega ou Retirada? '} 
                 items={[
-                  { value: "Visa", visualValue: "Visa" },  
-                  { value: "Master", visualValue: "Master" },
-                  { value: "Banri", visualValue: "banri" },
-                  { value: "Elo", visualValue: "Elo" },
-                  { value: "Amex", visualValue: "Amex" },
-                  { value: "Bndes", visualValue: "Bndes" }
+                  { value: "Entrega Imediata", visualValue: "Entrega Imediata" },  
+                  { value: "Entrega Agendada", visualValue: "Entrega Agendada" },  
+                  { value: "Retira", visualValue: "Retira" },
+                  { value: "Transportadora", visualValue: "Transportadora" }
                 ]} /> : <></>}
-                <br/><br/>
-                {!tipoFaturamentoRM && !tipoFaturamentoN && !tipoFaturamentoOther ? <CustomRadio 
-                    register={register("localCobranca")}
-                    labelText={'Local de Cobrança: '} 
-                    items={[
-                      { value: "Cobrar no Local", visualValue: "Cobrar no Local (Endereço de Entrega)" },  
-                      { value: "Cobrar na Empresa", visualValue: "Cobrar na Empresa (Cemear)" },
-                      { value: "Pago na sala de vendas", visualValue: "Pago na sala de vendas (Showroom)" }
-                    ]} /> : <></>}  
-              <br/><br/>
-
-              <TextField sx={{width: 250}} type="date" variant="outlined" required />
-        
-            </div>
-
-
-            <div style={{margin:50}}>
-              <TextField sx={{width: 250}} type="number" label="Orcamento" variant="outlined" required />
-              <br/><br/>
-              <CustomInputMask register={register("valorVenda")} placeHolder='Valor da Venda (incluindo frete)' />
-              {formaPGOAV ?<CustomRadio 
-                register={register("formaPagamentoAvista")} 
-                labelText={'Forma de Pagamento Á vista: '} 
-                items={[
-                  { value: "Depósito", visualValue: "Depósito" },  
-                  { value: "Pix", visualValue: "Pix" },
-                  { value: "Dinheiro", visualValue: "Dinheiro" },
-                  { value: "Pago com crédito", visualValue: "Pago com crédito" }
-                ]} /> : <></> }
-                <br/><br/>
-                <CustomSelect_Widget
+                <br/>
+                {vendaFreteSIM ? <CustomInputMask register={register("valorFrete")} placeHolder='Valor do Frete' />: <></>}
+                <br/>
+                {formaPGOCartao ? <CustomSelect_Widget
                 labelText={'Número de Parcelas:'} 
                 register={register("parcelas")} 
                 itens={[
@@ -189,47 +254,40 @@ const financeiro = ({}: Props) => {
                   { value: "6x", visualValue: "6x" },
                   { value: "Outros", visualValue: "Outros" }
                 ]}
-               />
-               <br/><br/>
-               {!tipoFaturamentoN ? <CustomRadio 
-                register={register("entregaRetira")} 
-                labelText={'Entrega ou Retirada? '} 
-                items={[
-                  { value: "Entrega", visualValue: "Entrega" },  
-                  { value: "Retira", visualValue: "Retira" },
-                  { value: "Transportadora", visualValue: "Transportadora" }
-                ]} /> : <></>}
-                <br/><br/>
-                <CustomRadio
+               /> : <></>}
+               
+              
+                {entregaRetiraEI || entregaRetiraEA ? <CustomRadio
                 register={register("entregaCadastro")}
                 labelText={'Entrega no Endereço do Cadastro? '}
                 items={[
                   { value: "Sim", visualValue: "Sim" },  
                   { value: "Não", visualValue: "Não" }
-                ]} />
-                <CustomRadio
+                ]} /> : <></> }
+                {entregaRetiraEA ? <CustomRadio
                 register={register("dataAgendada")}
                 labelText={'Foi agendado uma data? '}
+                onchange={(e)=> {
+                  switch(e.target.value){
+                    case "Sim":
+                      setAgendadoDataSim(true)
+                    break
+                    default:
+                      setAgendadoDataSim(false)
+                    break
+                  }
+                }}
                 items={[
                   { value: "Sim", visualValue: "Sim" },  
                   { value: "Não", visualValue: "Não" }
-                ]} />
-                <CustomRadio 
-                register={register("vendaFrete")} 
-                labelText={'Venda com Frete? '} 
-                items={[
-                  { value: "Sim", visualValue: "Sim" },  
-                  { value: "Não", visualValue: "Não" }
-                ]} />
-                <br/><br/>                  
-              
+                ]} /> : <></> }
+                                 
             </div>
-
-
-            
+                
         </div>
+        <TextField {...register("obs")} sx={{width: "100%",}} label="Observações" />
         <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-          <Button type='submit' sx={{width: "50%"}} variant="contained">Enviar</Button>
+          <Button type='submit' sx={{width: "50%", marginTop: 10}} variant="contained">Enviar</Button>
         </div>
       </form>
     </div>

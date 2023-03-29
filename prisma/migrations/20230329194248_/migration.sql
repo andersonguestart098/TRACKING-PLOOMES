@@ -91,7 +91,7 @@ CREATE TABLE "ConfirmacaoEntrega" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     "motorista" TEXT NOT NULL,
-    "codigoEntrega" INTEGER NOT NULL,
+    "notaFiscal" INTEGER NOT NULL,
     "cidade" TEXT NOT NULL,
     "entregaConcluida" TEXT NOT NULL,
     "obs" TEXT NOT NULL

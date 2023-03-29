@@ -30,8 +30,10 @@ const retorno = (props: Props) => {
     <div>
       <img src="/logoce (2).svg" style={{width: 70, marginLeft: 15, marginTop: 15}} />
       <form 
+      
       onSubmit={handleSubmit(onSubmit)}
-      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "80vh"}}>          
+      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "80vh"}}> 
+      <h3 style={{textAlign: "center", marginBottom: 30}}>Canhoto</h3>    
               <CustomSelect_Widget
                labelText={'Quem Recebeu:'} 
                register={register("quemRecebeu")}

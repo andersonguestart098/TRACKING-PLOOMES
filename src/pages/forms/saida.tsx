@@ -31,7 +31,8 @@ const retorno = (props: Props) => {
       <img src="/logoce (2).svg" style={{width: 70, marginLeft: 15, marginTop: 15}} />
       <form  
       onSubmit={handleSubmit(onSubmit)}
-      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 15}}> 
+      style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 150}}>
+        <h3 style={{textAlign: "center", marginBottom: 30}}>Carregamento do Caminhão</h3>
               <TextField 
               {...register("codigoEntrega")} 
               sx={{width: 250}} 
@@ -45,7 +46,7 @@ const retorno = (props: Props) => {
               type="number" required 
               id="numeroNotaFiscal" label="Número Nota Fiscal" 
               variant="outlined" />
-              <br/>
+              <br/><br/>
 
               <CustomSelect_Widget
                labelText={'Conferente:'} 
