@@ -6,8 +6,8 @@ import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 import CustomNavBar from "@components/customAppBar"
 import { ModelFinanceiro } from '~/models/setoresInterface';
-import CustomInput from '~/components/customInput';
-import CustomSelect from '~/components/customSelect';
+import CustomInput from '@components/customInput';
+import CustomSelect from '@components/customSelect';
 
 interface typeDB {
     result: ModelFinanceiro[]
@@ -36,10 +36,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 function index() {
   const { data: dataAuth } = useSession()
   const [pagina, setPagina ] = useState(0)
-  const [travarAuto, setTravarAuto ] = useState(0)
+  const [travarAuto, setTravarAuto ] = useState(false)
+  const [searchString, setSearchString ] = useState("")
 
-  const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro")
+  React.useEffect(() => {
+    if(searchString == "") {
+      setTravarAuto(false)
+    }
+  }, [searchString])
+  
 
+  const {data, isLoading} = travarAuto ?
+    useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "#financeiro", searchString) : 
+    useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro")
+
+  console.log(searchString)
+  console.log(data)
 
 
   if(isLoading) {
@@ -48,9 +60,14 @@ function index() {
     </div>
   }
 
+
   return (
     <>
-      <CustomNavBar setor="FINANCEIRO" setData={setPagina} dados={dataAuth} />
+      <CustomNavBar setor="FINANCEIRO" 
+      setSearchString={setSearchString} 
+      setSearch={setTravarAuto} dados={dataAuth} />
+
+      {data.result.length ?
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
@@ -192,7 +209,9 @@ function index() {
             value = value -1
             setPagina(value)
           }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
-      }/>
+      } />
+      : <>Nenhum dado no momento</>
+      }
     </>
   )
 }

@@ -7,11 +7,16 @@ import style from "@styles/button.module.css"
 
 interface Props {
   dados: any,
-  setData: React.Dispatch<React.SetStateAction<number>>
+  setSearch: React.Dispatch<React.SetStateAction<boolean>>
+  setSearchString: React.Dispatch<React.SetStateAction<string>>
   setor: string
 }
 
-const Index = ({setor, dados, setData}: Props) => {
+const Index = (props: Props) => {
+
+  const [stringSearch, setStringSearch] = React.useState("")
+
+  const {setor, dados, setSearch, setSearchString} = props
   return (
       <AppBar
       style={{
@@ -43,14 +48,23 @@ const Index = ({setor, dados, setData}: Props) => {
               borderRadius: 8,
               margin: 25
             }}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+                setStringSearch(event.target.value)
+            }}
             sx={{ flexGrow: 1, mx: 5 }}
-            placeholder="Pesquisar..."
+            placeholder="Pesquisar por Nota Fiscal..."
             hiddenLabel
             id="filled-hidden-label-small"
             variant="filled"
+            type="number"
             size="small"
           />
-          <SearchIcon className={style.icon} />
+          <IconButton onClick={() => { 
+            setSearchString(stringSearch)
+            setSearch(true) 
+          }}>
+            <SearchIcon className={style.icon} />
+          </IconButton>
           <IconButton onClick={() => {}} sx={{ p: 0 }}>
             <Avatar alt="Remy Sharp" src={dados.user.image} />
           </IconButton>

@@ -24,8 +24,8 @@ const CustomSelect_Widget = ({itens, labelText, register}: Props) => {
             label={labelText}
         >
             <MenuItem disabled value=""></MenuItem>
-            {itens.map(item => {
-                return <MenuItem value={item.value}>{item.visualValue}</MenuItem>
+            {itens.map((item: itensI, index: number) => {
+                return <MenuItem key={index} value={item.value}>{item.visualValue}</MenuItem>
             })}
         </Select>
     </FormControl>
