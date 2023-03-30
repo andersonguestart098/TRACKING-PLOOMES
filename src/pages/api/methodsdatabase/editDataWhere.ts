@@ -1,8 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@utils/prismaInstance";
+import NextCors from "nextjs-cors";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+    await NextCors(req, res, {
+        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        origin: '*',
+        optionsSuccessStatus: 200,
+     });
+
     if (req.method !== 'POST') {
         res.status(405).send({ result: 'Apenas metodos POST são autorizados' })
         return

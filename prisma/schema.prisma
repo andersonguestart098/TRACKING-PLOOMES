@@ -27,6 +27,16 @@ model PassagemDados {
 
 }
 
+model Assinatura {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cliente String
+  responsavel String
+  assinatura_img String
+}
+
 model Financeiro {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())

@@ -4,6 +4,7 @@ import { FinanceiroController } from "@controllers/setores/financeiro"
 import { SaidaController } from "@controllers/setores/saida"
 import { confirmacaoEntregaController } from "@controllers/confirmacaoEntrega"
 import { retornoController } from "~/controllers/retorno"
+import { assinaturaController } from "~/controllers/setores/assinatura"
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -39,6 +40,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case "retorno":
             await new retornoController(req.body).execute()
             res.status(201).send({result: "criado dado em retorno"})
+        break;
+
+        case "assinatura":
+            await new assinaturaController(req.body).execute()
+            res.status(201).send({result: "criado dado em assinatura"})
         break;
         
         default:

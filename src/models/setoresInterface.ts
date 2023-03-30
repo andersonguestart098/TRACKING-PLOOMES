@@ -13,6 +13,16 @@ export interface ModelCruzamento {
     logisticaPassagem: ModelLogistica[],
 }
 
+export interface ModelAssinatura {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cliente: string
+    responsavel: string
+    assinatura_img: string
+    setor: string
+}
+
 export interface ModelFinanceiro {
     author?: Passagem
     id?: string

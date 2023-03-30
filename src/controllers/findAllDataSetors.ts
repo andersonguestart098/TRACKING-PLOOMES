@@ -31,10 +31,10 @@ export class findAllData {
 
             case "logistica":
                 operator = prisma.logistica
-                break;
+            break;
 
             case "saida":
-                res.status(200).json({ 
+                return res.status(200).json({ 
                     result: await prisma.saida.findMany({
                         take: 3,
                         skip: pagina == 0 ? 0 : pagina * 3,
@@ -45,6 +45,19 @@ export class findAllData {
                     lengthDB: ((await prisma.saida.findMany()).length)
                 })
                 break;
+
+                case "assinatura":
+                    return res.status(200).json({ 
+                        result: await prisma.assinatura.findMany({
+                            take: 3,
+                            skip: pagina == 0 ? 0 : pagina * 3,
+                            orderBy: {
+                                id: "desc"
+                            }
+                        }),
+                        lengthDB: ((await prisma.assinatura.findMany()).length)
+                    })
+                    break;
 
             case "confirmacaoEntrega":
                 operator = prisma.confirmacaoEntrega
