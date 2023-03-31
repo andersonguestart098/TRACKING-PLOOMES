@@ -26,12 +26,16 @@ const financeiro = ({}: Props) => {
   const [formaPGOAV , setFormaPGOAV] = useState(false)
   const [formaPGOCartao , setFormaPGOCartao] = useState(false)
 
+  const [disabilitarBotao, setDisabilitarBotao] = useState(false)
+
   
   useEffect(() => {
     setWidthScreen(window.innerWidth)
   },[])
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
+    await setDisabilitarBotao(true) 
+
     let dadosFinanceiro: ModelFinanceiro = {
       cliente: data.cliente,
       formaPagamento: data.formaPagamentoAVista ?? data.formaPagamento ?? "",
@@ -43,22 +47,22 @@ const financeiro = ({}: Props) => {
       observacao: data.obs ?? "",
       orcamento: data.orcamento ?? "",
       parcelas: data.parcelas ?? "",
-      responsavelNotaFiscal: data.quemRecebeu ?? "",
+      responsavelNotaFiscal: "...",
       retiraEntrega: data.entregaRetira ?? "",
       tipoFaturamento: data.tipoFaturamento ?? "",
       tipoFrete: data.tipoFrete ?? "",
       valor: data.valorVenda ?? "",
-      observacaoFinanceiro: "",
-      operadorNotaFiscal: "",
+      observacaoFinanceiro: "...",
+      operadorNotaFiscal: "...",
       statusNotaFiscal: "Pendente",
       freteConta: "",
       valorFrete: "",
-      vendedor: "",
+      vendedor: data.vendedor ?? "",
       setor: "financeiro"
     }
 
-    console.log(dadosFinanceiro)
-    sendThisToDatabase("/api/methodsdatabase/create", dadosFinanceiro)
+    await sendThisToDatabase("/api/methodsdatabase/create", dadosFinanceiro, 300)
+    window.location.reload()
   }
 
   return (
@@ -71,7 +75,7 @@ const financeiro = ({}: Props) => {
             <div style={{margin: 50}}>
               <CustomSelect_Widget
                 labelText={'Vendedor:'}
-                register={register("quemRecebeu")} 
+                register={register("vendedor")} 
                 itens={[
                   { value: "BETO", visualValue: "BETO" },
                   { value: "FELIPE", visualValue: "FELIPE" },
@@ -313,7 +317,7 @@ const financeiro = ({}: Props) => {
         </div>
         <TextField {...register("obs")} sx={{width: "100%",}} label="Observações" />
         <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-          <Button type='submit' sx={{width: "50%", marginTop: 10}} variant="contained">Enviar</Button>
+          <Button type='submit' sx={{width: "50%", marginTop: 10}} disabled={disabilitarBotao} variant="contained">Enviar</Button>
         </div>
       </form>
     </div>

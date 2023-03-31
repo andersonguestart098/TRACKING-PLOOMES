@@ -10,20 +10,33 @@ type Props = {}
 const retorno = (props: Props) => {
   const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm()
 
-  function onSubmit(e: any) {
-    const dadosSaida: ModelSaida = {
-      motorista: e.motorista,
-      notaFiscal: e.numeroNotaFiscal,
-      cidadeDestino: e.cidadeDestino,
-      codigoEntrega: e.codigoEntrega,
-      hodometro: e.hodometro,
-      nomeConferente: e.conferente,
-      dataHoraSaida: e.dataHoraSaida,
-      obs: e.obs,
-      placa: e.placa,
-      setor: "saida"
+  const [disabilitarBotao, setDisabilitarBotao] = React.useState(false)
+  const [notas, setNotas] = React.useState("")
+  const [notasVisual, setNotasVisual] = React.useState([""])
+
+  React.useEffect(()=> {
+    let notasLocal = notas.split(",")
+      setNotasVisual(notasLocal)
+  },[notas])
+
+  async function onSubmit(e: any) {
+    setDisabilitarBotao(true)
+    for(let nota in notasVisual) {
+      const dadosSaida: ModelSaida = {
+        motorista: e.motorista,
+        notaFiscal: Number(notasVisual[nota]),
+        cidadeDestino: e.cidadeDestino,
+        codigoEntrega: e.codigoEntrega,
+        hodometro: e.hodometro,
+        nomeConferente: e.conferente,
+        dataHoraSaida: e.dataHoraSaida,
+        obs: e.obs,
+        placa: e.placa,
+        setor: "saida"
+      }
+      await sendThisToDatabase("/api/methodsdatabase/create", dadosSaida, 300)
     }
-    sendThisToDatabase("/api/methodsdatabase/create", dadosSaida)
+    window.location.reload()
   }
 
   return (
@@ -34,8 +47,11 @@ const retorno = (props: Props) => {
       style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", marginTop: 150}}>
         <h3 style={{textAlign: "center", marginBottom: 30}}>Carregamento do Caminhão</h3>
               <TextField 
-              {...register("codigoEntrega")} 
-              sx={{width: 250}} 
+              {...register("codigoEntrega", {
+                 value: Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
+              })} 
+              sx={{width: 250}}
+              disabled
               type="number" required 
               id="codigoEntrega" label="Código da entrega" 
               variant="outlined" />
@@ -43,9 +59,23 @@ const retorno = (props: Props) => {
               <TextField 
               {...register("numeroNotaFiscal")} 
               sx={{width: 250}} 
-              type="number" required 
+              value={notas}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setNotas(event.target.value);
+              }}
+              required 
               id="numeroNotaFiscal" label="Número Nota Fiscal" 
               variant="outlined" />
+              <div style={{marginTop: 5}}>
+              <p>Numero de Notas a serem enviadas</p>
+              <div style={{display: "flex",flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                {
+                  notasVisual.map((item,index) => {
+                    return <div key={index} style={{marginLeft: 4, color: "#fff", background: "#058FED", padding: 10, borderRadius: 5}}>{item}</div>
+                  })
+                }
+                </div>
+              </div>
               <br/><br/>
 
               <CustomSelect_Widget
@@ -136,7 +166,7 @@ const retorno = (props: Props) => {
 
 
 
-              <Button type="submit" variant="contained">Enviar</Button>
+              <Button type="submit" disabled={disabilitarBotao} variant="contained">Enviar</Button>
           </form>
     </div>
   )

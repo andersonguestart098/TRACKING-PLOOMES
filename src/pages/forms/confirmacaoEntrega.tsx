@@ -10,16 +10,29 @@ type Props = {}
 const confirmacaoEntrega = (props: Props) => {
   const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm()
 
-  function onSubmit(e: any) {
-    const dadosConfirmacaoEntrega: ModelConfirmacaoEntrega = {
-      notaFiscal: e.notaFiscal,
-      motorista: e.motorista,
-      cidade: e.cidade,
-      entregaConcluida: e.entregaConcluida,
-      obs: e.obs,
-      setor: "confirmacao entrega"
+  const [disabilitarBotao, setDisabilitarBotao] = React.useState(false)
+  const [notas, setNotas] = React.useState("")
+  const [notasVisual, setNotasVisual] = React.useState([""])
+
+  React.useEffect(()=> {
+    let notasLocal = notas.split(",")
+      setNotasVisual(notasLocal)
+  },[notas])
+
+  async function onSubmit(e: any) {
+    setDisabilitarBotao(true)
+    for(let nota in notasVisual) {
+      const dadosConfirmacaoEntrega: ModelConfirmacaoEntrega = {
+        notaFiscal: Number(notasVisual[nota]),
+        motorista: e.motorista,
+        cidade: e.cidade,
+        entregaConcluida: e.entregaConcluida,
+        obs: e.obs,
+        setor: "confirmacao entrega"
+      }
+      await sendThisToDatabase("/api/methodsdatabase/create", dadosConfirmacaoEntrega, 300)
     }
-    sendThisToDatabase("/api/methodsdatabase/create", dadosConfirmacaoEntrega)
+    window.location.reload()
   }
 
   return (
@@ -31,10 +44,25 @@ const confirmacaoEntrega = (props: Props) => {
         <h3 style={{textAlign: "center", marginBottom: 30}}>Confirmação de Entrega</h3> 
               <TextField
               {...register("notaFiscal")} 
+              value={notas}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setNotas(event.target.value);
+              }}
               sx={{width: 250}} 
-              type="number" required 
+              type="text" required 
               id="notaFiscal" label="Número da nota"
               variant="outlined" />
+
+              <div style={{marginTop: 5}}>
+              <p>Numero de Notas a serem enviadas</p>
+              <div style={{display: "flex",flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                {
+                  notasVisual.map((item,index) => {
+                    return <div key={index} style={{marginLeft: 4, color: "#fff", background: "#058FED", padding: 10, borderRadius: 5}}>{item}</div>
+                  })
+                }
+                </div>
+              </div>
               <br/><br/>
               <CustomSelect_Widget
                labelText={'Motorista:'}
@@ -81,7 +109,7 @@ const confirmacaoEntrega = (props: Props) => {
                   variant="outlined" />
                   <br/><br/>
 
-              <Button type="submit" variant="contained">Enviar</Button>
+              <Button disabled={disabilitarBotao} type="submit" variant="contained">Enviar</Button>
           </form>
     </div>
   )

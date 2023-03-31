@@ -12,22 +12,30 @@ const retorno = (props: Props) => {
   const { register, handleSubmit, formState: { errors } } = useForm()
 
   const [disabilitarBotao, setDisabilitarBotao] = useState(false)
-  const [notas, setNotas] = React.useState([1])
+  const [notas, setNotas] = React.useState("")
+  const [notasVisual, setNotasVisual] = React.useState([""])
 
   const defaultValues = {
     activitiesbefore: "",
   }
 
+  React.useEffect(()=> {
+    let notasLocal = notas.split(",")
+      setNotasVisual(notasLocal)
+  },[notas])
+
   async function onSubmit(e: any) {
     setDisabilitarBotao(true)
-    const dadosCanhoto: ModelCanhoto = {
-      motorista: e.motorista,
-      numeroNotaFiscal: e.numeroNotaFiscal,
-      responsavelCanhoto: e.quemRecebeu,
-      statusCanhoto: "Concluido",
-      setor: "canhoto"
+    for(let nota in notasVisual) {
+      const dadosCanhoto: ModelCanhoto = {
+        motorista: e.motorista,
+        numeroNotaFiscal: Number(notasVisual[nota]),
+        responsavelCanhoto: e.quemRecebeu,
+        statusCanhoto: "Concluido",
+        setor: "canhoto"
+      }
+      await sendThisToDatabase("/api/methodsdatabase/create", dadosCanhoto, 300)
     }
-    await sendThisToDatabase("/api/methodsdatabase/create", dadosCanhoto)
     window.location.reload()
   }
 
@@ -52,18 +60,10 @@ const retorno = (props: Props) => {
               <br/><br/>
               <TextField 
               {...register("numeroNotaFiscal")}
-              onChange={(e) => {
-                let valor = e.target.value
-                let items = valor.split(",")
-                let currentNotas = notas
-                console.log(items)
-                console.log(notas)
-                items.map(item => {
-                  currentNotas.push(Number(item))
-                })
-                setNotas(currentNotas)
-                
-              }} 
+              value={notas}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setNotas(event.target.value);
+              }}
               sx={{width: 250}} 
                required 
               id="numeroNotaFiscal" label="Numero Nota Fiscal" 
@@ -72,17 +72,8 @@ const retorno = (props: Props) => {
               <p>Numero de Notas a serem enviadas</p>
               <div style={{display: "flex",flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                 {
-                  notas.map((_, i) => {
-                    return <Box
-                    key={i}
-                    sx={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: 2,
-                      backgroundColor: 'primary.dark',
-                      marginLeft: 2
-                    }}
-                  />
+                  notasVisual.map((item,index) => {
+                    return <div key={index} style={{marginLeft: 4, color: "#fff", background: "#058FED", padding: 10, borderRadius: 5}}>{item}</div>
                   })
                 }
                 </div>

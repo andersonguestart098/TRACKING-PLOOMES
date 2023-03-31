@@ -14,18 +14,21 @@ function assinatura({}: Props) {
   const [pincelWidth, setPincelWidth] = React.useState(4);
   const [preenchido, setPreenchido] = React.useState(false);
   const [imagemBase64, setImagemBase64] = React.useState("");
+  const [disabilitarBotao, setDisabilitarBotao] = React.useState(false)
 
   const { register, handleSubmit, formState: { errors } } = useForm()
 
   async function onSubmit(e: any) {
+    setDisabilitarBotao(true)
     const data: ModelAssinatura = {
         responsavel: e.responsavel,
         cliente: e.cliente,
         assinatura_img: imagemBase64,
         setor: "assinatura"
     }
-    await sendThisToDatabase("/api/methodsdatabase/create", data)
-  }
+    await sendThisToDatabase("/api/methodsdatabase/create", data, 500)
+    window.location.reload()
+    }
 
   return (
     <div>
@@ -77,7 +80,7 @@ function assinatura({}: Props) {
             <TextField margin='dense' {...register("cliente")} label="Para" required />
             <Button onClick={()=> setOpen(true)} variant="outlined">Abrir campo para edição de assinatura</Button>
             {!preenchido ? <Alert sx={{margin: 2}} severity="error">Assinatura ainda não desenhada</Alert> : <></>}
-            <Button type="submit" variant='outlined'>Enviar</Button>
+            <Button disabled={disabilitarBotao || !preenchido} type="submit" variant='contained'>Enviar</Button>
         </form>
     </div>
   )

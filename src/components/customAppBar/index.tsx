@@ -9,16 +9,18 @@ interface Props {
   dados: any,
   setSearch: React.Dispatch<React.SetStateAction<boolean>>
   setSearchString: React.Dispatch<React.SetStateAction<string>>
+  setValueInputChange: React.Dispatch<React.SetStateAction<string>>
   setor: string
   filter: string
   searchString: string
+  filterData: any[]
 }
 
 const Index = (props: Props) => {
 
   const [stringSearch, setStringSearch] = React.useState("")
 
-  const {setor, dados, setSearch, setSearchString, filter, searchString} = props
+  const {setValueInputChange, setor, dados, setSearch, setSearchString, filter, searchString, filterData} = props
   return (
       <AppBar
       style={{
@@ -51,29 +53,35 @@ const Index = (props: Props) => {
               margin: 25
             }}
             onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+                  console.log(event.target.value)
+                  setValueInputChange(event.target.value)
                   let json = JSON.parse(searchString)
-                  if(filter == "notaFiscal") {
+                  
+                  for(let i in filterData[0]) {
+                    if(filter == filterData[0][i]) {
+                      json = filterData[1][i]
+                    }
+                  } 
+                  if (filter == "dataCriacao") {
+                    let date = new Date(event.target.value)
                     json = {
-                      author: {
-                        notaFiscal: Number(event.target.value)
+                      updatedAt: {
+                        gte: date
                       }
+                    }
                   }
-                }else if (filter == "cliente") {
-                  json = {
-                    cliente: event.target.value
-                }
-                }
-                setStringSearch(JSON.stringify(json))
+                let text = JSON.stringify(json)
+                setStringSearch(text)
             }}
             sx={{ flexGrow: 1, mx: 5 }}
             placeholder={"Pesquisar por "+filter+"..."}
             hiddenLabel
             id="filled-hidden-label-small"
             variant="filled"
-            type={filter.includes("notaFiscal") ? "number" : "text"}
+            type={filter.includes("notaFiscal") ? "number" : filter.includes("dataCriacao") ? "date" : "text"}
             size="small"
           />
-          <IconButton onClick={() => { 
+          <IconButton onClick={() => {
             setSearchString(stringSearch)
             setSearch(true) 
           }}>

@@ -15,7 +15,7 @@ export interface ModelCruzamento {
 
 export interface ModelAssinatura {
     id?: string
-    createdAt?: Date | string
+    createdAt?: string
     updatedAt?: Date | string
     cliente: string
     responsavel: string

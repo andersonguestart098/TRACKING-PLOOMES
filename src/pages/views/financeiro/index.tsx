@@ -36,11 +36,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 function index() {
   const { data: dataAuth } = useSession()
   const [pagina, setPagina ] = useState(0)
+
   const [travarAuto, setTravarAuto ] = useState(false)
   const [searchString, setSearchString ] = useState("{}")
   const [filter, setFilter ] = useState(['notaFiscal'])
   const [filterInput, setFilterInput ] = useState('notaFiscal')
-  const [_, setFixBug ] = useState("")
+  
+  const [valueInputChange, setValueInputChange ] = useState('')
+
+  console.log(searchString)
 
   React.useEffect(() => {
     if(searchString == "") {
@@ -48,7 +52,6 @@ function index() {
     }
   }, [searchString])
   
-
   const {data, isLoading} = travarAuto ?
     useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro", searchString) : 
     useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro")
@@ -63,11 +66,22 @@ function index() {
 
   return (
     <>
-      <CustomNavBar setor="FINANCEIRO" 
-      setSearchString={setSearchString} 
+      <CustomNavBar setor="FINANCEIRO"
+      setSearchString={setSearchString}
+      setValueInputChange={setValueInputChange}
       searchString={searchString}
       filter={filterInput}
-      setSearch={setTravarAuto} dados={dataAuth} />
+      setSearch={setTravarAuto}
+      dados={dataAuth} 
+      filterData={[["notaFiscal", "cliente"],[
+        {author: {
+            notaFiscal: valueInputChange
+        }},
+        {cliente: {
+            contains: valueInputChange
+        }}
+      ]]} 
+      />
       <div style={{textAlign: "center"}}>
         <p>Filtrar ao digitar: </p>
         <div>
@@ -78,6 +92,10 @@ function index() {
           <Chip onClick={() => { 
             setFilterInput("cliente")
           }} sx={filterInput == "cliente" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cliente"  variant="outlined" />
+
+          <Chip onClick={() => { 
+            setFilterInput("dataCriacao")
+          }} sx={filterInput == "dataCriacao" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Data"  variant="outlined" />
         </div>
         <p>Filtro rapido: </p>
         <div>
@@ -216,7 +234,18 @@ function index() {
                       tags={["Pendente","Emitida", "Cancelada", "Retornou", "Boleto em aberto", "Aguardando deposito"]}
                       />
                   </TableCell>
-                  <TableCell>{item.operadorNotaFiscal}</TableCell>
+                  <TableCell>
+                    <CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_operadorNotaFiscal"
+                      value="operadorNotaFiscal"
+                      tags={[
+                        "Rosi", "Aprendiz", "Julia"
+                      ]}
+                    />
+                  </TableCell>
                   <TableCell>
                     <CustomSelect 
                       key={item.id}
@@ -227,7 +256,18 @@ function index() {
                       tags={["expedicao", "expedicao2", "logistica"]}
                       />
                   </TableCell>
-                  <TableCell>{item.responsavelNotaFiscal}</TableCell>
+                  <TableCell>
+                  <CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_responsavelNotaFiscal"
+                      value="responsavelNotaFiscal"
+                      tags={[
+                        "Max", "Eduardo", "Cristiano S.", "Manoel", "Cristinao D."
+                      ]}
+                      />
+                  </TableCell>
                   <TableCell>
                     <CustomInput 
                       key={item.id}

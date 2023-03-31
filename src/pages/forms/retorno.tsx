@@ -10,16 +10,29 @@ type Props = {}
 const retorno = (props: Props) => {
   const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm()
 
-  function onSubmit(e: any) {
-    const dadosRetorno: ModelRetorno = {
-      codigoEntrega: e.codigoEntrega,
-      placa: e.placa,
-      hodometro: e.hodometro,
-      data: e.data,
-      obs: e.obs,
-      setor: "retorno"
+  const [disabilitarBotao, setDisabilitarBotao] = React.useState(false)
+  const [notas, setNotas] = React.useState("")
+  const [notasVisual, setNotasVisual] = React.useState([""])
+
+  React.useEffect(()=> {
+    let notasLocal = notas.split(",")
+      setNotasVisual(notasLocal)
+  },[notas])
+
+  async function onSubmit(e: any) {
+    setDisabilitarBotao(true)
+    for(let nota in notasVisual) {
+      const dadosRetorno: ModelRetorno = {
+        codigoEntrega: e.codigoEntrega,
+        placa: e.placa,
+        hodometro: e.hodometro,
+        data: e.data,
+        obs: e.obs,
+        setor: "retorno"
+      }
+      await sendThisToDatabase("/api/methodsdatabase/create", dadosRetorno, 300)
     }
-    sendThisToDatabase("/api/methodsdatabase/create", dadosRetorno)
+    window.location.reload()
   }
 
   return (
@@ -57,6 +70,27 @@ const retorno = (props: Props) => {
                />
               <br/><br/>
               <TextField 
+              {...register("numeroNotaFiscal")}
+              value={notas}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setNotas(event.target.value);
+              }}
+              sx={{width: 250}} 
+              required 
+              id="numeroNotaFiscal" label="Numero Nota Fiscal" 
+              variant="outlined" />
+              <div style={{marginTop: 5}}>
+              <p>Numero de Notas a serem enviadas</p>
+              <div style={{display: "flex",flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                {
+                  notasVisual.map((item,index) => {
+                    return <div key={index} style={{marginLeft: 4, color: "#fff", background: "#058FED", padding: 10, borderRadius: 5}}>{item}</div>
+                  })
+                }
+                </div>
+              </div>
+              <br/><br/>
+              <TextField 
               {...register("hodometro")} 
               sx={{width: 250}} 
               type="text" required 
@@ -78,7 +112,7 @@ const retorno = (props: Props) => {
                   variant="outlined" />
                   <br/><br/>
 
-              <Button type="submit" variant="contained">Enviar</Button>
+              <Button type="submit" disabled={disabilitarBotao} variant="contained">Enviar</Button>
           </form>
     </div>
   )

@@ -31,6 +31,7 @@ CREATE TABLE "Financeiro" (
     "formaPagamento" TEXT NOT NULL,
     "parcelas" TEXT NOT NULL,
     "vendaFrete" BOOLEAN NOT NULL,
+    "bandeiraCartao" TEXT NOT NULL,
     "retiraEntrega" TEXT NOT NULL,
     "freteConta" TEXT NOT NULL,
     "entregaCadastro" BOOLEAN NOT NULL,

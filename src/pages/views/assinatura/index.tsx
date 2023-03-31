@@ -7,7 +7,7 @@ import CustomNavBar from "@components/customAppBar"
 import CustomInput from '@components/customInput';
 import CustomSelect from '@components/customSelect';
 
-import { Button, CircularProgress, Pagination, TableCell, TableRow } from "@mui/material";
+import { Button, Chip, CircularProgress, Pagination, TableCell, TableRow } from "@mui/material";
 import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 
@@ -40,8 +40,20 @@ function index() {
   const [pagina, setPagina ] = useState(0)
   const [imgGigante, setImgGigante ] = useState("")
 
-  const { data, isLoading } = useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "assinatura")
+  const [travarAuto, setTravarAuto ] = useState(false)
+  const [searchString, setSearchString ] = useState("{}")
+  const [filter, setFilter ] = useState(['notaFiscal'])
+  const [filterInput, setFilterInput ] = useState('notaFiscal')
 
+  React.useEffect(() => {
+    if(searchString == "") {
+      setTravarAuto(false)
+    }
+  }, [searchString])
+
+  const { data, isLoading } = travarAuto ? 
+  useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "assinatura", searchString) :
+  useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "assinatura")
 
 
   if(isLoading) {
@@ -69,9 +81,51 @@ function index() {
                 position: "absolute",
                 right: 10,
                 top: 10
-            }} color="error" onClick={() => setImgGigante(false)} variant='contained'>X</Button>
+            }} color="error" onClick={() => setImgGigante("")} variant='contained'>X</Button>
         </div> : <></>}
-      <CustomNavBar setor="CANHOTO" setData={setPagina} dados={dataAuth} />
+        <CustomNavBar setor="ASSINATURA" 
+          setSearchString={setSearchString} 
+          searchString={searchString}
+          filter={filterInput}
+          setSearch={setTravarAuto} dados={dataAuth} />
+      <div style={{textAlign: "center"}}>
+        <p>Filtrar ao digitar: </p>
+        <div>
+          <Chip onClick={() => {
+            setFilterInput("notaFiscal")
+          }} sx={filterInput == "notaFiscal" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
+          
+          <Chip onClick={() => { 
+            setFilterInput("cliente")
+          }} sx={filterInput == "cliente" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cliente"  variant="outlined" />
+
+          <Chip onClick={() => { 
+            setFilterInput("dataCriacao")
+          }} sx={filterInput == "dataCriacao" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Data"  variant="outlined" />
+        </div>
+        <p>Filtro rapido: </p>
+        <div>
+        <Chip onClick={() => {
+            let filterCurrent: string[] = filter
+            filterCurrent.push("notaEmitida")
+            setFilter(filterCurrent)
+            let currentFilter = JSON.parse(searchString)
+            currentFilter.statusNotaFiscal = "Emitida"
+            setSearchString(JSON.stringify(currentFilter))
+            setTravarAuto(true)
+          }} sx={filter.includes("notaEmitida") ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Nota Emitida"  variant="outlined" />
+
+          <Chip onClick={() => {
+            let filterCurrent: string[] = filter
+            filterCurrent.push("notaPendente")
+            setFilter(filterCurrent)
+            let currentFilter = JSON.parse(searchString)
+            currentFilter.statusNotaFiscal = "Pendente"
+            setSearchString(JSON.stringify(currentFilter))
+            setTravarAuto(true)
+          }} sx={filter.includes("notaPendente") ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Nota Pendente"  variant="outlined" />
+        </div>
+      </div>
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
@@ -90,7 +144,7 @@ function index() {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.updatedAt}</TableCell>
+                  <TableCell>{item.createdAt}</TableCell>
                   <TableCell>{item.responsavel}</TableCell>
                   <TableCell>{item.cliente}</TableCell>
                   <TableCell><img onClick={() => setImgGigante(item.assinatura_img)} src={item.assinatura_img} width={30} /></TableCell>
