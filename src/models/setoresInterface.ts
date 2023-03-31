@@ -29,6 +29,7 @@ export interface ModelFinanceiro {
     setor?: string
     authorId?: string
     createdAt?: string
+    bandeiraCartao: string
     vendedor: string 
     orcamento: string 
     cliente: string 

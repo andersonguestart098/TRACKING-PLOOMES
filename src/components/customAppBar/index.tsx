@@ -10,13 +10,15 @@ interface Props {
   setSearch: React.Dispatch<React.SetStateAction<boolean>>
   setSearchString: React.Dispatch<React.SetStateAction<string>>
   setor: string
+  filter: string
+  searchString: string
 }
 
 const Index = (props: Props) => {
 
   const [stringSearch, setStringSearch] = React.useState("")
 
-  const {setor, dados, setSearch, setSearchString} = props
+  const {setor, dados, setSearch, setSearchString, filter, searchString} = props
   return (
       <AppBar
       style={{
@@ -49,14 +51,26 @@ const Index = (props: Props) => {
               margin: 25
             }}
             onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-                setStringSearch(event.target.value)
+                  let json = JSON.parse(searchString)
+                  if(filter == "notaFiscal") {
+                    json = {
+                      author: {
+                        notaFiscal: Number(event.target.value)
+                      }
+                  }
+                }else if (filter == "cliente") {
+                  json = {
+                    cliente: event.target.value
+                }
+                }
+                setStringSearch(JSON.stringify(json))
             }}
             sx={{ flexGrow: 1, mx: 5 }}
-            placeholder="Pesquisar por Nota Fiscal..."
+            placeholder={"Pesquisar por "+filter+"..."}
             hiddenLabel
             id="filled-hidden-label-small"
             variant="filled"
-            type="number"
+            type={filter.includes("notaFiscal") ? "number" : "text"}
             size="small"
           />
           <IconButton onClick={() => { 

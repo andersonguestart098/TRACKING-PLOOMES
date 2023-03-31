@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useFetch } from "@hooks/useFetch";
-import { CircularProgress, Pagination, TableCell, TableRow } from "@mui/material";
+import { Chip, CircularProgress, Pagination, TableCell, TableRow } from "@mui/material";
 import CustomTable from "@components/customtable"
 import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
@@ -37,7 +37,10 @@ function index() {
   const { data: dataAuth } = useSession()
   const [pagina, setPagina ] = useState(0)
   const [travarAuto, setTravarAuto ] = useState(false)
-  const [searchString, setSearchString ] = useState("")
+  const [searchString, setSearchString ] = useState("{}")
+  const [filter, setFilter ] = useState(['notaFiscal'])
+  const [filterInput, setFilterInput ] = useState('notaFiscal')
+  const [_, setFixBug ] = useState("")
 
   React.useEffect(() => {
     if(searchString == "") {
@@ -47,11 +50,8 @@ function index() {
   
 
   const {data, isLoading} = travarAuto ?
-    useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "#financeiro", searchString) : 
+    useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro", searchString) : 
     useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro")
-
-  console.log(searchString)
-  console.log(data)
 
 
   if(isLoading) {
@@ -65,8 +65,43 @@ function index() {
     <>
       <CustomNavBar setor="FINANCEIRO" 
       setSearchString={setSearchString} 
+      searchString={searchString}
+      filter={filterInput}
       setSearch={setTravarAuto} dados={dataAuth} />
+      <div style={{textAlign: "center"}}>
+        <p>Filtrar ao digitar: </p>
+        <div>
+          <Chip onClick={() => {
+            setFilterInput("notaFiscal")
+          }} sx={filterInput == "notaFiscal" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
+          
+          <Chip onClick={() => { 
+            setFilterInput("cliente")
+          }} sx={filterInput == "cliente" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cliente"  variant="outlined" />
+        </div>
+        <p>Filtro rapido: </p>
+        <div>
+        <Chip onClick={() => {
+            let filterCurrent: string[] = filter
+            filterCurrent.push("notaEmitida")
+            setFilter(filterCurrent)
+            let currentFilter = JSON.parse(searchString)
+            currentFilter.statusNotaFiscal = "Emitida"
+            setSearchString(JSON.stringify(currentFilter))
+            setTravarAuto(true)
+          }} sx={filter.includes("notaEmitida") ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Nota Emitida"  variant="outlined" />
 
+          <Chip onClick={() => {
+            let filterCurrent: string[] = filter
+            filterCurrent.push("notaPendente")
+            setFilter(filterCurrent)
+            let currentFilter = JSON.parse(searchString)
+            currentFilter.statusNotaFiscal = "Pendente"
+            setSearchString(JSON.stringify(currentFilter))
+            setTravarAuto(true)
+          }} sx={filter.includes("notaPendente") ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Nota Pendente"  variant="outlined" />
+        </div>
+      </div>
       {data.result.length ?
       <CustomTable 
       childrenCabecarioTable={

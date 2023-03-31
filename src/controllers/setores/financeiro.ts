@@ -1,29 +1,5 @@
 import prisma from "@utils/prismaInstance";
-
-interface ModelFinanceiro {
-    vendedor: string 
-    orcamento: number 
-    cliente: string 
-    tipoFaturamento: string 
-    valor: string 
-    formaPagamento: string 
-    parcelas: string 
-    vendaFrete: boolean 
-    retiraEntrega: string 
-    freteConta: string 
-    entregaCadastro: boolean 
-    localCobranca: string 
-    observacao: string 
-    observacaoFinanceiro: string 
-    tipoFrete: string 
-    valorFrete: string 
-    dataEntrega: string 
-    numeroNotaFiscal: number 
-    statusNotaFiscal: string 
-    operadorNotaFiscal: string 
-    expedicaoLog: string 
-    responsavelNotaFiscal: string 
-}
+import { ModelFinanceiro } from "~/models/setoresInterface";
 
 export class FinanceiroController {
     constructor(
@@ -31,15 +7,33 @@ export class FinanceiroController {
     ){}
 
     async execute() {
-        this.data.orcamento = Number(this.data.orcamento)
-        this.data.numeroNotaFiscal = Number(this.data.numeroNotaFiscal)
         await prisma.financeiro.create({
             data: {
-                ...this.data,
+                cliente: this.data.cliente,
+                dataEntrega: this.data.dataEntrega,
+                entregaCadastro: this.data.entregaCadastro,
+                formaPagamento: this.data.formaPagamento,
+                freteConta: this.data.freteConta,
+                localCobranca: this.data.localCobranca,
+                observacao: this.data.observacao,
+                observacaoFinanceiro: this.data.observacaoFinanceiro,
+                operadorNotaFiscal: this.data.operadorNotaFiscal,
+                orcamento: Number(this.data.orcamento),
+                parcelas: this.data.parcelas,
+                responsavelNotaFiscal: this.data.responsavelNotaFiscal,
+                retiraEntrega: this.data.retiraEntrega,
+                statusNotaFiscal: this.data.statusNotaFiscal,
+                tipoFaturamento: this.data.tipoFaturamento,
+                tipoFrete: this.data.tipoFrete,
+                valor: this.data.valor,
+                valorFrete: this.data.valorFrete,
+                vendaFrete: this.data.vendaFrete,
+                vendedor: this.data.vendedor,
+                bandeiraCartao: this.data.bandeiraCartao,
                 author: {
                     create: {
-                        expedicao: "",
-                        notaFiscal: 23233
+                        expedicao: "ainda não definido",
+                        notaFiscal: 0
                     }
                     
                 }

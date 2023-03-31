@@ -4,6 +4,8 @@ import CustomInputMask from '@components/customInputMask'
 import CustomSelect_Widget from '@components/customSelect_widget'
 import { useForm } from 'react-hook-form'
 import CustomRadio from '@components/customRadio'
+import { ModelFinanceiro } from '~/models/setoresInterface'
+import { sendThisToDatabase } from '~/services/sendData'
 
 type Props = {}
 
@@ -17,10 +19,9 @@ const financeiro = ({}: Props) => {
 
   const [entregaRetiraEI , setEntregaRetiraEI] = useState(false)
   const [entregaRetiraEA , setEntregaRetiraEA] = useState(false)
-  const [entregaRetiraT , setEntregaRetiraT] = useState(false)
+  const [_ , setEntregaRetiraT] = useState(false)
 
   const [vendaFreteSIM , setVendaFreteSIM] = useState(false)
-  const [entregaECSIm , setEntregaECSIm] = useState(false)
   const [agendadoDataSim , setAgendadoDataSim] = useState(false)
   const [formaPGOAV , setFormaPGOAV] = useState(false)
   const [formaPGOCartao , setFormaPGOCartao] = useState(false)
@@ -31,8 +32,33 @@ const financeiro = ({}: Props) => {
   },[])
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    alert("oK")
+    let dadosFinanceiro: ModelFinanceiro = {
+      cliente: data.cliente,
+      formaPagamento: data.formaPagamentoAVista ?? data.formaPagamento ?? "",
+      bandeiraCartao: data.bandeira ?? "",
+      dataEntrega: data.dataEntrega ?? "",
+      entregaCadastro: data.entregaCadastro == "Sim" ? true : false ?? false,
+      vendaFrete: data.vendaFrete == "Sim" ? true : false ?? false,
+      localCobranca: data.localCobranca ?? "",
+      observacao: data.obs ?? "",
+      orcamento: data.orcamento ?? "",
+      parcelas: data.parcelas ?? "",
+      responsavelNotaFiscal: data.quemRecebeu ?? "",
+      retiraEntrega: data.entregaRetira ?? "",
+      tipoFaturamento: data.tipoFaturamento ?? "",
+      tipoFrete: data.tipoFrete ?? "",
+      valor: data.valorVenda ?? "",
+      observacaoFinanceiro: "",
+      operadorNotaFiscal: "",
+      statusNotaFiscal: "Pendente",
+      freteConta: "",
+      valorFrete: "",
+      vendedor: "",
+      setor: "financeiro"
+    }
+
+    console.log(dadosFinanceiro)
+    sendThisToDatabase("/api/methodsdatabase/create", dadosFinanceiro)
   }
 
   return (
@@ -109,7 +135,7 @@ const financeiro = ({}: Props) => {
                 ]} />
                 <br/>
                 {formaPGOAV ?<CustomRadio 
-                register={register("formaPagamentoAvista")} 
+                register={register("formaPagamentoAVista")} 
                 labelText={'Forma de Pagamento Á vista: '} 
                 items={[
                   { value: "Depósito", visualValue: "Depósito" },  
@@ -167,13 +193,13 @@ const financeiro = ({}: Props) => {
                 ]} /> : <></> }
                 <br/>
 
-              {agendadoDataSim? <TextField sx={{width: 250}} type="date" variant="outlined" required />:<></>}
+              {agendadoDataSim? <TextField {...register("dataEntrega")} sx={{width: 250}} type="date" variant="outlined" required />:<></>}
               
             </div>
 
 
             <div style={{margin:50}}>
-              <TextField sx={{width: 250}} type="number" label="Orcamento" variant="outlined" required />
+              <TextField {...register("orcamento")} sx={{width: 250}} type="number" label="Orcamento" variant="outlined" required />
               <br/><br/>
               <CustomInputMask register={register("valorVenda")} placeHolder='Valor da Venda (incluindo frete)' />
               

@@ -1,20 +1,25 @@
-import { Button, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import React from 'react'
+import { Box, Button, InputLabel, MenuItem, Select, TextField } from '@mui/material'
+import React, {useState} from 'react'
 import { useForm } from "react-hook-form";
 import { sendThisToDatabase } from '@services/sendData';
 import { ModelCanhoto } from '@models/setoresInterface';
 import CustomSelect_Widget from '@components/customSelect_widget';
+import { BorderLeft } from '@mui/icons-material';
 
 type Props = {}
 
 const retorno = (props: Props) => {
   const { register, handleSubmit, formState: { errors } } = useForm()
 
+  const [disabilitarBotao, setDisabilitarBotao] = useState(false)
+  const [notas, setNotas] = React.useState([1])
+
   const defaultValues = {
     activitiesbefore: "",
   }
 
   async function onSubmit(e: any) {
+    setDisabilitarBotao(true)
     const dadosCanhoto: ModelCanhoto = {
       motorista: e.motorista,
       numeroNotaFiscal: e.numeroNotaFiscal,
@@ -46,11 +51,42 @@ const retorno = (props: Props) => {
                />
               <br/><br/>
               <TextField 
-              {...register("numeroNotaFiscal")} 
+              {...register("numeroNotaFiscal")}
+              onChange={(e) => {
+                let valor = e.target.value
+                let items = valor.split(",")
+                let currentNotas = notas
+                console.log(items)
+                console.log(notas)
+                items.map(item => {
+                  currentNotas.push(Number(item))
+                })
+                setNotas(currentNotas)
+                
+              }} 
               sx={{width: 250}} 
-              type="number" required 
+               required 
               id="numeroNotaFiscal" label="Numero Nota Fiscal" 
               variant="outlined" />
+              <div style={{marginTop: 5}}>
+              <p>Numero de Notas a serem enviadas</p>
+              <div style={{display: "flex",flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                {
+                  notas.map((_, i) => {
+                    return <Box
+                    key={i}
+                    sx={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 2,
+                      backgroundColor: 'primary.dark',
+                      marginLeft: 2
+                    }}
+                  />
+                  })
+                }
+                </div>
+              </div>
               <br/><br/>
               <CustomSelect_Widget
                labelText={'Motorista:'} 
@@ -70,7 +106,7 @@ const retorno = (props: Props) => {
                ]}  
                />
               <br/><br/>
-              <Button type="submit" variant="contained" sx={{width: 250, padding: 2}}>Enviar</Button>
+              <Button type="submit" variant="contained" sx={{width: 250, padding: 2}} disabled={disabilitarBotao}>Enviar</Button>
           </form>
     </div>
   )
