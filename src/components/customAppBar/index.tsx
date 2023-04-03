@@ -61,12 +61,11 @@ const Index = (props: Props) => {
                     if(filter == filterData[0][i]) {
                       json = filterData[1][i]
                     }
-                  } 
-                  if (filter == "dataCriacao") {
-                    let date = new Date(event.target.value)
+                  }
+                  if (filter == "notaFiscal") {
                     json = {
-                      updatedAt: {
-                        gte: date
+                      author: {
+                        notaFiscal: Number(event.target.value)
                       }
                     }
                   }

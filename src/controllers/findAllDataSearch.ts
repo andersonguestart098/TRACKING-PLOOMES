@@ -3,16 +3,24 @@ import prisma from "@utils/prismaInstance";
 
 export class findAllDataSearch {
     async execute(req: NextApiRequest, res: NextApiResponse) {
-        const values = req.body.setor.split("#")
+        let resultFilter
+
+        switch (req.body.setor) {
+            case "financeiro":
+                resultFilter = await prisma.financeiro.findMany({
+                    include: {
+                        author: true
+                    },
+                    where: {
+                        ...JSON.parse(req.body.stringSearch)
+                    }
+                })
+                break;
         
-        let resultFilter = await prisma.financeiro.findMany({
-            include: {
-                author: true
-            },
-            where: {
-                ...JSON.parse(req.body.stringSearch)
-            }
-        })
+            default:
+                res.status(400).send({result: "Setor não informado"})
+                break;
+        }
             
         res.status(200).send({result: resultFilter})
     }

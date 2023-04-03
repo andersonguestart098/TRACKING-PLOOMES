@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import { useFetch } from "@hooks/useFetch";
-import { Chip, CircularProgress, Pagination, TableCell, TableRow } from "@mui/material";
+import { Chip, Pagination, TableCell, TableRow } from "@mui/material";
 import CustomTable from "@components/customtable"
 import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 import CustomNavBar from "@components/customAppBar"
-import { ModelFinanceiro } from '~/models/setoresInterface';
+import { ModelFinanceiro } from '@models/setoresInterface';
 import CustomInput from '@components/customInput';
 import CustomSelect from '@components/customSelect';
+import CustomSelect_Widget from '@components/customSelect_widget';
+import { motion } from 'framer-motion';
+import ItemNaoEncontrado from '@components/itemNaoEncontrado';
+import Loader from '@components/loader';
 
 interface typeDB {
     result: ModelFinanceiro[]
@@ -39,15 +43,14 @@ function index() {
 
   const [travarAuto, setTravarAuto ] = useState(false)
   const [searchString, setSearchString ] = useState("{}")
-  const [filter, setFilter ] = useState(['notaFiscal'])
+
+  //! VALOR PADRAO DE FILTRO DE PESQUISA (VALOR DO DB)
   const [filterInput, setFilterInput ] = useState('notaFiscal')
   
   const [valueInputChange, setValueInputChange ] = useState('')
 
-  console.log(searchString)
-
   React.useEffect(() => {
-    if(searchString == "") {
+    if(searchString == "{}") {
       setTravarAuto(false)
     }
   }, [searchString])
@@ -55,17 +58,19 @@ function index() {
   const {data, isLoading} = travarAuto ?
     useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro", searchString) : 
     useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro")
+      
 
-
+  //! LOADER DE CARREGAMENTO
   if(isLoading) {
-    return <div style={{display: "flex", height: "100vh", justifyContent: 'center', alignItems: 'center'}}>
-      <CircularProgress />
-    </div>
+    return (
+      <Loader />
+    )
   }
 
 
   return (
     <>
+      {/* //! BARRA DE PESQUISA */}
       <CustomNavBar setor="FINANCEIRO"
       setSearchString={setSearchString}
       setValueInputChange={setValueInputChange}
@@ -73,15 +78,19 @@ function index() {
       filter={filterInput}
       setSearch={setTravarAuto}
       dados={dataAuth} 
-      filterData={[["notaFiscal", "cliente"],[
-        {author: {
-            notaFiscal: valueInputChange
-        }},
+      filterData={[["dataCriacao", "cliente"],[
+        {
+          updatedAt: {
+            gte: new Date(valueInputChange)
+          }
+        },
         {cliente: {
             contains: valueInputChange
         }}
       ]]} 
       />
+
+      {/* //! MAIS OPÇÔES DE FILTRO (ODF) */}
       <div style={{textAlign: "center"}}>
         <p>Filtrar ao digitar: </p>
         <div>
@@ -98,28 +107,76 @@ function index() {
           }} sx={filterInput == "dataCriacao" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Data"  variant="outlined" />
         </div>
         <p>Filtro rapido: </p>
-        <div>
-        <Chip onClick={() => {
-            let filterCurrent: string[] = filter
-            filterCurrent.push("notaEmitida")
-            setFilter(filterCurrent)
+        <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
+          <CustomSelect_Widget 
+          itens={[
+            {value: "Emitida", visualValue: "Notas Emitida", color: "#38f269"},
+            {value: "Pendente", visualValue: "Notas Pendente", color: "#f28538"},
+            {value: "Cancelada", visualValue: "Notas Cancelada", color: "#d62013"},
+            {value: "Retornou", visualValue: "Notas Retornou", color: "#d851f0"},
+            {value: "Boleto em aberto", visualValue: "Notas Boleto em aberto", color: "#eb8c34"},
+            {value: "Aguardando deposito", visualValue: "Notas Aguardando deposito", color: "#cc34eb"}
+          ]} 
+          onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
-            currentFilter.statusNotaFiscal = "Emitida"
+            currentFilter.statusNotaFiscal = e.target.value
             setSearchString(JSON.stringify(currentFilter))
             setTravarAuto(true)
-          }} sx={filter.includes("notaEmitida") ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Nota Emitida"  variant="outlined" />
-
-          <Chip onClick={() => {
-            let filterCurrent: string[] = filter
-            filterCurrent.push("notaPendente")
-            setFilter(filterCurrent)
+          }}
+          labelText={'Status Nota Fiscal'}          
+          />
+          <CustomSelect_Widget 
+          itens={[
+            {value: "expedicao", visualValue: "Expedicao"},
+            {value: "expedicao2", visualValue: "Expedicao 2"},
+            {value: "logistica", visualValue: "Logistica"}
+          ]} 
+          onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
-            currentFilter.statusNotaFiscal = "Pendente"
+            currentFilter.author = {}
+            currentFilter.author.expedicao = e.target.value
             setSearchString(JSON.stringify(currentFilter))
             setTravarAuto(true)
-          }} sx={filter.includes("notaPendente") ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Nota Pendente"  variant="outlined" />
+          }}
+          labelText={'Expedicões'}          
+          />
+          <CustomSelect_Widget 
+          itens={[
+            {value: "Rosi", visualValue: "Rosi"},
+            {value: "Aprendiz", visualValue: "Aprendiz"},
+            {value: "Julia", visualValue: "Julia"},
+          ]} 
+          onChangeValue={(e) => {
+            let currentFilter = JSON.parse(searchString)
+            currentFilter.operadorNotaFiscal = e.target.value
+            setSearchString(JSON.stringify(currentFilter))
+            setTravarAuto(true)
+          }}
+          labelText={'Operador Nota Fiscal'}          
+          />
+          <CustomSelect_Widget 
+          itens={[
+            {value: "Max", visualValue: "Max"},
+            {value: "Eduardo", visualValue: "Eduardo"},
+            {value: "Cristiano S.", visualValue: "Cristiano S."},
+            {value: "Manoel", visualValue: "Manoel"},
+            {value: "Cristinao D.", visualValue: "Cristinao D."}
+          ]} 
+          onChangeValue={(e) => {
+            let currentFilter = JSON.parse(searchString)
+            currentFilter.responsavelNotaFiscal = e.target.value
+            setSearchString(JSON.stringify(currentFilter))
+            setTravarAuto(true)
+          }}
+          labelText={'Responsavel Nota Fiscal'}          
+          />
         </div>
+        <Chip onClick={() => { 
+            setSearchString("{}")
+          }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
+
+      {/* //! TABELA CABEÇALHO */}
       {data.result.length ?
       <CustomTable 
       childrenCabecarioTable={
@@ -152,8 +209,16 @@ function index() {
       }
       childrenRowTable={
         data!.result.map((item: ModelFinanceiro) => {
-            return (
+            return (              
               <TableRow
+                  component={motion.div}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.5,
+                    ease: [0, 0.71, 0.2, 1.01]
+                  }}
                   key={item.id}
                   style={
                     item.statusNotaFiscal == "Cancelada"? {background: "#d62013"} : 
@@ -276,16 +341,17 @@ function index() {
                       metadata="_observacaoFinanceiro"
                     />
                   </TableCell>
-                </TableRow>
+              </TableRow>
             )
         })
       } paginacao={
-        <Pagination onChange={(_, value) => { 
+        <Pagination 
+            onChange={(_, value) => { 
             value = value -1
             setPagina(value)
           }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
       } />
-      : <>Nenhum dado no momento</>
+      : <ItemNaoEncontrado />
       }
     </>
   )

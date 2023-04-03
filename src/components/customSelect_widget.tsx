@@ -4,15 +4,17 @@ import React from 'react'
 interface itensI {
     value: string | number
     visualValue: string
+    color?: string
 }
 
 interface Props {
     itens: itensI[]
     labelText: string
-    register: any
+    register?: any
+    onChangeValue?(e: any): void
 }
 
-const CustomSelect_Widget = ({itens, labelText, register}: Props) => {
+const CustomSelect_Widget = ({itens, labelText, register, onChangeValue}: Props) => {
   return (
     <FormControl sx={{width: 250}}>
         <InputLabel id="demo-simple-select-label">{labelText}</InputLabel>
@@ -20,12 +22,13 @@ const CustomSelect_Widget = ({itens, labelText, register}: Props) => {
             required
             labelId="demo-simple-select-label"
             {...register}
+            onChange={(e) => onChangeValue?.(e)}
             id="demo-simple-select"
             label={labelText}
         >
             <MenuItem disabled value=""></MenuItem>
             {itens.map((item: itensI, index: number) => {
-                return <MenuItem key={index} value={item.value}>{item.visualValue}</MenuItem>
+                return <MenuItem style={{background: item.color ?? "#ffff"}} key={index} value={item.value}>{item.visualValue}</MenuItem>
             })}
         </Select>
     </FormControl>
