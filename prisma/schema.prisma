@@ -32,7 +32,7 @@ model Assinatura {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cliente String
+  notaFiscal String
   responsavel String
   assinatura_img String
 }

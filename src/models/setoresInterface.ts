@@ -18,7 +18,7 @@ export interface ModelAssinatura {
     id?: string
     createdAt?: string
     updatedAt?: Date | string
-    cliente: string
+    notaFiscal: string
     responsavel: string
     assinatura_img: string
     setor: string

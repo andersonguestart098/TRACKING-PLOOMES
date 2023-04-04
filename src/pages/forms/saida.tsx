@@ -22,19 +22,21 @@ const retorno = (props: Props) => {
   async function onSubmit(e: any) {
     setDisabilitarBotao(true)
     for(let nota in notasVisual) {
-      const dadosSaida: ModelSaida = {
-        motorista: e.motorista,
-        notaFiscal: Number(notasVisual[nota]),
-        cidadeDestino: e.cidadeDestino,
-        codigoEntrega: e.codigoEntrega,
-        hodometro: e.hodometro,
-        nomeConferente: e.conferente,
-        dataHoraSaida: e.dataHoraSaida,
-        obs: e.obs,
-        placa: e.placa,
-        setor: "saida"
+      if(notasVisual[nota]?.trim().length != 0) {
+        const dadosSaida: ModelSaida = {
+          motorista: e.motorista,
+          notaFiscal: Number(notasVisual[nota]),
+          cidadeDestino: e.cidadeDestino,
+          codigoEntrega: e.codigoEntrega,
+          hodometro: e.hodometro,
+          nomeConferente: e.conferente,
+          dataHoraSaida: e.dataHoraSaida,
+          obs: e.obs,
+          placa: e.placa,
+          setor: "saida"
+        }
+        await sendThisToDatabase("/api/methodsdatabase/create", dadosSaida, 300)
       }
-      await sendThisToDatabase("/api/methodsdatabase/create", dadosSaida, 300)
     }
     window.location.reload()
   }

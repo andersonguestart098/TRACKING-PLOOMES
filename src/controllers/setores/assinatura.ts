@@ -10,7 +10,7 @@ export class assinaturaController {
         await prisma.assinatura.create({
             data: {
                 assinatura_img: this.data.assinatura_img,
-                cliente: this.data.cliente,
+                notaFiscal: this.data.notaFiscal,
                 responsavel: this.data.responsavel
             }
         })

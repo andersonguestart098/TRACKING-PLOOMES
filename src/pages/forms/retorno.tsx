@@ -22,15 +22,17 @@ const retorno = (props: Props) => {
   async function onSubmit(e: any) {
     setDisabilitarBotao(true)
     for(let nota in notasVisual) {
-      const dadosRetorno: ModelRetorno = {
-        codigoEntrega: e.codigoEntrega,
-        placa: e.placa,
-        hodometro: e.hodometro,
-        data: e.data,
-        obs: e.obs,
-        setor: "retorno"
+      if(notasVisual[nota]?.trim().length != 0) {
+        const dadosRetorno: ModelRetorno = {
+          codigoEntrega: e.codigoEntrega,
+          placa: e.placa,
+          hodometro: e.hodometro,
+          data: e.data,
+          obs: e.obs,
+          setor: "retorno"
+        }
+        await sendThisToDatabase("/api/methodsdatabase/create", dadosRetorno, 300)
       }
-      await sendThisToDatabase("/api/methodsdatabase/create", dadosRetorno, 300)
     }
     window.location.reload()
   }

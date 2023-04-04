@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { ReactSketchCanvas } from 'react-sketch-canvas';
 import { sendThisToDatabase } from '@services/sendData';
 import { ModelAssinatura } from '@models/setoresInterface';
+import CustomSelect_Widget from '~/components/customSelect_widget';
 
 type Props = {}
 
@@ -22,7 +23,7 @@ function assinatura({}: Props) {
     setDisabilitarBotao(true)
     const data: ModelAssinatura = {
         responsavel: e.responsavel,
-        cliente: e.cliente,
+        notaFiscal: e.notaFiscal,
         assinatura_img: imagemBase64,
         setor: "assinatura"
     }
@@ -76,8 +77,19 @@ function assinatura({}: Props) {
         </Box>
         </Modal>
         <form onSubmit={handleSubmit(onSubmit)} style={{display: "flex", flexDirection: "column", height: "100vh", justifyContent: "center", alignItems: "center"}}>
-            <TextField margin='dense' {...register("responsavel")} label="Responsavel" required />
-            <TextField margin='dense' {...register("cliente")} label="Para" required />
+        <CustomSelect_Widget
+               labelText={'Responsável:'} 
+               register={register("responsavel")} 
+               itens={[
+                {value: "Cristiano S.", visualValue: "Cristiano S."},
+                {value: "Cristiano D.", visualValue: "Cristiano D."},
+                {value: "Max", visualValue: "Max"},
+                {value: "Manoel", visualValue: "Manoel"},
+                {value: "Eduardo", visualValue: "Eduardo"},
+                {value: "Everton", visualValue: "Everton"},
+               ]}  
+               />
+            <TextField margin='dense' {...register("notaFiscal")} label="Número Nota Fiscal" required />
             <Button onClick={()=> setOpen(true)} variant="outlined">Abrir campo para edição de assinatura</Button>
             {!preenchido ? <Alert sx={{margin: 2}} severity="error">Assinatura ainda não desenhada</Alert> : <></>}
             <Button disabled={disabilitarBotao || !preenchido} type="submit" variant='contained'>Enviar</Button>

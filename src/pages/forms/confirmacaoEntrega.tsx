@@ -22,15 +22,17 @@ const confirmacaoEntrega = (props: Props) => {
   async function onSubmit(e: any) {
     setDisabilitarBotao(true)
     for(let nota in notasVisual) {
-      const dadosConfirmacaoEntrega: ModelConfirmacaoEntrega = {
-        notaFiscal: Number(notasVisual[nota]),
-        motorista: e.motorista,
-        cidade: e.cidade,
-        entregaConcluida: e.entregaConcluida,
-        obs: e.obs,
-        setor: "confirmacao entrega"
+      if(notasVisual[nota]?.trim().length != 0) {
+        const dadosConfirmacaoEntrega: ModelConfirmacaoEntrega = {
+          notaFiscal: Number(notasVisual[nota]),
+          motorista: e.motorista,
+          cidade: e.cidade,
+          entregaConcluida: e.entregaConcluida,
+          obs: e.obs,
+          setor: "confirmacao entrega"
+        }
+        await sendThisToDatabase("/api/methodsdatabase/create", dadosConfirmacaoEntrega, 300)
       }
-      await sendThisToDatabase("/api/methodsdatabase/create", dadosConfirmacaoEntrega, 300)
     }
     window.location.reload()
   }

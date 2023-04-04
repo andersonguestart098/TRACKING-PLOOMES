@@ -27,14 +27,16 @@ const retorno = (props: Props) => {
   async function onSubmit(e: any) {
     setDisabilitarBotao(true)
     for(let nota in notasVisual) {
-      const dadosCanhoto: ModelCanhoto = {
-        motorista: e.motorista,
-        numeroNotaFiscal: Number(notasVisual[nota]),
-        responsavelCanhoto: e.quemRecebeu,
-        statusCanhoto: "Concluido",
-        setor: "canhoto"
+      if(notasVisual[nota]?.trim().length != 0) {
+        const dadosCanhoto: ModelCanhoto = {
+          motorista: e.motorista,
+          numeroNotaFiscal: Number(notasVisual[nota]),
+          responsavelCanhoto: e.quemRecebeu,
+          statusCanhoto: "Concluido",
+          setor: "canhoto"
+        }
+        await sendThisToDatabase("/api/methodsdatabase/create", dadosCanhoto, 300)
       }
-      await sendThisToDatabase("/api/methodsdatabase/create", dadosCanhoto, 300)
     }
     window.location.reload()
   }

@@ -15,7 +15,7 @@ export class findAllDataSearch {
                         ...JSON.parse(req.body.stringSearch)
                     }
                 })
-                break;
+            break;
             case "cruzamento":
                 resultFilter = await prisma.passagemDados.findMany({
                     include: {
@@ -26,6 +26,71 @@ export class findAllDataSearch {
                     },
                     where: {
                         ...JSON.parse(req.body.stringSearch)
+                    }
+                })
+            break
+            
+            case "expedicao":
+                resultFilter = await prisma.expedicao.findMany({
+                    include: {
+                        author: true
+                    },
+                    where: {
+                        ...JSON.parse(req.body.stringSearch)
+                    }
+                })
+            break
+
+            case "expedicao2":
+                resultFilter = await prisma.expedicao2.findMany({
+                    include: {
+                        author: true
+                    },
+                    where: {
+                        ...JSON.parse(req.body.stringSearch)
+                    }
+                })
+            break
+
+            case "logistica":
+                resultFilter = await prisma.logistica.findMany({
+                    include: {
+                        author: true
+                    },
+                    where: {
+                        ...JSON.parse(req.body.stringSearch)
+                    }
+                })
+            break
+
+            case "assinatura":
+                resultFilter = await prisma.assinatura.findMany({
+                    where: {
+                        ...JSON.parse(req.body.stringSearch) 
+                    }
+                })
+            break
+
+            case "confirmacaoEntrega":
+                resultFilter = await prisma.confirmacaoEntrega.findMany({
+                    where: {
+                        ...JSON.parse(req.body.stringSearch) 
+                    }
+                })
+            break
+
+            case "retorno":
+                resultFilter = await prisma.retorno.findMany({
+                    where: {
+                        ...JSON.parse(req.body.stringSearch) 
+                    }
+                })
+            break
+
+            case "saida":
+                resultFilter = await prisma.saida.findMany({
+                    where: {
+                        ...JSON.parse(req.body.stringSearch) 
                     }
                 })
             break
