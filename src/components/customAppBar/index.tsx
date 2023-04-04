@@ -68,6 +68,10 @@ const Index = (props: Props) => {
                         notaFiscal: Number(event.target.value)
                       }
                     }
+                  }else if (filter == "notaFiscalP") {
+                    json = {
+                      notaFiscal: Number(event.target.value)
+                    }
                   }
                 let text = JSON.stringify(json)
                 setStringSearch(text)

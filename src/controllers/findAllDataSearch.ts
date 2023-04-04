@@ -16,6 +16,19 @@ export class findAllDataSearch {
                     }
                 })
                 break;
+            case "cruzamento":
+                resultFilter = await prisma.passagemDados.findMany({
+                    include: {
+                        expedicao2Passagem: true,
+                        expedicaoPassagem: true,
+                        financeiroPassagem: true,
+                        logisticaPassagem: true,
+                    },
+                    where: {
+                        ...JSON.parse(req.body.stringSearch)
+                    }
+                })
+            break
         
             default:
                 res.status(400).send({result: "Setor não informado"})

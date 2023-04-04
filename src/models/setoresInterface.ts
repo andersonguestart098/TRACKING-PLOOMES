@@ -11,6 +11,7 @@ export interface ModelCruzamento {
     expedicaoPassagem: ModelExpedicao[],
     expedicao2Passagem: ModelExpedicao2[],
     logisticaPassagem: ModelLogistica[],
+    financeiroPassagem: ModelFinanceiro[]
 }
 
 export interface ModelAssinatura {

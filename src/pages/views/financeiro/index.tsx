@@ -12,6 +12,7 @@ import CustomSelect_Widget from '@components/customSelect_widget';
 import { motion } from 'framer-motion';
 import ItemNaoEncontrado from '@components/itemNaoEncontrado';
 import Loader from '@components/loader';
+import color from '~/config/colors';
 
 interface typeDB {
     result: ModelFinanceiro[]
@@ -110,12 +111,12 @@ function index() {
         <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
           <CustomSelect_Widget 
           itens={[
-            {value: "Emitida", visualValue: "Notas Emitida", color: "#38f269"},
-            {value: "Pendente", visualValue: "Notas Pendente", color: "#f28538"},
-            {value: "Cancelada", visualValue: "Notas Cancelada", color: "#d62013"},
-            {value: "Retornou", visualValue: "Notas Retornou", color: "#d851f0"},
-            {value: "Boleto em aberto", visualValue: "Notas Boleto em aberto", color: "#eb8c34"},
-            {value: "Aguardando deposito", visualValue: "Notas Aguardando deposito", color: "#cc34eb"}
+            {value: "Emitida", visualValue: "Notas Emitida", color: color.financeiro.emitida.background},
+            {value: "Pendente", visualValue: "Notas Pendente", color: color.financeiro.pendente.background},
+            {value: "Cancelada", visualValue: "Notas Cancelada", color: color.financeiro.cancelada.background},
+            {value: "Retornou", visualValue: "Notas Retornou", color: color.financeiro.retornou.background},
+            {value: "Boleto em aberto", visualValue: "Notas Boleto em aberto", color: color.financeiro.boletoAberto.background},
+            {value: "Aguardando deposito", visualValue: "Notas Aguardando deposito", color: color.financeiro.aguardadoDeposito.background}
           ]} 
           onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
@@ -221,12 +222,12 @@ function index() {
                   }}
                   key={item.id}
                   style={
-                    item.statusNotaFiscal == "Cancelada"? {background: "#d62013"} : 
-                    item.statusNotaFiscal ==  "Emitida" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Retornou" ? {background: "#d851f0"} :
-                    item.statusNotaFiscal ==  "Boleto em aberto" ? {background: "#eb8c34"} : 
-                    item.statusNotaFiscal ==  "Aguardando deposito" ? {background: "#cc34eb"} : 
-                    item.statusNotaFiscal ==  "Pendente" ? {background: "#f28538"} : {}
+                    item.statusNotaFiscal == "Cancelada"? color.financeiro.cancelada : 
+                    item.statusNotaFiscal ==  "Emitida" ? color.financeiro.emitida :
+                    item.statusNotaFiscal ==  "Retornou" ? color.financeiro.retornou :
+                    item.statusNotaFiscal ==  "Boleto em aberto" ? color.financeiro.boletoAberto : 
+                    item.statusNotaFiscal ==  "Aguardando deposito" ? color.financeiro.aguardadoDeposito : 
+                    item.statusNotaFiscal ==  "Pendente" ? color.financeiro.pendente : {}
                   }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
