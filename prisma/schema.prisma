@@ -32,7 +32,7 @@ model Assinatura {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  notaFiscal String
+  notaFiscal Int
   responsavel String
   assinatura_img String
 }
@@ -137,7 +137,7 @@ model Retorno {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  codigoEntrega Int
+  notaFiscal    Int
   placa         String
   hodometro     Int
   data          String

@@ -12,7 +12,7 @@ CREATE TABLE "Assinatura" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "notaFiscal" TEXT NOT NULL,
+    "notaFiscal" INTEGER NOT NULL,
     "responsavel" TEXT NOT NULL,
     "assinatura_img" TEXT NOT NULL
 );
@@ -113,7 +113,7 @@ CREATE TABLE "Retorno" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "codigoEntrega" INTEGER NOT NULL,
+    "notaFiscal" INTEGER NOT NULL,
     "placa" TEXT NOT NULL,
     "hodometro" INTEGER NOT NULL,
     "data" TEXT NOT NULL,

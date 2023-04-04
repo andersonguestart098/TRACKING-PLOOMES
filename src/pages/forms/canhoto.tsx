@@ -30,7 +30,7 @@ const retorno = (props: Props) => {
       if(notasVisual[nota]?.trim().length != 0) {
         const dadosCanhoto: ModelCanhoto = {
           motorista: e.motorista,
-          numeroNotaFiscal: Number(notasVisual[nota]),
+          notaFiscal: Number(notasVisual[nota]),
           responsavelCanhoto: e.quemRecebeu,
           statusCanhoto: "Concluido",
           setor: "canhoto"

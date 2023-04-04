@@ -11,7 +11,7 @@ export class retornoController {
     async execute() {
         await prisma.retorno.create({
             data: {
-                codigoEntrega: Number(this.data.codigoEntrega),
+                notaFiscal: Number(this.data.notaFiscal),
                 placa: this.data.placa,
                 hodometro: Number(this.data.hodometro),
                 data: this.data.data,

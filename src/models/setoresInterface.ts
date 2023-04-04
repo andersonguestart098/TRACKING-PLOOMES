@@ -18,7 +18,7 @@ export interface ModelAssinatura {
     id?: string
     createdAt?: string
     updatedAt?: Date | string
-    notaFiscal: string
+    notaFiscal: number
     responsavel: string
     assinatura_img: string
     setor: string
@@ -122,7 +122,7 @@ export interface ModelRetorno {
     setor?: string
     authorId?: string
     createdAt?: string
-    codigoEntrega: number
+    notaFiscal: number
     placa: string 
     hodometro: number
     data: string
@@ -136,7 +136,7 @@ export interface ModelCanhoto {
     id?: string
     setor?: string
     createdAt?: string
-    numeroNotaFiscal: number
+    notaFiscal: number
     motorista: string
     statusCanhoto: string
     responsavelCanhoto: string

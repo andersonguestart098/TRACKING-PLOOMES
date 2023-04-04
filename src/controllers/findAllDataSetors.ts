@@ -60,11 +60,29 @@ export class findAllData {
                     break;
 
             case "confirmacaoEntrega":
-                operator = prisma.confirmacaoEntrega
+                return res.status(200).json({ 
+                    result: await prisma.confirmacaoEntrega.findMany({
+                        take: 3,
+                        skip: pagina == 0 ? 0 : pagina * 3,
+                        orderBy: {
+                            id: "desc"
+                        }
+                    }),
+                    lengthDB: ((await prisma.confirmacaoEntrega.findMany()).length)
+                })
                 break;
 
             case "retorno":
-                operator = prisma.retorno
+                return res.status(200).json({ 
+                    result: await prisma.retorno.findMany({
+                        take: 3,
+                        skip: pagina == 0 ? 0 : pagina * 3,
+                        orderBy: {
+                            id: "desc"
+                        }
+                    }),
+                    lengthDB: ((await prisma.retorno.findMany()).length)
+                })
                 break;
 
             case "canhoto":

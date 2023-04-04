@@ -48,7 +48,7 @@ function index() {
   const [searchString, setSearchString ] = useState("{}")
 
   //! VALOR PADRAO DE FILTRO DE PESQUISA (VALOR DO DB)
-  const [filterInput, setFilterInput ] = useState('notaFiscal')
+  const [filterInput, setFilterInput ] = useState('notaFiscalP')
   
   const [valueInputChange, setValueInputChange ] = useState('')
 
@@ -59,7 +59,7 @@ function index() {
   }, [searchString])
 
   const { data, isLoading } = travarAuto ?
-  useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "assinaturaf", searchString) :
+  useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "assinatura", searchString) :
   useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "assinatura")
 
 
@@ -92,7 +92,7 @@ function index() {
             }} color="error" onClick={() => setImgGigante("")} variant='contained'>X</Button>
         </div> : <></>}
         {/* //! BARRA DE PESQUISA */}
-      <CustomNavBar setor="FINANCEIRO"
+      <CustomNavBar setor="ASSINATURAS"
       setSearchString={setSearchString}
       setValueInputChange={setValueInputChange}
       searchString={searchString}
@@ -115,8 +115,8 @@ function index() {
         <p>Filtrar ao digitar: </p>
         <div>
           <Chip onClick={() => {
-            setFilterInput("notaFiscal")
-          }} sx={filterInput == "notaFiscal" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
+            setFilterInput("notaFiscalP")
+          }} sx={filterInput == "notaFiscalP" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
           
           <Chip onClick={() => { 
             setFilterInput("cliente")

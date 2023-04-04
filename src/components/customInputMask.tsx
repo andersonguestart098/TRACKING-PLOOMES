@@ -1,5 +1,7 @@
+import { TextField } from '@mui/material'
 import React from 'react'
-import CurrencyInput from 'react-currency-input-field'
+import { CurrencyInput } from 'react-currency-mask';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props {
     placeHolder?: string 
@@ -7,16 +9,20 @@ interface Props {
 }
 
 const CustomInputMask = ({placeHolder, register}: Props) => {
+  const { control } = useFormContext();
   return (
-    <CurrencyInput
-        {...register}
-        intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
-        placeholder={placeHolder ?? ""}
-        decimalsLimit={2}
-        style={{padding: 15, width: 250, borderRadius: 5, 
-        borderColor: "#9e9d9d", 
-        borderStyle: 'solid', borderWidth: 1}}
-        required
+    <Controller
+      name={""}
+      control={control}
+      render={({ field }) => (
+        <CurrencyInput
+          value={field.value}
+          onChangeValue={(_, value) => {
+            field.onChange(value);
+          }}
+          InputElement={<TextField />}
+        />
+      )}
     />
   )
 }

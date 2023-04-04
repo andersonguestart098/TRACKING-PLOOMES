@@ -94,6 +94,14 @@ export class findAllDataSearch {
                     }
                 })
             break
+
+            case "canhoto":
+                resultFilter = await prisma.canhoto.findMany({
+                    where: {
+                        ...JSON.parse(req.body.stringSearch) 
+                    }
+                })
+            break
         
             default:
                 res.status(400).send({result: "Setor não informado"})

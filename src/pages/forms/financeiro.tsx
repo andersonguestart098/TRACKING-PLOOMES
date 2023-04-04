@@ -205,6 +205,7 @@ const financeiro = ({}: Props) => {
             <div style={{margin:50}}>
               <TextField {...register("orcamento")} sx={{width: 250}} type="number" label="Orcamento" variant="outlined" required />
               <br/><br/>
+              
               <CustomInputMask register={register("valorVenda")} placeHolder='Valor da Venda (incluindo frete)' />
               
                 {!tipoFaturamentoRM ? <CustomRadio 

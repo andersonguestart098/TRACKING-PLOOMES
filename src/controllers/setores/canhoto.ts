@@ -11,7 +11,7 @@ export class CanhotoController {
         await prisma.canhoto.create({
             data: {
                 motorista: this.data.motorista,
-                notaFiscal: Number(this.data.numeroNotaFiscal),
+                notaFiscal: Number(this.data.notaFiscal),
                 responsavelCanhoto: this.data.responsavelCanhoto,
                 statusCanhoto: this.data.statusCanhoto
             }

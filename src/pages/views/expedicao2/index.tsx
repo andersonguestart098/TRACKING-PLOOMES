@@ -74,7 +74,7 @@ function index() {
     <>
       
       {/* //! BARRA DE PESQUISA */}
-      <CustomNavBar setor="FINANCEIRO"
+      <CustomNavBar setor="EXPEDIÇÃO 2"
       setSearchString={setSearchString}
       setValueInputChange={setValueInputChange}
       searchString={searchString}

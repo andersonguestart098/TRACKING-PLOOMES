@@ -17,19 +17,31 @@ function assinatura({}: Props) {
   const [imagemBase64, setImagemBase64] = React.useState("");
   const [disabilitarBotao, setDisabilitarBotao] = React.useState(false)
 
+  const [notas, setNotas] = React.useState("")
+  const [notasVisual, setNotasVisual] = React.useState([""])
+
   const { register, handleSubmit, formState: { errors } } = useForm()
 
   async function onSubmit(e: any) {
     setDisabilitarBotao(true)
-    const data: ModelAssinatura = {
-        responsavel: e.responsavel,
-        notaFiscal: e.notaFiscal,
-        assinatura_img: imagemBase64,
-        setor: "assinatura"
+    for(let nota in notasVisual) {
+        if(notasVisual[nota]?.trim().length != 0) {
+            const data: ModelAssinatura = {
+                responsavel: e.responsavel,
+                notaFiscal: Number(notasVisual[nota]),
+                assinatura_img: imagemBase64,
+                setor: "assinatura"
+            }
+            await sendThisToDatabase("/api/methodsdatabase/create", data, 500)
+        }
     }
-    await sendThisToDatabase("/api/methodsdatabase/create", data, 500)
     window.location.reload()
     }
+
+    React.useEffect(()=> {
+        let notasLocal = notas.split(",")
+          setNotasVisual(notasLocal)
+      },[notas])
 
   return (
     <div>
@@ -89,7 +101,22 @@ function assinatura({}: Props) {
                 {value: "Everton", visualValue: "Everton"},
                ]}  
                />
-            <TextField margin='dense' {...register("notaFiscal")} label="Número Nota Fiscal" required />
+            <TextField margin='dense' 
+                {...register("notaFiscal")} 
+                value={notas}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setNotas(event.target.value);
+              }} label="Número Nota Fiscal" required />
+              <div style={{marginTop: 5}}>
+              <p>Numero de Notas a serem enviadas</p>
+              <div style={{display: "flex",flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                {
+                  notasVisual.map((item,index) => {
+                    return <div key={index} style={{marginLeft: 4, color: "#fff", background: "#058FED", padding: 10, borderRadius: 5}}>{item}</div>
+                  })
+                }
+                </div>
+              </div>
             <Button onClick={()=> setOpen(true)} variant="outlined">Abrir campo para edição de assinatura</Button>
             {!preenchido ? <Alert sx={{margin: 2}} severity="error">Assinatura ainda não desenhada</Alert> : <></>}
             <Button disabled={disabilitarBotao || !preenchido} type="submit" variant='contained'>Enviar</Button>
