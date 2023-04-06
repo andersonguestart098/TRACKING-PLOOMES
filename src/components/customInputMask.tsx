@@ -1,29 +1,35 @@
 import { TextField } from '@mui/material'
-import React from 'react'
-import { CurrencyInput } from 'react-currency-mask';
-import { Controller, useFormContext } from 'react-hook-form';
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form';
 
 interface Props {
     placeHolder?: string 
-    register?: any
+    register?: React.Dispatch<React.SetStateAction<string>>
 }
 
 const CustomInputMask = ({placeHolder, register}: Props) => {
-  const { control } = useFormContext();
+  const [valueInput, setValueInput] = useState("");
+  let { setValue } = useForm();
+
+  const handleChange = (event: any) => {
+    // Remove caracteres não-numéricos
+    let inputValue = event.target.value.replace(/[^\d]/g, "");
+
+    // Divide o valor por 100 para obter o valor em centavos
+    let numberVal = parseFloat(inputValue) / 100;
+
+    // Formata o valor em moeda BRL
+    let formattedVal = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(numberVal);
+
+    // Atualiza o valor do estado do componente com o valor formatado
+    register?.(formattedVal)
+    setValueInput(formattedVal);
+  };
   return (
-    <Controller
-      name={""}
-      control={control}
-      render={({ field }) => (
-        <CurrencyInput
-          value={field.value}
-          onChangeValue={(_, value) => {
-            field.onChange(value);
-          }}
-          InputElement={<TextField />}
-        />
-      )}
-    />
+    <TextField style={{width:250}} type="text" onChange={handleChange} value={valueInput} label={placeHolder} required />
   )
 }
 

@@ -28,6 +28,8 @@ const financeiro = ({}: Props) => {
 
   const [disabilitarBotao, setDisabilitarBotao] = useState(false)
 
+  const [valorVendaInput, setValorVendaInput] = useState("")
+
   
   useEffect(() => {
     setWidthScreen(window.innerWidth)
@@ -51,7 +53,7 @@ const financeiro = ({}: Props) => {
       retiraEntrega: data.entregaRetira ?? "",
       tipoFaturamento: data.tipoFaturamento ?? "",
       tipoFrete: data.tipoFrete ?? "",
-      valor: data.valorVenda ?? "",
+      valor: valorVendaInput ?? "",
       observacaoFinanceiro: "...",
       operadorNotaFiscal: "...",
       statusNotaFiscal: "Pendente",
@@ -206,7 +208,7 @@ const financeiro = ({}: Props) => {
               <TextField {...register("orcamento")} sx={{width: 250}} type="number" label="Orcamento" variant="outlined" required />
               <br/><br/>
               
-              <CustomInputMask register={register("valorVenda")} placeHolder='Valor da Venda (incluindo frete)' />
+              <CustomInputMask register={setValorVendaInput} placeHolder='Valor da Venda (incluindo frete)' />
               
                 {!tipoFaturamentoRM ? <CustomRadio 
                     register={register("formaPagamento")} 
