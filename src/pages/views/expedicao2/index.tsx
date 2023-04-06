@@ -11,9 +11,10 @@ import { Chip, CircularProgress, Pagination, TableCell, TableRow } from "@mui/ma
 import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 import { motion } from 'framer-motion';
-import CustomSelect_Widget from '~/components/customSelect_widget';
-import Loader from '~/components/loader';
+import CustomSelect_Widget from '@components/customSelect_widget';
+import Loader from '@components/loader';
 import color from '~/config/colors';
+import ItemNaoEncontrado from '@components/itemNaoEncontrado';
 
 interface typeDB {
     result: ModelExpedicao2[]
@@ -106,12 +107,11 @@ function index() {
         <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
           <CustomSelect_Widget 
           itens={[
-            {value: "Emitida", visualValue: "Notas Emitida", color: color.financeiro.emitida.background},
-            {value: "Pendente", visualValue: "Notas Pendente", color: color.financeiro.pendente.background},
-            {value: "Cancelada", visualValue: "Notas Cancelada", color: color.financeiro.cancelada.background},
-            {value: "Retornou", visualValue: "Notas Retornou", color: color.financeiro.retornou.background},
-            {value: "Boleto em aberto", visualValue: "Notas Boleto em aberto", color: color.financeiro.boletoAberto.background},
-            {value: "Aguardando deposito", visualValue: "Notas Aguardando deposito", color: color.financeiro.aguardadoDeposito.background}
+            {value: "Aguardando Cliente", visualValue: "Aguardando Cliente", color: color.expedicao2.aguardandoCliente.background},
+            {value: "Aguardando Transportadora", visualValue: "Aguardando Transportadora", color: color.expedicao2.aguardandoTransportadora.background},
+            {value: "Cliente Retirou", visualValue: "Cliente Retirou", color: color.expedicao2.clienteRetirou.background},
+            {value: "Nota fiscal sendo encaminhada para o setor", visualValue: "Nota fiscal sendo encaminhada para o setor", 
+            color: color.expedicao2.notaFiscalSendoEnviada.background}
           ]} 
           onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
@@ -123,40 +123,8 @@ function index() {
           />
           <CustomSelect_Widget 
           itens={[
-            {value: "expedicao", visualValue: "Expedicao"},
-            {value: "expedicao2", visualValue: "Expedicao 2"},
-            {value: "logistica", visualValue: "Logistica"}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.author = {}
-            currentFilter.author.expedicao = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Expedicões'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Rosi", visualValue: "Rosi"},
-            {value: "Aprendiz", visualValue: "Aprendiz"},
-            {value: "Julia", visualValue: "Julia"},
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.operadorNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Operador Nota Fiscal'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Max", visualValue: "Max"},
-            {value: "Eduardo", visualValue: "Eduardo"},
-            {value: "Cristiano S.", visualValue: "Cristiano S."},
             {value: "Manoel", visualValue: "Manoel"},
-            {value: "Cristinao D.", visualValue: "Cristinao D."}
+            {value: "Cristiano D.", visualValue: "Cristiano D."}
           ]} 
           onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
@@ -171,8 +139,9 @@ function index() {
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
-      
-      <CustomTable 
+
+    {data.result.length ?  
+    <CustomTable 
       childrenCabecarioTable={
         <TableRow>
               <TableCell>Id</TableCell>
@@ -197,20 +166,41 @@ function index() {
                   }}
                   key={item.id}
                   style={
-                    item.statusNotaFiscal == "Cancelada" ? {background: "#d62013"} : 
-                    item.statusNotaFiscal ==  "Cliente retirou" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Aguardando cliente" ? {background: "#d851f0"} :
-                    item.statusNotaFiscal ==  "a definir" ? {background: "#eb8c34"} : 
-                    item.statusNotaFiscal ==  "" ? {background: "#cc34eb"} : 
-                    item.statusNotaFiscal ==  "" ? {background: "#f28538"} : {}
+                    item.statusNotaFiscal == "Aguardando Cliente" ? color.expedicao2.aguardandoCliente : 
+                    item.statusNotaFiscal ==  "Aguardando Transportadora" ? color.expedicao2.aguardandoTransportadora :
+                    item.statusNotaFiscal ==  "Cliente Retirou" ? color.expedicao2.clienteRetirou :
+                    item.statusNotaFiscal ==  "Nota fiscal sendo encaminhada para o setor" ? color.expedicao2.notaFiscalSendoEnviada :
+                    item.statusNotaFiscal ==  "a definir" ? color.expedicao2.pendente : {}
                   }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{new Date(String(item.createdAt)).getDate()}/{new Date(String(item.createdAt)).getMonth()+1}/{new Date(String(item.createdAt)).getFullYear()} 
+                  <br/> {new Date(String(item.createdAt)).getHours()}:{new Date(String(item.createdAt)).getMinutes()}</TableCell>
                   <TableCell>{item.author?.notaFiscal}</TableCell>
-                  <TableCell>{item.responsavelNotaFiscal}</TableCell>
-                  <TableCell>{item.statusNotaFiscal}</TableCell>
+                  <TableCell><CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_responsavelNotaFiscal"
+                      value="responsavelNotaFiscal"
+                      tags={[
+                        "Manoel", "Cristiano D."
+                      ]}
+                      setor="expedicao2"
+                    /></TableCell>
+                  <TableCell><CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_statusNotaFiscal"
+                      value="statusNotaFiscal"
+                      tags={[
+                        "Aguardando Cliente", "Aguardando Transportadora", 
+                        "Cliente Retirou", "Nota fiscal sendo encaminhada para o setor"
+                      ]}
+                      setor="expedicao2"
+                    /></TableCell>
 
                 </TableRow>
             )
@@ -219,8 +209,9 @@ function index() {
         <Pagination onChange={(_, value) => { 
             value = value -1
             setPagina(value)
-          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
+          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/40)} />
       }/>
+    : <ItemNaoEncontrado />}
     </>
   )
 }

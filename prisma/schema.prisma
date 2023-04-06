@@ -157,6 +157,7 @@ model Canhoto {
 
 model Account {
   id                String  @id @default(cuid())
+  setor             String?
   userId            String
   type              String
   provider          String

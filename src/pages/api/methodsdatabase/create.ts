@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { CanhotoController } from "@controllers/setores/canhoto"
 import { FinanceiroController } from "@controllers/setores/financeiro"
 import { SaidaController } from "@controllers/setores/saida"
-import { confirmacaoEntregaController } from "@controllers/confirmacaoEntrega"
-import { retornoController } from "~/controllers/retorno"
-import { assinaturaController } from "~/controllers/setores/assinatura"
+import { confirmacaoEntregaController } from "@controllers/setores/confirmacaoEntrega"
+import { retornoController } from "@controllers/setores/retorno"
+import { assinaturaController } from "@controllers/setores/assinatura"
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

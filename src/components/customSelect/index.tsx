@@ -9,9 +9,10 @@ interface Props {
     routerEdit: string
     item: ModelFinanceiro | any
     metadata: string
+    setor?: string
 }
 
-const Index = ({routerEdit, item, metadata, value, tags}: Props) => {
+const Index = ({routerEdit, item, metadata, value, tags, setor}: Props) => {
 
   function onSubmit(sendThis: string, value: string | boolean) { 
     if(tags[0] == "boolean"){
@@ -26,7 +27,8 @@ const Index = ({routerEdit, item, metadata, value, tags}: Props) => {
     ).execute({
       router: routerEdit, 
       metadata: sendThis, 
-      value: value
+      value: value,
+      setor: setor ?? "financeiro"
     })
   }
 

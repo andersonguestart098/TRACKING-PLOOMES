@@ -11,9 +11,10 @@ import { Chip, CircularProgress, Pagination, TableCell, TableRow } from "@mui/ma
 import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 import { motion } from 'framer-motion';
-import Loader from '~/components/loader';
-import CustomSelect_Widget from '~/components/customSelect_widget';
+import Loader from '@components/loader';
+import CustomSelect_Widget from '@components/customSelect_widget';
 import color from '~/config/colors';
+import ItemNaoEncontrado from '@components/itemNaoEncontrado';
 
 interface typeDB {
     result: ModelLogistica[]
@@ -81,15 +82,12 @@ function index() {
       filter={filterInput}
       setSearch={setTravarAuto}
       dados={dataAuth} 
-      filterData={[["dataCriacao", "cliente"],[
+      filterData={[["dataCriacao"],[
         {
           updatedAt: {
             gte: new Date(valueInputChange)
           }
-        },
-        {cliente: {
-            contains: valueInputChange
-        }}
+        }
       ]]} 
       />
 
@@ -102,10 +100,6 @@ function index() {
           }} sx={filterInput == "notaFiscal" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
           
           <Chip onClick={() => { 
-            setFilterInput("cliente")
-          }} sx={filterInput == "cliente" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cliente"  variant="outlined" />
-
-          <Chip onClick={() => { 
             setFilterInput("dataCriacao")
           }} sx={filterInput == "dataCriacao" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Data"  variant="outlined" />
         </div>
@@ -113,12 +107,23 @@ function index() {
         <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
           <CustomSelect_Widget 
           itens={[
-            {value: "Emitida", visualValue: "Notas Emitida", color: color.financeiro.emitida.background},
-            {value: "Pendente", visualValue: "Notas Pendente", color: color.financeiro.pendente.background},
-            {value: "Cancelada", visualValue: "Notas Cancelada", color: color.financeiro.cancelada.background},
-            {value: "Retornou", visualValue: "Notas Retornou", color: color.financeiro.retornou.background},
-            {value: "Boleto em aberto", visualValue: "Notas Boleto em aberto", color: color.financeiro.boletoAberto.background},
-            {value: "Aguardando deposito", visualValue: "Notas Aguardando deposito", color: color.financeiro.aguardadoDeposito.background}
+            {value: "Aguardando Rota", visualValue: "Aguardando Rota", color: color.logistica.aguardandoRota.background},
+            {value: "Aguardando Vendedor", visualValue: "Aguardando Vendedor", color: color.logistica.aguardandoVendedor.background},
+            {value: "Cancelada", visualValue: "Notas", color: color.logistica.cancelada.background},
+            {value: "Nota fiscal sendo encaminhada para o setor", visualValue: "Nota fiscal sendo encaminhada para o setor", 
+            color: color.logistica.notaFiscalSendoEnviada.background},
+            {value: "Em Transito - ALEXANDRE", visualValue: "Em Transito - ALEXANDRE", color: color.logistica.emTransito.background},
+            {value: "Em Transito - Dionathan", visualValue: "Em Transito - Dionathan", color: color.logistica.emTransito.background},
+            {value: "Em Transito - DOUGLAS", visualValue: "Em Transito - DOUGLAS", color: color.logistica.emTransito.background},
+            {value: "Em Transito - IGON", visualValue: "Em Transito - IGON", color: color.logistica.emTransito.background},
+            {value: "Em Transito - JULIANO", visualValue: "Em Transito - JULIANO", color: color.logistica.emTransito.background},
+            {value: "Em Transito - MATHEUS", visualValue: "Em Transito - MATHEUS", color: color.logistica.emTransito.background},
+            {value: "Em Transito - PAULO ALEXANDRE", visualValue: "Em Transito - PAULO ALEXANDRE", color: color.logistica.emTransito.background},
+            {value: "Em Transito - VANDERLEI", visualValue: "Em Transito - VANDERLEI", color: color.logistica.emTransito.background},
+            {value: "Em Transito - VILNEI", visualValue: "Em Transito - VILNEI", color: color.logistica.emTransito.background},
+            {value: "Em Transito - MAX", visualValue: "Em Transito - MAX", color: color.logistica.emTransito.background},
+            {value: "Em Transito - CRISTIANO", visualValue: "Em Transito - CRISTIANO", color: color.logistica.emTransito.background},
+            {value: "Em Transito - WILLIAM", visualValue: "Em Transito - WILLIAM", color: color.logistica.emTransito.background},
           ]} 
           onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
@@ -128,42 +133,12 @@ function index() {
           }}
           labelText={'Status Nota Fiscal'}          
           />
+
           <CustomSelect_Widget 
           itens={[
-            {value: "expedicao", visualValue: "Expedicao"},
-            {value: "expedicao2", visualValue: "Expedicao 2"},
-            {value: "logistica", visualValue: "Logistica"}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.author = {}
-            currentFilter.author.expedicao = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Expedicões'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Rosi", visualValue: "Rosi"},
-            {value: "Aprendiz", visualValue: "Aprendiz"},
-            {value: "Julia", visualValue: "Julia"},
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.operadorNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Operador Nota Fiscal'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Max", visualValue: "Max"},
-            {value: "Eduardo", visualValue: "Eduardo"},
+            {value: "Dieimes", visualValue: "Dieimes"},
             {value: "Cristiano S.", visualValue: "Cristiano S."},
-            {value: "Manoel", visualValue: "Manoel"},
-            {value: "Cristinao D.", visualValue: "Cristinao D."}
+            {value: "Vanderlei", visualValue: "Vanderlei"},
           ]} 
           onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
@@ -178,8 +153,9 @@ function index() {
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
-      
-      <CustomTable 
+    
+    {data.result.length ?  
+    <CustomTable 
       childrenCabecarioTable={
         <TableRow>
               <TableCell>Id</TableCell>
@@ -204,31 +180,57 @@ function index() {
                   }}
                   key={item.id}
                   style={
-                    item.statusNotaFiscal ==  "Alexandre" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Dionathan" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Douglas" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Igon" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Juliano" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Matheus" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Paulo Alexandre" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Vanderlei" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Vilnei" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Max" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Cristiano" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "William" ? {background: "#38f269"} :
-                    item.statusNotaFiscal ==  "Cancelada" ? {background: "#d62013"} : 
-                    item.statusNotaFiscal ==  "Aguardando rota" ? {background: "#d851f0"} :
-                    item.statusNotaFiscal ==  "a definir" ? {background: "#eb8c34"} : 
-                    item.statusNotaFiscal ==  "Aguardando vendedor" ? {background: "#cc34eb"} : 
+                    item.statusNotaFiscal ==  "Em Transito - ALEXANDRE" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - Dionathan" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - DOUGLAS" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - IGON" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - JULIANO" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - MATHEUS" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - PAULO ALEXANDRE" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - VANDERLEI" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - VILNEI" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - MAX" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - CRISTIANO" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Em Transito - WILLIAM" ? color.logistica.emTransito :
+                    item.statusNotaFiscal ==  "Cancelada" ? color.logistica.cancelada : 
+                    item.statusNotaFiscal ==  "Aguardando Rota" ? color.logistica.aguardandoRota :
+                    item.statusNotaFiscal ==  "a definir" ? color.logistica.pendente : 
+                    item.statusNotaFiscal ==  "Aguardando Vendedor" ? color.logistica.aguardandoVendedor : 
                     item.statusNotaFiscal ==  "" ? {background: "#f28538"} : {}
                   }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{new Date(String(item.createdAt)).getDate()}/{new Date(String(item.createdAt)).getMonth()+1}/{new Date(String(item.createdAt)).getFullYear()} 
+                  <br/> {new Date(String(item.createdAt)).getHours()}:{new Date(String(item.createdAt)).getMinutes()}</TableCell>
                   <TableCell>{item.author?.notaFiscal}</TableCell>
-                  <TableCell>{item.responsavelNotaFiscal}</TableCell>
-                  <TableCell>{item.statusNotaFiscal}</TableCell>
+                  <TableCell><CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_responsavelNotaFiscal"
+                      value="responsavelNotaFiscal"
+                      tags={[
+                        "Dieimes", "Cristiano S.", "Vanderlei"
+                      ]}
+                      setor="logistica"
+                    /></TableCell>
+                  <TableCell><CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_statusNotaFiscal"
+                      value="statusNotaFiscal"
+                      tags={[
+                        "Aguardando Rota", "Aguardando Vendedor", 
+                        "Em Transito - ALEXANDRE", "Em Transito - Dionathan", "Em Transito - DOUGLAS",
+                        "Em Transito - IGON", "Em Transito - JULIANO", "Em Transito - MATHEUS",
+                        "Em Transito - PAULO ALEXANDRE", "Em Transito - VANDERLEI", "Em Transito - VILNEI",
+                        "Em Transito - MAX", "Em Transito - CRISTIANO", "Em Transito - WILLIAM",
+                        "Nota fiscal sendo encaminhada para o setor"
+                      ]}
+                      setor="logistica"
+                    /></TableCell>
 
                 </TableRow>
             )
@@ -237,8 +239,9 @@ function index() {
         <Pagination onChange={(_, value) => { 
             value = value -1
             setPagina(value)
-          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
+          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/40)} />
       }/>
+    : <ItemNaoEncontrado />}
     </>
   )
 }

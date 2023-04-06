@@ -13,7 +13,7 @@ export class databaseRepository implements databaseRepositoryImpl {
         }
     }
 
-    edit(router: string, metadata: string, value: string | number | boolean): void {
+    edit(router: string, metadata: string, value: string | number | boolean, setor: string): void {
         try {
             const metaData: any = metadata.split("_")
             sendThisToDatabase(router, {
@@ -21,7 +21,8 @@ export class databaseRepository implements databaseRepositoryImpl {
                 dado: {
                     index: metaData[1],
                     value: value
-                }
+                },
+                setor: setor
           })
         } catch (error) {
             console.log(error)

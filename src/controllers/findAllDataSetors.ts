@@ -36,8 +36,8 @@ export class findAllData {
             case "saida":
                 return res.status(200).json({ 
                     result: await prisma.saida.findMany({
-                        take: 3,
-                        skip: pagina == 0 ? 0 : pagina * 3,
+                        take: 40,
+                        skip: pagina == 0 ? 0 : pagina * 40,
                         orderBy: {
                             id: "desc"
                         }
@@ -49,8 +49,8 @@ export class findAllData {
                 case "assinatura":
                     return res.status(200).json({ 
                         result: await prisma.assinatura.findMany({
-                            take: 3,
-                            skip: pagina == 0 ? 0 : pagina * 3,
+                            take: 40,
+                            skip: pagina == 0 ? 0 : pagina * 40,
                             orderBy: {
                                 id: "desc"
                             }
@@ -62,8 +62,8 @@ export class findAllData {
             case "confirmacaoEntrega":
                 return res.status(200).json({ 
                     result: await prisma.confirmacaoEntrega.findMany({
-                        take: 3,
-                        skip: pagina == 0 ? 0 : pagina * 3,
+                        take: 40,
+                        skip: pagina == 0 ? 0 : pagina * 40,
                         orderBy: {
                             id: "desc"
                         }
@@ -75,8 +75,8 @@ export class findAllData {
             case "retorno":
                 return res.status(200).json({ 
                     result: await prisma.retorno.findMany({
-                        take: 3,
-                        skip: pagina == 0 ? 0 : pagina * 3,
+                        take: 40,
+                        skip: pagina == 0 ? 0 : pagina * 40,
                         orderBy: {
                             id: "desc"
                         }
@@ -88,8 +88,8 @@ export class findAllData {
             case "canhoto":
                 return await res.status(200).json({ 
                     result: await prisma.canhoto.findMany({
-                        take: 3,
-                        skip: pagina == 0 ? 0 : pagina * 3,
+                        take: 40,
+                        skip: pagina == 0 ? 0 : pagina * 40,
                         orderBy: {
                             id: "desc"
                         }
@@ -107,8 +107,8 @@ export class findAllData {
                             expedicao2Passagem: true,
                             logisticaPassagem: true
                         },
-                        take: 3,
-                        skip: pagina == 0 ? 0 : pagina * 3,
+                        take: 40,
+                        skip: pagina == 0 ? 0 : pagina * 40,
                         orderBy: {
                             id: "desc"
                         }
@@ -143,8 +143,8 @@ export class findAllData {
                 include: {
                     author: true
                 },
-                take: 3,
-                skip: pagina == 0 ? 0 : pagina * 3,
+                take: 40,
+                skip: pagina == 0 ? 0 : pagina * 40,
                 orderBy: {
                     id: "desc"
                 }

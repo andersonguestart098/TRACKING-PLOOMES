@@ -13,6 +13,7 @@ import { Chip, CircularProgress, Pagination, TableCell, TableRow } from "@mui/ma
 import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 import CustomSelect_Widget from '~/components/customSelect_widget';
+import ItemNaoEncontrado from '~/components/itemNaoEncontrado';
 
 interface typeDB {
     result: ModelSaida[]
@@ -78,7 +79,7 @@ function index() {
 
   return (
     <>
-      <CustomNavBar setor="SAIDA" 
+      <CustomNavBar setor="CARREGAMENTO CAMINHÃO" 
       setSearchString={setSearchString}
       setValueInputChange={setValueInputChange}
       searchString={searchString}
@@ -106,83 +107,19 @@ function index() {
           }} sx={filterInput == "notaFiscalP" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
           
           <Chip onClick={() => { 
-            setFilterInput("cliente")
+            setFilterInput("cidade")
           }} sx={filterInput == "cliente" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cliente"  variant="outlined" />
 
           <Chip onClick={() => { 
             setFilterInput("dataCriacao")
           }} sx={filterInput == "dataCriacao" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Data"  variant="outlined" />
         </div>
-        <p>Filtro rapido: </p>
-        <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Emitida", visualValue: "Notas Emitida", color: color.financeiro.emitida.background},
-            {value: "Pendente", visualValue: "Notas Pendente", color: color.financeiro.pendente.background},
-            {value: "Cancelada", visualValue: "Notas Cancelada", color: color.financeiro.cancelada.background},
-            {value: "Retornou", visualValue: "Notas Retornou", color: color.financeiro.retornou.background},
-            {value: "Boleto em aberto", visualValue: "Notas Boleto em aberto", color: color.financeiro.boletoAberto.background},
-            {value: "Aguardando deposito", visualValue: "Notas Aguardando deposito", color: color.financeiro.aguardadoDeposito.background}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.statusNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Status Nota Fiscal'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "expedicao", visualValue: "Expedicao"},
-            {value: "expedicao2", visualValue: "Expedicao 2"},
-            {value: "logistica", visualValue: "Logistica"}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.author = {}
-            currentFilter.author.expedicao = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Expedicões'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Rosi", visualValue: "Rosi"},
-            {value: "Aprendiz", visualValue: "Aprendiz"},
-            {value: "Julia", visualValue: "Julia"},
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.operadorNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Operador Nota Fiscal'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Max", visualValue: "Max"},
-            {value: "Eduardo", visualValue: "Eduardo"},
-            {value: "Cristiano S.", visualValue: "Cristiano S."},
-            {value: "Manoel", visualValue: "Manoel"},
-            {value: "Cristinao D.", visualValue: "Cristinao D."}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.responsavelNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Responsavel Nota Fiscal'}          
-          />
-        </div>
         <Chip onClick={() => { 
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
 
+      {data.result.length ?
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
@@ -208,16 +145,83 @@ function index() {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{new Date(String(item.createdAt)).getDate()}/{new Date(String(item.createdAt)).getMonth()+1}/{new Date(String(item.createdAt)).getFullYear()} 
+                  <br/> {new Date(String(item.createdAt)).getHours()}:{new Date(String(item.createdAt)).getMinutes()}</TableCell>
                   <TableCell>{item.codigoEntrega}</TableCell>
-                  <TableCell>{item.notaFiscal}</TableCell>
-                  <TableCell>{item.nomeConferente}</TableCell>
-                  <TableCell>{item.placa}</TableCell>
-                  <TableCell>{item.motorista}</TableCell>
-                  <TableCell>{item.cidadeDestino}</TableCell>
-                  <TableCell>{item.hodometro}</TableCell>
+                  <TableCell>
+                  <CustomInput 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_notaFiscal"
+                      setor="saida"
+                    />
+                  </TableCell>
+                  <TableCell><CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_nomeConferente"
+                      value="nomeConferente"
+                      tags={[
+                        "Manoel", "Cristiano D.", "Max", "Eduardo", "Everton", "Cristiano S."
+                      ]}
+                      setor="saida"
+                    /></TableCell>
+                  <TableCell><CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_placa"
+                      value="placa"
+                      tags={[
+                        "YW7921", "IWC5261", "JBD7E59", "IZT1E84", "IWW7921", "IVO1603",
+                        "AZI2E30", "ITA7784", "IUT9476", "IST6840", "IVP0G05", "JBD9H36",
+                        "IXH8706"
+                      ]}
+                      setor="saida"
+                    /></TableCell>
+                  <TableCell><CustomSelect 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_motorista"
+                      value="motorista"
+                      tags={[
+                        "ALEXANDRE", "DIONATHA", "DOUGLAS", "IGON", "JULIANO", "MATHEUS",
+                        "PAULO", "VANDERLEI", "VILNEI", "MAX", "CRISTIANO", "WILLIAM",
+                        "PAULO ALEXANDRE"
+                      ]}
+                      setor="saida"
+                    /></TableCell>
+                  <TableCell>
+                  <CustomInput 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_cidadeDestino"
+                      setor="saida"
+                    />
+                  </TableCell>
+                  <TableCell>
+                  <CustomInput 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_hodometro"
+                      setor="saida"
+                    />
+                  </TableCell>
                   <TableCell>{item.dataHoraSaida}</TableCell>
-                  <TableCell>{item.obs}</TableCell>
+                  <TableCell>
+                  <CustomInput 
+                      key={item.id}
+                      item={item}
+                      routerEdit="/api/methodsdatabase/editDataWhere"
+                      metadata="_obs"
+                      setor="saida"
+                    />
+                  </TableCell>
                 </TableRow>
             )
           })
@@ -225,8 +229,9 @@ function index() {
         <Pagination onChange={(_, value) => { 
             value = value -1
             setPagina(value)
-          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
+          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/40)} />
       }/>
+    : <ItemNaoEncontrado />}
     </>
   )
 }

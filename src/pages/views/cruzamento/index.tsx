@@ -7,9 +7,10 @@ import { GetServerSideProps } from 'next/types';
 import CustomNavBar from "@components/customAppBar"
 import { ModelCruzamento, ModelExpedicao2 } from '@models/setoresInterface';
 import Loader from '@components/loader';
-import CustomSelect_Widget from '~/components/customSelect_widget';
+import CustomSelect_Widget from '@components/customSelect_widget';
 import color from '~/config/colors';
 import { motion } from 'framer-motion';
+import ItemNaoEncontrado from '@components/itemNaoEncontrado';
 
 interface typeDB {
     result: ModelCruzamento[]
@@ -177,8 +178,9 @@ function index() {
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
-
-      <CustomTable 
+    
+    {data.result.length ?
+    <CustomTable 
       childrenCabecarioTable={
         <TableRow>
           <TableCell>Id (Financeiro)</TableCell>
@@ -218,14 +220,16 @@ function index() {
                     item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Aguardando deposito" ? color.financeiro.aguardadoDeposito : 
                     item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.pendente : {}
                   }>{item?.financeiroPassagem[0]?.statusNotaFiscal}</TableCell>
+              
           </TableRow>
         }) 
       } paginacao={
         <Pagination onChange={(_, value) => { 
             value = value -1
             setPagina(value)
-          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
+          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/40)} />
       }/>
+    : <ItemNaoEncontrado />}
     </>
   )
 }

@@ -13,6 +13,7 @@ import { GetServerSideProps } from 'next/types';
 import Loader from '~/components/loader';
 import CustomSelect_Widget from '~/components/customSelect_widget';
 import color from '~/config/colors';
+import ItemNaoEncontrado from '~/components/itemNaoEncontrado';
 
 interface typeDB {
     result: ModelConfirmacaoEntrega[]
@@ -78,13 +79,13 @@ function index() {
       filter={filterInput}
       setSearch={setTravarAuto}
       dados={dataAuth} 
-      filterData={[["dataCriacao", "cliente"],[
+      filterData={[["dataCriacao", "cidade"],[
         {
           updatedAt: {
             gte: new Date(valueInputChange)
           }
         },
-        {cliente: {
+        {cidade: {
             contains: valueInputChange
         }}
       ]]} 
@@ -99,8 +100,8 @@ function index() {
           }} sx={filterInput == "notaFiscal" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
           
           <Chip onClick={() => { 
-            setFilterInput("cliente")
-          }} sx={filterInput == "cliente" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cliente"  variant="outlined" />
+            setFilterInput("cidade")
+          }} sx={filterInput == "cidade" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cidade"  variant="outlined" />
 
           <Chip onClick={() => { 
             setFilterInput("dataCriacao")
@@ -110,73 +111,50 @@ function index() {
         <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
           <CustomSelect_Widget 
           itens={[
-            {value: "Emitida", visualValue: "Notas Emitida", color: color.financeiro.emitida.background},
-            {value: "Pendente", visualValue: "Notas Pendente", color: color.financeiro.pendente.background},
-            {value: "Cancelada", visualValue: "Notas Cancelada", color: color.financeiro.cancelada.background},
-            {value: "Retornou", visualValue: "Notas Retornou", color: color.financeiro.retornou.background},
-            {value: "Boleto em aberto", visualValue: "Notas Boleto em aberto", color: color.financeiro.boletoAberto.background},
-            {value: "Aguardando deposito", visualValue: "Notas Aguardando deposito", color: color.financeiro.aguardadoDeposito.background}
+            {value: "Sim", visualValue: "Sim"},
+            {value: "Não", visualValue: "Não"},
           ]} 
           onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
-            currentFilter.statusNotaFiscal = e.target.value
+            currentFilter.entregaConcluida = e.target.value
             setSearchString(JSON.stringify(currentFilter))
             setTravarAuto(true)
           }}
-          labelText={'Status Nota Fiscal'}          
+          labelText={'Entrega Concluida'}          
           />
           <CustomSelect_Widget 
           itens={[
-            {value: "expedicao", visualValue: "Expedicao"},
-            {value: "expedicao2", visualValue: "Expedicao 2"},
-            {value: "logistica", visualValue: "Logistica"}
+              {value: "ALEXANDRE", visualValue: "ALEXANDRE"},
+              {value: "DIONATHA", visualValue: "DIONATHA"},
+              {value: "DOUGLAS", visualValue: "DOUGLAS"},
+              {value: "IGON", visualValue: "IGON"},
+              {value: "JULIANO", visualValue: "JULIANO"},
+              {value: "MATHEUS", visualValue: "MATHEUS"},
+              {value: "PAULO", visualValue: "PAULO"},
+              {value: "VANDERLEI", visualValue: "VANDERLEI"},
+              {value: "VILNEI", visualValue: "VILNEI"},
+              {value: "MAX", visualValue: "MAX"},
+              {value: "PAULO VITOR", visualValue: "PAULO VITOR"},
+              {value: "CRISTIANO", visualValue: "CRISTIANO"},
+              {value: "WILLIAM", visualValue: "WILLIAM"},
+              {value: "PAULO ALEXANDRE", visualValue: "PAULO ALEXANDRE"}
           ]} 
           onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
-            currentFilter.author = {}
-            currentFilter.author.expedicao = e.target.value
+            currentFilter.motorista = e.target.value
             setSearchString(JSON.stringify(currentFilter))
             setTravarAuto(true)
           }}
-          labelText={'Expedicões'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Rosi", visualValue: "Rosi"},
-            {value: "Aprendiz", visualValue: "Aprendiz"},
-            {value: "Julia", visualValue: "Julia"},
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.operadorNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Operador Nota Fiscal'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Max", visualValue: "Max"},
-            {value: "Eduardo", visualValue: "Eduardo"},
-            {value: "Cristiano S.", visualValue: "Cristiano S."},
-            {value: "Manoel", visualValue: "Manoel"},
-            {value: "Cristinao D.", visualValue: "Cristinao D."}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.responsavelNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Responsavel Nota Fiscal'}          
+          labelText={'Motorista'}          
           />
         </div>
         <Chip onClick={() => { 
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
-      
-      <CustomTable 
+
+    {data.result.length ?  
+    <CustomTable 
       childrenCabecarioTable={
         <TableRow>
               <TableCell>Id</TableCell>
@@ -202,10 +180,14 @@ function index() {
                     ease: [0, 0.71, 0.2, 1.01]
                   }}
                   key={item.id}
+                  style={
+                    item.entregaConcluida == "Sim" ? color.confirmacaoEntrega.sim : color.confirmacaoEntrega.nao
+                  }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{new Date(String(item.createdAt)).getDate()}/{new Date(String(item.createdAt)).getMonth()+1}/{new Date(String(item.createdAt)).getFullYear()} 
+                  <br/> {new Date(String(item.createdAt)).getHours()}:{new Date(String(item.createdAt)).getMinutes()}</TableCell>
                   <TableCell>{item.motorista}</TableCell>
                   <TableCell>{item.notaFiscal}</TableCell>
                   <TableCell>{item.cidade}</TableCell>
@@ -219,8 +201,9 @@ function index() {
         <Pagination onChange={(_, value) => { 
             value = value -1
             setPagina(value)
-          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
+          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/40)} />
       }/>
+    : <ItemNaoEncontrado />}
     </>
   )
 }

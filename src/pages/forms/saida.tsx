@@ -109,7 +109,7 @@ const retorno = (props: Props) => {
                 {value: "IVP0G05", visualValue: "IVP0G05"},
                 {value: "JBD9H36", visualValue: "JBD9H36"},
                 {value: "IXH8706", visualValue: "IXH8706"}
-               ]}  
+               ]}
                />
               <br/><br/>
               <CustomSelect_Widget

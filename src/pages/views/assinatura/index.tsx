@@ -14,6 +14,7 @@ import Loader from '~/components/loader';
 import { motion } from 'framer-motion';
 import CustomSelect_Widget from '~/components/customSelect_widget';
 import color from '~/config/colors';
+import ItemNaoEncontrado from '~/components/itemNaoEncontrado';
 
 interface typeDB {
     result: ModelAssinatura[]
@@ -119,10 +120,6 @@ function index() {
           }} sx={filterInput == "notaFiscalP" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
           
           <Chip onClick={() => { 
-            setFilterInput("cliente")
-          }} sx={filterInput == "cliente" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cliente"  variant="outlined" />
-
-          <Chip onClick={() => { 
             setFilterInput("dataCriacao")
           }} sx={filterInput == "dataCriacao" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Data"  variant="outlined" />
         </div>
@@ -130,65 +127,20 @@ function index() {
         <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
           <CustomSelect_Widget 
           itens={[
-            {value: "Emitida", visualValue: "Notas Emitida", color: color.financeiro.emitida.background},
-            {value: "Pendente", visualValue: "Notas Pendente", color: color.financeiro.pendente.background},
-            {value: "Cancelada", visualValue: "Notas Cancelada", color: color.financeiro.cancelada.background},
-            {value: "Retornou", visualValue: "Notas Retornou", color: color.financeiro.retornou.background},
-            {value: "Boleto em aberto", visualValue: "Notas Boleto em aberto", color: color.financeiro.boletoAberto.background},
-            {value: "Aguardando deposito", visualValue: "Notas Aguardando deposito", color: color.financeiro.aguardadoDeposito.background}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.statusNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Status Nota Fiscal'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "expedicao", visualValue: "Expedicao"},
-            {value: "expedicao2", visualValue: "Expedicao 2"},
-            {value: "logistica", visualValue: "Logistica"}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.author = {}
-            currentFilter.author.expedicao = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Expedicões'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Rosi", visualValue: "Rosi"},
-            {value: "Aprendiz", visualValue: "Aprendiz"},
-            {value: "Julia", visualValue: "Julia"},
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.operadorNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Operador Nota Fiscal'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Max", visualValue: "Max"},
-            {value: "Eduardo", visualValue: "Eduardo"},
             {value: "Cristiano S.", visualValue: "Cristiano S."},
+            {value: "Cristiano D.", visualValue: "Cristiano D."},
+            {value: "Max", visualValue: "Max"},
             {value: "Manoel", visualValue: "Manoel"},
-            {value: "Cristinao D.", visualValue: "Cristinao D."}
+            {value: "Eduardo", visualValue: "Eduardo"},
+            {value: "Everton", visualValue: "Everton"},
           ]} 
           onChangeValue={(e) => {
             let currentFilter = JSON.parse(searchString)
-            currentFilter.responsavelNotaFiscal = e.target.value
+            currentFilter.responsavel = e.target.value
             setSearchString(JSON.stringify(currentFilter))
             setTravarAuto(true)
           }}
-          labelText={'Responsavel Nota Fiscal'}          
+          labelText={'Responsavel'}          
           />
         </div>
         <Chip onClick={() => { 
@@ -196,7 +148,8 @@ function index() {
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
 
-      <CustomTable 
+    {data.result.length ?
+    <CustomTable 
       childrenCabecarioTable={
         <TableRow>
               <TableCell>Id</TableCell>
@@ -222,7 +175,8 @@ function index() {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{new Date(String(item.createdAt)).getDate()}/{new Date(String(item.createdAt)).getMonth()+1}/{new Date(String(item.createdAt)).getFullYear()} 
+                  <br/> {new Date(String(item.createdAt)).getHours()}:{new Date(String(item.createdAt)).getMinutes()}</TableCell>
                   <TableCell>{item.responsavel}</TableCell>
                   <TableCell>{item.notaFiscal}</TableCell>
                   <TableCell><img onClick={() => setImgGigante(item.assinatura_img)} src={item.assinatura_img} width={30} /></TableCell>
@@ -233,8 +187,9 @@ function index() {
         <Pagination onChange={(_, value) => { 
             value = value -1
             setPagina(value)
-          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
+          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/40)} />
       }/>
+    : <ItemNaoEncontrado />}
     </>
   )
 }

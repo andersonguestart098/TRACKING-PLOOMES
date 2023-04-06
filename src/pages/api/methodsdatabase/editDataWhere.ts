@@ -19,15 +19,44 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const {id, dado} = req.body
     console.log(req.body)
     if(dado.index == "notaFiscal") {
-        await prisma.passagemDados.update({
-            data: {
-                notaFiscal: Number(dado.value)
-            },
-            where: {
-                id: Number(id)
+        if(req.body.setor == "financeiro" || req.body.setor == "expedicao" || 
+           req.body.setor == "expedicao2" || req.body.setor == "logistica") {
+            await prisma.passagemDados.update({
+                data: {
+                    notaFiscal: Number(dado.value)
+                },
+                where: {
+                    id: Number(id)
+                }
+            })
+            return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+        }else {
+            switch (req.body.setor) {        
+                case "saida":
+                    await prisma.saida.update({
+                        where: {
+                            id: Number(id)
+                        },
+                        data: {
+                            notaFiscal: Number(dado.value)
+                        }
+                    })
+                    return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+                break;
+        
+                case "canhoto":
+                    await prisma.canhoto.update({
+                        where: {
+                            id: Number(id)
+                        },
+                        data: {
+                            notaFiscal: Number(dado.value)
+                        }
+                    })
+                    return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+                break;
             }
-        })
-        return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+        }
     }
 
     if(!req.body) {
@@ -39,14 +68,92 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     
+    switch (req.body.setor) {
+        case "financeiro":
+            await prisma.financeiro.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    [dado.index]: dado.value
+                }
+            })
+            return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+        break;
 
-    await prisma.financeiro.update({
-        where: {
-            id: Number(id)
-        },
-        data: {
-            [dado.index]: dado.value
-        }
-    })
-    return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+        case "expedicao":
+            await prisma.expedicao.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    [dado.index]: dado.value
+                }
+            })
+            return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+        break;
+
+        case "expedicao2":
+            await prisma.expedicao2.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    [dado.index]: dado.value
+                }
+            })
+            return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+        break;
+        case "logistica":
+            await prisma.logistica.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    [dado.index]: dado.value
+                }
+            })
+            return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+        break;
+
+        case "saida":
+            if(dado.index == "hodometro") {
+                await prisma.saida.update({
+                    where: {
+                        id: Number(id)
+                    },
+                    data: {
+                        hodometro: Number(dado.value)
+                    }
+                })
+                return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+            }else {
+                await prisma.saida.update({
+                    where: {
+                        id: Number(id)
+                    },
+                    data: {
+                        [dado.index]: dado.value
+                    }
+                })
+                return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+            }
+        break;
+
+        case "canhoto":
+            await prisma.canhoto.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    [dado.index]: dado.value
+                }
+            })
+            return res.status(201).send({ result: `editado ${dado.index} com valor ${dado.value}`})
+        break;
+    
+        default:
+        break;
+    }
+    
 }

@@ -71,31 +71,64 @@ export default function ResponsiveDrawer({window}: Props) {
       </div>
       </Toolbar>
       <List>
-        {[['Dashboard', <DashboardIcon />], ['Usuarios', <GroupIcon />],
-          ['Tabelas', <BackupTableIcon />], ['Formularios', <DesignServicesIcon />],].map((text, index) => (
-          <ListItem key={Number(index)} disablePadding>
-            <ListItemButton onClick={() => {
-              Swal.fire({
-                title: 'Setores disponiveis',
-                width: 600,
-                padding: '3em',
-                html:
-                  'Click nos setores disponiveis abaixo: <br/><br/>'+
-                  '<a target="_blank" href="/views/expedicao">Expedicao</a>'
-              })
-            }}>
-              <ListItemIcon>
-                {text[1]}
-              </ListItemIcon>
-              <ListItemText primary={text[0]} />
+          <ListItem disablePadding>
+          <ListItemButton onClick={() => {
+                  Swal.fire({
+                    title: 'Setores disponiveis',
+                    width: 600,
+                    padding: '3em',
+                    html:
+                      'Click nos setores disponiveis abaixo: <br/><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/expedicao">Expedicao</a>'
+                  })
+              }}>
+              <ListItemIcon><DashboardIcon /></ListItemIcon>
+              <ListItemText primary="Dashboard" />
             </ListItemButton>
           </ListItem>
-        ))}
+          <ListItem disablePadding>
+          <ListItemButton onClick={() => {
+                  Swal.fire({
+                    title: 'Setores disponiveis',
+                    width: 600,
+                    padding: '3em',
+                    html:
+                      'Click nos setores disponiveis abaixo: <br/><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/expedicao">Expedicao</a>'
+                  })
+              }}>
+              <ListItemIcon><BackupTableIcon /></ListItemIcon>
+              <ListItemText primary="Tabelas" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+          <ListItemButton onClick={() => {
+                  Swal.fire({
+                    title: 'Setores disponiveis',
+                    width: 600,
+                    padding: '3em',
+                    html:
+                      'Click nos setores disponiveis abaixo: <br/><br/>'+
+                      '<a style="color: red" target="_blank" href="/forms/expedicao">Expedicao</a>'
+                  })
+              }}>
+              <ListItemIcon><DesignServicesIcon /></ListItemIcon>
+              <ListItemText primary="Formularios" />
+            </ListItemButton>
+          </ListItem>
       </List>
     </div>
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
+
+  
+  if(dataAuth?.user?.setor == undefined) {
+    return (
+      <p>Tela Apresentação</p>
+    )
+  }
+
 
   return (
     <Box sx={{ display: 'flex' }}>

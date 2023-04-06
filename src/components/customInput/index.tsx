@@ -9,9 +9,10 @@ interface Props {
     item: ModelFinanceiro | any
     metadata: string
     typeInput?: React.HTMLInputTypeAttribute
+    setor?: string
 }
 
-const Index = ({routerEdit, item, metadata, typeInput}: Props) => {
+const Index = ({routerEdit, item, metadata, typeInput, setor}: Props) => {
     const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm({
         defaultValues: {
             [item.id+metadata]: item[metadata.replace("_", "")].toString()
@@ -30,7 +31,8 @@ const Index = ({routerEdit, item, metadata, typeInput}: Props) => {
         ).execute({
           router: routerEdit, 
           metadata: sendThis, 
-          value: value
+          value: value,
+          setor: setor ?? "financeiro"
         })
       }
 

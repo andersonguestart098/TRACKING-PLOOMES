@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 import CustomSelect_Widget from '~/components/customSelect_widget';
 import color from '~/config/colors';
 import Loader from '~/components/loader';
+import ItemNaoEncontrado from '~/components/itemNaoEncontrado';
 
 interface typeDB {
     result: ModelRetorno[]
@@ -91,8 +92,9 @@ function index() {
         }}
       ]]} 
       />
-            {/* //! MAIS OPÇÔES DE FILTRO (ODF) */}
-            <div style={{textAlign: "center"}}>
+      
+        {/* //! MAIS OPÇÔES DE FILTRO (ODF) */}
+        <div style={{textAlign: "center"}}>
         <p>Filtrar ao digitar: </p>
         <div>
           <Chip onClick={() => {
@@ -176,6 +178,8 @@ function index() {
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
+
+      {data.result.length ?
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
@@ -193,7 +197,7 @@ function index() {
         data!.result.map((item: ModelRetorno) => {
             return (
               <TableRow
-              component={motion.div}
+                  component={motion.div}
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
@@ -205,7 +209,8 @@ function index() {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{new Date(String(item.createdAt)).getDate()}/{new Date(String(item.createdAt)).getMonth()+1}/{new Date(String(item.createdAt)).getFullYear()} 
+                  <br/> {new Date(String(item.createdAt)).getHours()}:{new Date(String(item.createdAt)).getMinutes()}</TableCell>
                   <TableCell>{item.notaFiscal}</TableCell>
                   <TableCell>{item.placa}</TableCell>
                   <TableCell>{item.hodometro}</TableCell>
@@ -219,8 +224,9 @@ function index() {
         <Pagination onChange={(_, value) => { 
             value = value -1
             setPagina(value)
-          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/3)} />
+          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/40)} />
       }/>
+    : <ItemNaoEncontrado />}
     </>
   )
 }
