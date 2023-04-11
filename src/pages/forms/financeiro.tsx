@@ -29,6 +29,7 @@ const financeiro = ({}: Props) => {
   const [disabilitarBotao, setDisabilitarBotao] = useState(false)
 
   const [valorVendaInput, setValorVendaInput] = useState("")
+  const [valorFreteInput, setValorFreteInput] = useState("")
 
   
   useEffect(() => {
@@ -58,7 +59,7 @@ const financeiro = ({}: Props) => {
       operadorNotaFiscal: "...",
       statusNotaFiscal: "Pendente",
       freteConta: "",
-      valorFrete: "",
+      valorFrete: valorFreteInput ?? "",
       vendedor: data.vendedor ?? "",
       setor: "financeiro"
     }
@@ -272,7 +273,7 @@ const financeiro = ({}: Props) => {
                   { value: "Transportadora", visualValue: "Transportadora" }
                 ]} /> : <></>}
                 <br/>
-                {vendaFreteSIM ? <CustomInputMask register={register("valorFrete")} placeHolder='Valor do Frete' />: <></>}
+                {vendaFreteSIM ? <CustomInputMask register={setValorFreteInput} placeHolder='Valor do Frete' />: <></>}
                 <br/>
                 {formaPGOCartao ? <CustomSelect_Widget
                 labelText={'Número de Parcelas:'} 

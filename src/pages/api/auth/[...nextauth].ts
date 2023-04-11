@@ -10,6 +10,9 @@ export const authOptions = {
       clientSecret: (process.env.GITHUB_SECRET as string)
     }),
   ],
+  session: {
+    maxAge: 300000 * 24 * 60 * 60
+  },
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   callback: {

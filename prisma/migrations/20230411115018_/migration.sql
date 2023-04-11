@@ -134,7 +134,6 @@ CREATE TABLE "Canhoto" (
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "setor" TEXT,
     "userId" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
@@ -162,6 +161,7 @@ CREATE TABLE "Session" (
 CREATE TABLE "User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT,
+    "setor" TEXT,
     "username" TEXT,
     "email" TEXT,
     "emailVerified" DATETIME,

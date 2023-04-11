@@ -1,31 +1,57 @@
 import * as React from 'react';
-import {AppBar, Avatar, Box, CssBaseline,
+import {AppBar, Avatar, Box, Button, CssBaseline,
     Drawer, IconButton, List, ListItem, ListItemButton, 
-    ListItemIcon, ListItemText, Toolbar, Typography} from '@mui/material';
+    ListItemIcon, ListItemText, Step, StepLabel, Stepper, Toolbar, Typography} from '@mui/material';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import MenuIcon from '@mui/icons-material/Menu';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import CustomCard from "@components/customCard"
 
 import { AccountTree, Backup, BarChart } from '@mui/icons-material';
 import { useFetch } from '@hooks/useFetch';
 import Swal from 'sweetalert2';
+import Loader from '~/components/loader';
+import { GetServerSideProps } from 'next';
+import CustomSelect_Widget from '~/components/customSelect_widget';
+import { sendThisToDatabase } from '~/services/sendData';
+import ClearIcon from '@mui/icons-material/Clear';
+import { red } from '@mui/material/colors';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import TableRowsIcon from '@mui/icons-material/TableRows';
+import { url } from 'inspector';
 
 
 const drawerWidth = 270;
 
-interface Props {
-  window?: () => Window;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx)
+
+  if(!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props:{
+      session
+    }
+  }
 }
 
-export default function ResponsiveDrawer({window}: Props) {
-  const { data, isLoading } = useFetch("/api/methodsdatabase/getall", 0, "home")
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+export default function ResponsiveDrawer(props: any) {
+  const {window} = props
   const { data: dataAuth } = useSession()
+
+  const { data, isLoading } = useFetch("/api/methodsdatabase/getall", 0, "home", JSON.stringify(dataAuth))
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -74,27 +100,12 @@ export default function ResponsiveDrawer({window}: Props) {
           <ListItem disablePadding>
           <ListItemButton onClick={() => {
                   Swal.fire({
-                    title: 'Setores disponiveis',
+                    title: 'Tabelas disponiveis',
                     width: 600,
                     padding: '3em',
                     html:
                       'Click nos setores disponiveis abaixo: <br/><br/>'+
-                      '<a style="color: red" target="_blank" href="/views/expedicao">Expedicao</a>'
-                  })
-              }}>
-              <ListItemIcon><DashboardIcon /></ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-          <ListItemButton onClick={() => {
-                  Swal.fire({
-                    title: 'Setores disponiveis',
-                    width: 600,
-                    padding: '3em',
-                    html:
-                      'Click nos setores disponiveis abaixo: <br/><br/>'+
-                      '<a style="color: red" target="_blank" href="/views/expedicao">Expedicao</a>'
+                      '<a style="color: red" target="_blank" href="/views/'+data?.setor+'">'+data?.setor.toUpperCase()+'</a>'
                   })
               }}>
               <ListItemIcon><BackupTableIcon /></ListItemIcon>
@@ -104,16 +115,22 @@ export default function ResponsiveDrawer({window}: Props) {
           <ListItem disablePadding>
           <ListItemButton onClick={() => {
                   Swal.fire({
-                    title: 'Setores disponiveis',
+                    title: 'Formularios disponiveis',
                     width: 600,
                     padding: '3em',
                     html:
                       'Click nos setores disponiveis abaixo: <br/><br/>'+
-                      '<a style="color: red" target="_blank" href="/forms/expedicao">Expedicao</a>'
+                      '<a style="color: red" target="_blank" href="/forms/'+data?.setor+'"> FORMULARIO '+data?.setor.toUpperCase()+'</a>'
                   })
               }}>
               <ListItemIcon><DesignServicesIcon /></ListItemIcon>
               <ListItemText primary="Formularios" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+          <ListItemButton href='http://localhost:3000/api/methodsdatabase/excelexport'>
+              <ListItemIcon><TableRowsIcon /></ListItemIcon>
+              <ListItemText primary="Exportar Excel" />
             </ListItemButton>
           </ListItem>
       </List>
@@ -122,16 +139,35 @@ export default function ResponsiveDrawer({window}: Props) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
-  
-  if(dataAuth?.user?.setor == undefined) {
-    return (
-      <p>Tela Apresentação</p>
-    )
-  }
-
-
   return (
-    <Box sx={{ display: 'flex' }}>
+    data?.result == "não definido" ? 
+      <div style={{background: 'url("https://img.freepik.com/free-vector/white-background-with-low-poly-digital-lines-connection_1017-25549.jpg?w=1380&t=st=1681234815~exp=1681235415~hmac=62ad822368b96c6189c466355069016f63a8a68ed86a9da9a6930e114fdea1a6")'}}>
+        <form style={{display: "flex", height: "100vh", alignItems: "center", 
+                  justifyContent: 'center', flexDirection: "column"}}>
+          <h1>BEM - VIND@ </h1>
+          <CustomSelect_Widget 
+            itens={[
+              {value: "expedicao", visualValue: "Expedicao"},
+              {value: "expedicao2", visualValue: "Expedicao 2"},
+              {value: "logistica", visualValue: "Logistica"},
+              {value: "financeiro", visualValue: "Financeiro"},
+              {value: "confirmacaoEntrega", visualValue: "Confirmação Entrega"},
+              {value: "canhoto", visualValue: "Canhoto"},
+              {value: "saida", visualValue: "Carregamento Caminhao"},
+              {value: "retorno", visualValue: "Retorno da Entrega"},
+            ]} 
+            onChangeValue={(e) => {
+              sendThisToDatabase("/api/methodsdatabase/editDataWhere", {
+                setor: "home",
+                email: dataAuth?.user?.email,
+                setorEditar: e.target.value
+              }, 1)
+            }}
+            labelText={'Setor'} />
+          <br />
+        </form>
+      </div>
+    : <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -154,7 +190,7 @@ export default function ResponsiveDrawer({window}: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            EXPEDICAO
+            {data?.setor?.toUpperCase()}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -194,27 +230,31 @@ export default function ResponsiveDrawer({window}: Props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <h2>Ola novamente, {dataAuth?.user?.name}</h2>
+        <h2>Olá novamente, {dataAuth?.user?.name}</h2>
         <div style={{
             display: "flex",
             flexDirection: "row",
             width: "100%",
             justifyContent: "space-between"
         }}>
+          {data?.result[0] != "N/D" ?
             <CustomCard icon={
-                <AccountTree sx={{fontSize: 50}} />
+                <ClearIcon sx={{fontSize: 70, color: "#eb1c15"}} />
             } 
               valor={data?.result[0]}
               titulo="Pendente"  
-            />
+            /> : <></>}
+
+            {data?.result[0] != "N/D" ?
+              <CustomCard icon={
+                  <CheckCircleOutlineIcon sx={{fontSize: 70, color: "#5ad43b"}} />
+              }
+                valor={data?.result[1]} 
+                titulo="Emitida" 
+              /> : <></>}
+              
             <CustomCard icon={
-                <Backup sx={{fontSize: 50}} />
-            }
-              valor={data?.result[1]} 
-              titulo="Emitida" 
-            />
-            <CustomCard icon={
-                <BarChart sx={{fontSize: 50}} />
+                <BarChart sx={{fontSize: 70, color: "#45b4f5"}} />
             }
               valor={data?.result[2]} 
               titulo="Total" 

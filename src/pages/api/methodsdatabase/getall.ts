@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         optionsSuccessStatus: 200,
      });
 
-    if(req.body.stringSearch == ""){
+    if(req.body.stringSearch == "" || req.body.setor == "home"){
         return await new findAllData().execute(req, res)
     }
 

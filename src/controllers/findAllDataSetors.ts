@@ -118,21 +118,136 @@ export class findAllData {
                 break;
 
             case "home": 
-                const notasPendentes = await prisma.expedicao.findMany({
+                const dataAuth = await JSON.parse(req.body.stringSearch)
+                const dataAuthDB = await prisma.user.findUnique({
                     where: {
-                        statusNotaFiscal: "Pendente"
+                        email: dataAuth.user.email
                     }
                 })
-                const notasEmitidas = await prisma.expedicao.findMany({
-                    where: {
-                        statusNotaFiscal: "Emitida"
-                    }
-                })
-                const notasTotais = await prisma.expedicao.findMany()
 
-                return await res.status(200).send({result: [notasPendentes.length, notasEmitidas.length, notasTotais.length]})
+                if(dataAuthDB?.setor == null) {
+                    return res.status(200).send({result: "não definido"})
+                }
+
+                switch(dataAuthDB?.setor) {
+                    case "logistica": 
+                        return await res.status(200).send(
+                            {result: [(await prisma.logistica.findMany({
+                                where: {
+                                    statusNotaFiscal: "Pendente"
+                                }
+                            })).length, (await prisma.logistica.findMany({
+                                where: {
+                                    statusNotaFiscal: "Emitida"
+                                }
+                            })).length, (
+                                await prisma.logistica.findMany()
+                            ).length],
+                            setor: "logistica"})
+                    break
+                    
+                    case "financeiro": 
+                        return await res.status(200).send(
+                            {result: [(await prisma.financeiro.findMany({
+                                where: {
+                                    statusNotaFiscal: "Pendente"
+                                }
+                            })).length, (await prisma.financeiro.findMany({
+                                where: {
+                                    statusNotaFiscal: "Emitida"
+                                }
+                            })).length, (
+                                await prisma.financeiro.findMany()
+                            ).length],
+                            setor: "financeiro"})
+                    break
+
+                    case "expedicao": 
+                        return await res.status(200).send(
+                            {result: [(await prisma.expedicao.findMany({
+                                where: {
+                                    statusNotaFiscal: "Pendente"
+                                }
+                            })).length, (await prisma.expedicao.findMany({
+                                where: {
+                                    statusNotaFiscal: "Emitida"
+                                }
+                            })).length, (
+                                await prisma.expedicao.findMany()
+                            ).length],
+                            setor: "expedicao"})
+                    break
+
+                    case "expedicao2": 
+                        return await res.status(200).send(
+                            {result: [(await prisma.expedicao2.findMany({
+                                where: {
+                                    statusNotaFiscal: "Pendente"
+                                }
+                            })).length, (await prisma.expedicao2.findMany({
+                                where: {
+                                    statusNotaFiscal: "Emitida"
+                                }
+                            })).length, (
+                                await prisma.expedicao2.findMany()
+                            ).length],
+                            setor: "expedicao2"})
+                    break
+
+                    case "confirmacaoEntrega": 
+                        return await res.status(200).send(
+                            {result: [
+                            //? PENDENTE
+                            (await prisma.confirmacaoEntrega.findMany({
+                                where: {
+                                    entregaConcluida: "Não"
+                                }
+                            })).length, 
+                            //? EMITIDA
+                            (await prisma.confirmacaoEntrega.findMany({
+                                where: {
+                                    entregaConcluida: "Sim"
+                                }
+                            })).length, 
+                            //? TOTAL
+                            (await prisma.confirmacaoEntrega.findMany()).length],
+                            setor: "confirmacaoEntrega"})
+                    break
+
+                    case "canhoto": 
+                        return await res.status(200).send(
+                            {result: [(await prisma.canhoto.findMany({
+                                where: {
+                                    statusCanhoto: "Pendente"
+                                }
+                            })).length, (await prisma.canhoto.findMany({
+                                where: {
+                                    statusCanhoto: "Concluido"
+                                }
+                            })).length, (
+                                await prisma.canhoto.findMany()
+                            ).length],
+                            setor: "canhoto"})
+                    break
+                    
+                    case "saida": 
+                        return await res.status(200).send(
+                            {result: ["N/D", "N/D", (
+                                await prisma.saida.findMany()
+                            ).length],
+                            setor: "Saida"})
+                    break
+
+                    case "retorno": 
+                        return await res.status(200).send(
+                            {result: ["N/D", "N/D", (
+                                await prisma.retorno.findMany()
+                            ).length],
+                            setor: "retorno"})
+                    break
+
+                }
                 break;
-            
             default:
                 return await res.status(400).send({result: "setor em falta"})
                 break;

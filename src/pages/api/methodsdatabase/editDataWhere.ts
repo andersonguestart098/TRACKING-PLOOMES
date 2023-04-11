@@ -17,6 +17,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const {id, dado} = req.body
+
+    if(req.body.setor == "home") {
+        await prisma.user.update({
+            where: {
+                email: req!.body!.email
+            },
+            data: {
+                setor: req!.body!.setorEditar
+            }
+        })
+        return res.status(200).send({result: "Bem-Vindo"})
+    }
+
     console.log(req.body)
     if(dado.index == "notaFiscal") {
         if(req.body.setor == "financeiro" || req.body.setor == "expedicao" || 
