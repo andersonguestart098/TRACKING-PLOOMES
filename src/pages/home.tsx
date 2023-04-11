@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import {AppBar, Avatar, Box, Button, CssBaseline,
     Drawer, IconButton, List, ListItem, ListItemButton, 
     ListItemIcon, ListItemText, Step, StepLabel, Stepper, Toolbar, Typography} from '@mui/material';
@@ -22,7 +22,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { red } from '@mui/material/colors';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import TableRowsIcon from '@mui/icons-material/TableRows';
-import { url } from 'inspector';
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
 
 
 const drawerWidth = 270;
@@ -139,9 +140,22 @@ export default function ResponsiveDrawer(props: any) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  const particlesInit = useCallback(async (engine: any) => {
+      console.log(engine);
+      // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
+      // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+      // starting from v2 you can add only the features you need reducing the bundle size
+      await loadFull(engine);
+  }, []);
+
+  const particlesLoaded = useCallback(async (container: any) => {
+      await console.log(container);
+  }, []);
+
   return (
     data?.result == "não definido" ? 
-      <div style={{background: 'url("https://img.freepik.com/free-vector/white-background-with-low-poly-digital-lines-connection_1017-25549.jpg?w=1380&t=st=1681234815~exp=1681235415~hmac=62ad822368b96c6189c466355069016f63a8a68ed86a9da9a6930e114fdea1a6")'}}>
+      <div>
+        <Particles id="tsparticles" url="http://localhost:3000/api/methodsdatabase/delete" init={particlesInit} loaded={particlesLoaded} />
         <form style={{display: "flex", height: "100vh", alignItems: "center", 
                   justifyContent: 'center', flexDirection: "column"}}>
           <h1>BEM - VIND@ </h1>

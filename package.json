@@ -37,10 +37,12 @@
     "react-hook-form": "^7.43.5",
     "react-painter": "^0.4.0",
     "react-sketch-canvas": "^6.2.0",
+    "react-tsparticles": "^2.9.3",
     "styled-components": "^5.3.8",
     "superjson": "1.9.1",
     "sweetalert2": "^11.7.3",
     "swr": "^2.1.0",
+    "tsparticles": "^2.9.3",
     "zod": "^3.20.6"
   },
   "devDependencies": {
