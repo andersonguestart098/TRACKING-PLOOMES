@@ -99,20 +99,41 @@ export class findAllData {
                 break;
 
             case "cruzamento": 
-                return await res.status(200).json({ 
-                    result: await prisma.passagemDados.findMany({
-                        include: {
-                            financeiroPassagem: true,
-                            expedicaoPassagem: true,
-                            expedicao2Passagem: true,
-                            logisticaPassagem: true
-                        },
-                        take: 40,
-                        skip: pagina == 0 ? 0 : pagina * 40,
-                        orderBy: {
-                            id: "desc"
+                let dataTotalCanhoto: any[] = []
+                let dataTotalConfirmacao: any[] = []
+                let data = await prisma.passagemDados.findMany({
+                    include: {
+                        financeiroPassagem: true,
+                        expedicaoPassagem: true,
+                        expedicao2Passagem: true,
+                        logisticaPassagem: true
+                    },
+                    take: 40,
+                    skip: pagina == 0 ? 0 : pagina * 40,
+                    orderBy: {
+                        id: "desc"
+                    }
+                })
+                
+                for(let prop in data){
+                    let dataCanhoto = await prisma.canhoto.findFirst({
+                        where: {
+                            notaFiscal: data[prop]?.notaFiscal
                         }
-                    }),
+                    })
+                    let dataCorfirmacaoEntrega = await prisma.confirmacaoEntrega.findFirst({
+                        where: {
+                            notaFiscal: data[prop]?.notaFiscal
+                        }
+                    })
+                    dataTotalCanhoto.push(dataCanhoto ?? {})
+                    dataTotalConfirmacao.push(dataCorfirmacaoEntrega ?? {})
+                }
+
+
+                return await res.status(200).json({ 
+                    result: data,
+                    nonFlux: [dataTotalCanhoto, dataTotalConfirmacao],
                     lengthDB: ((await prisma.passagemDados.findMany()).length)
                 })
                 break;

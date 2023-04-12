@@ -12,11 +12,12 @@ interface Props {
     labelText: string
     register?: any
     onChangeValue?(e: any): void
+    bg?: string
 }
 
-const CustomSelect_Widget = ({itens, labelText, register, onChangeValue}: Props) => {
+const CustomSelect_Widget = ({itens, labelText, register, onChangeValue, bg}: Props) => {
   return (
-    <FormControl sx={{width: 250}}>
+    <FormControl sx={{width: 250, background: bg ?? ""}}>
         <InputLabel id="demo-simple-select-label">{labelText}</InputLabel>
         <Select
             required

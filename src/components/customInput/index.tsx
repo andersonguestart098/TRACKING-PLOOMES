@@ -10,12 +10,13 @@ interface Props {
     metadata: string
     typeInput?: React.HTMLInputTypeAttribute
     setor?: string
+    valorPadrao?: string
 }
 
-const Index = ({routerEdit, item, metadata, typeInput, setor}: Props) => {
+const Index = ({routerEdit, item, metadata, typeInput, setor, valorPadrao}: Props) => {
     const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm({
         defaultValues: {
-            [item.id+metadata]: item[metadata.replace("_", "")].toString()
+          [item.id+metadata]: item[metadata.replace("_", "")].toString()
         }
     })
 

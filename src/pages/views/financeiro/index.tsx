@@ -56,7 +56,7 @@ function index() {
     }
   }, [searchString])
   
-  const {data, isLoading} = travarAuto ?
+  const {data, isLoading, isValidating} = travarAuto ?
     useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro", searchString) : 
     useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "financeiro")
       

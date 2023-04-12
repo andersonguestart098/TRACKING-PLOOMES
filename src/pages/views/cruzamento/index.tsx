@@ -5,17 +5,13 @@ import CustomTable from "@components/customtable"
 import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next/types';
 import CustomNavBar from "@components/customAppBar"
-import { ModelCruzamento, ModelExpedicao2 } from '@models/setoresInterface';
+import { ModelCanhoto, ModelConfirmacaoEntrega, ModelCruzamento, ModelExpedicao2 } from '@models/setoresInterface';
 import Loader from '@components/loader';
 import CustomSelect_Widget from '@components/customSelect_widget';
 import color from '~/config/colors';
 import { motion } from 'framer-motion';
 import ItemNaoEncontrado from '@components/itemNaoEncontrado';
 
-interface typeDB {
-    result: ModelCruzamento[]
-    lengthDB: number
-}
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession(ctx)
@@ -54,8 +50,8 @@ function index() {
   }, [searchString])
 
   const { data, isLoading } = travarAuto ? 
-  useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "cruzamento", searchString) :
-  useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "cruzamento")
+  useFetch("/api/methodsdatabase/getall", pagina, "cruzamento", searchString) :
+  useFetch("/api/methodsdatabase/getall", pagina, "cruzamento")
 
   console.log(data)
 
@@ -184,14 +180,20 @@ function index() {
       childrenCabecarioTable={
         <TableRow>
           <TableCell>Id (Financeiro)</TableCell>
+          <TableCell>Número NF (Financeiro)</TableCell>
+          <TableCell>Vendedor (Financeiro)</TableCell>
+          <TableCell>Cliente (Financeiro)</TableCell>
+          <TableCell>Valor(Financeiro)</TableCell>
+          <TableCell>Status (Financeiro)</TableCell>
           <TableCell>Status (Expedicao)</TableCell>
           <TableCell>Status (Expedicao 2)</TableCell>
           <TableCell>Status (Logistica)</TableCell>
-          <TableCell>Status (Financeiro)</TableCell>
+          <TableCell>Status (Confirmacao Entrega)</TableCell>
+          <TableCell>Status (Canhoto)</TableCell>
         </TableRow>
       }
       childrenRowTable={
-        data.result.map((item, index) => {
+        data.result.map((item:any, index:number) => {
           return <TableRow 
             component={motion.div}
             initial={{ opacity: 0, scale: 0.5 }}
@@ -203,24 +205,67 @@ function index() {
             }}
             key={index}>
             <TableCell>{item?.financeiroPassagem[0]?.id}</TableCell>
+
+            <TableCell style={item.notaFiscal == undefined ? {background: "yellow"} : {}}>
+                          {item.notaFiscal ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
+
+            <TableCell style={item?.financeiroPassagem[0]?.vendedor == undefined ? {background: "red"} : {}}>
+                          {item?.financeiroPassagem[0]?.vendedor ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
+
+            <TableCell style={item?.financeiroPassagem[0]?.cliente == undefined ? {background: "yellow"} : {}}>
+                          {item?.financeiroPassagem[0]?.cliente ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
+
+            <TableCell style={item?.financeiroPassagem[0]?.valor == undefined ? {background: "yellow"} : {}}>
+                          {item?.financeiroPassagem[0]?.valor ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
+
+            <TableCell style={
+                      item?.financeiroPassagem[0]?.statusNotaFiscal == "Cancelada"? color.financeiro.cancelada : 
+                      item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Emitida" ? color.financeiro.emitida :
+                      item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Retornou" ? color.financeiro.retornou :
+                      item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.financeiro.boletoAberto : 
+                      item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Aguardando deposito" ? color.financeiro.aguardadoDeposito : 
+                      item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.pendente : {}
+                    }>{item?.financeiroPassagem[0]?.statusNotaFiscal}</TableCell>
+
+
+
+
             <TableCell style={item?.expedicaoPassagem[0]?.statusNotaFiscal == undefined ? {background: "red"} : {}}>
               {item?.expedicaoPassagem[0]?.statusNotaFiscal ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
 
             <TableCell style={item?.expedicao2Passagem[0]?.statusNotaFiscal == undefined ? {background: "red"} : {}}
             >{item?.expedicao2Passagem[0]?.statusNotaFiscal ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
             
-            <TableCell style={item?.logisticaPassagem[0]?.statusNotaFiscal == undefined ? {background: "red"} : {}}
-            >{item?.logisticaPassagem[0]?.statusNotaFiscal ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
-
             <TableCell style={
-                    item?.financeiroPassagem[0]?.statusNotaFiscal == "Cancelada"? color.financeiro.cancelada : 
-                    item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Emitida" ? color.financeiro.emitida :
-                    item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Retornou" ? color.financeiro.retornou :
-                    item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.financeiro.boletoAberto : 
-                    item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Aguardando deposito" ? color.financeiro.aguardadoDeposito : 
-                    item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.pendente : {}
-                  }>{item?.financeiroPassagem[0]?.statusNotaFiscal}</TableCell>
-              
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - ALEXANDRE"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - Dionathan"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - DOUGLAS"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - IGON"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - JULIANO"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - MATHEUS"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - PAULO ALEXANDRE"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - VANDERLEI"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - VILNEI"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - MAX"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - CRISTIANO"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - WILLIAM"? color.logistica.pendente :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Emitida" ? color.logistica.aguardandoRota :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Retornou" ? color.logistica.aguardandoVendedor :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.logistica.notaFiscalSendoEnviada : 
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Aguardando deposito" ? color.logistica.emTransito : 
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.cancelada : {}
+                    }>{item?.logisticaPassagem[0]?.statusNotaFiscal}</TableCell>
+
+            
+            {/* //! o 1 do dado abaixo referencia ao confirmção entrega*/}
+            <TableCell style={
+                      data.nonFlux[1][index].entregaConcluida == "Sim" ? {background: "#38f269"} : {}
+                    }>{data.nonFlux[1][index].entregaConcluida}</TableCell>
+            {/* //! o 0 do dado abaixo referencia ao canhoto*/}
+            <TableCell style={
+                      data.nonFlux[0][index].statusCanhoto == "Concluido" ? {background: "#38f269"} : {}
+                    }>{data.nonFlux[0][index].statusCanhoto}</TableCell>
+
           </TableRow>
         }) 
       } paginacao={

@@ -154,12 +154,20 @@ export default function ResponsiveDrawer(props: any) {
 
   return (
     data?.result == "não definido" ? 
-      <div>
+      <div style={{background: "#080808"}}>
+        <img src="/logoce (2).svg" 
+      style={{
+        marginBottom: 15,
+        marginTop: 15,
+        marginLeft: 15,
+        width: 50
+        }} />
         <Particles id="tsparticles" url="http://localhost:3000/api/methodsdatabase/delete" init={particlesInit} loaded={particlesLoaded} />
         <form style={{display: "flex", height: "100vh", alignItems: "center", 
                   justifyContent: 'center', flexDirection: "column"}}>
-          <h1>BEM - VIND@ </h1>
-          <CustomSelect_Widget 
+          <h1 style={{color: "#f7f5f5"}}>BEM - VIND@ </h1>
+          <CustomSelect_Widget
+            bg='#fff' 
             itens={[
               {value: "expedicao", visualValue: "Expedicao"},
               {value: "expedicao2", visualValue: "Expedicao 2"},
@@ -264,7 +272,7 @@ export default function ResponsiveDrawer(props: any) {
                   <CheckCircleOutlineIcon sx={{fontSize: 70, color: "#5ad43b"}} />
               }
                 valor={data?.result[1]} 
-                titulo="Emitida" 
+                titulo="Concluído" 
               /> : <></>}
               
             <CustomCard icon={
