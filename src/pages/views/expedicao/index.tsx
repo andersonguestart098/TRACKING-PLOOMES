@@ -141,16 +141,17 @@ function index() {
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
+      <br/>
       
     {data.result.length ?
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell >Data|Hora</TableCell>
-              <TableCell>Número|NF</TableCell>
-              <TableCell>Responsável|NF</TableCell>
-              <TableCell>Status|NF</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Id</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Data|Hora</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Número|NF</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Responsável|NF</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Status|NF</TableCell>
               
           </TableRow>
       }
@@ -198,8 +199,8 @@ function index() {
                       metadata="_statusNotaFiscal"
                       value="statusNotaFiscal"
                       tags={[
-                        "Aguardando Cliente", "Aguardando Transportadora", 
-                        "Cliente Retirou", "Nota fiscal sendo encaminhada para o setor"
+                        "Aguardando Cliente", 
+                        "Cliente Retirou"
                       ]}
                       setor="expedicao"
                     /></TableCell>

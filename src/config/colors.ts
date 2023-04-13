@@ -2,30 +2,30 @@ import confirmacaoEntrega from "~/pages/forms/confirmacaoEntrega"
 
 const color = {
     financeiro: {
-        pendente: {background: "#f28538"},
-        cancelada: {background: "#d62013"},
+        pendente: {background: "#f2c335"},
+        cancelada: {background: "#f76159"},
         emitida: {background: "#38f269"},
         retornou: {background: "#d851f0"},
-        boletoAberto: {background: "#eb8c34"},
-        aguardadoDeposito: {background: "#cc34eb"}
+        boletoAberto: {background: "#ed87ed"},
+        aguardadoDeposito: {background: "#5256bf"}
     },
     expedicao: {
-        pendente: {background: "#38f269"},
+        pendente: {background: "#f2c335"},
         clienteRetirou: {background: "#38f269"},
-        aguardandoCliente: {background: "#f28538"},
+        aguardandoCliente: {background: "#f2c335"},
         notaFiscalSendoEnviada: {background: "#cc34eb"},
     },
     expedicao2: {
-        pendente: {background: "#38f269"},
+        pendente: {background: "#f2c335"},
         clienteRetirou: {background: "#38f269"},
-        aguardandoCliente: {background: "#f28538"},
+        aguardandoCliente: {background: "#f2c335"},
         aguardandoTransportadora: {background: "#d851f0"},
         notaFiscalSendoEnviada: {background: "#cc34eb"}
     },
     logistica: {
-        pendente: {background: "#38f269"},
-        aguardandoRota: {background: "#f28538"},
-        aguardandoVendedor: {background: "#d851f0"},
+        pendente: {background: "#f2c335"},
+        aguardandoRota: {background: "#d851f0"},
+        aguardandoVendedor: {background: "#5256bf"},
         notaFiscalSendoEnviada: {background: "#cc34eb"},
         emTransito: {background: "#38f269"},
         cancelada: {background: "#d62013"},

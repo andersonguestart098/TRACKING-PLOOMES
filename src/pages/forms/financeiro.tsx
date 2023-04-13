@@ -273,7 +273,6 @@ const financeiro = ({}: Props) => {
                   { value: "Transportadora", visualValue: "Transportadora" }
                 ]} /> : <></>}
                 <br/>
-                {vendaFreteSIM ? <CustomInputMask register={setValorFreteInput} placeHolder='Valor do Frete' />: <></>}
                 <br/>
                 {formaPGOCartao ? <CustomSelect_Widget
                 labelText={'Número de Parcelas:'} 
@@ -288,8 +287,10 @@ const financeiro = ({}: Props) => {
                   { value: "6x", visualValue: "6x" },
                   { value: "Outros", visualValue: "Outros" }
                 ]}
-               /> : <></>}
+                /> : <></>}
+                <br/><br/>
                
+                {vendaFreteSIM ? <CustomInputMask register={setValorFreteInput} placeHolder='Valor do Frete' />: <></>}
               
                 {entregaRetiraEI || entregaRetiraEA ? <CustomRadio
                 register={register("entregaCadastro")}

@@ -178,18 +178,18 @@ function index() {
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
-
+      <br/>
       {data.result.length ?
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell >Data|Hora</TableCell>
-              <TableCell>Nota|Fiscal</TableCell>
-              <TableCell>Placa</TableCell>
-              <TableCell>Hodometro</TableCell>
-              <TableCell>Data</TableCell>
-              <TableCell>Observação</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Id</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Data|Hora</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Nota|Fiscal</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Placa</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Hodometro</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Data</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Observação</TableCell>
               
           </TableRow>
       }

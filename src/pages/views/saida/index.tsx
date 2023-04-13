@@ -118,22 +118,22 @@ function index() {
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
-
+      <br/>
       {data.result.length ?
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell >Data|Hora</TableCell>
-              <TableCell>Cód|Entrega</TableCell>
-              <TableCell>Número|NF</TableCell>
-              <TableCell>Conferente</TableCell>
-              <TableCell>Placa</TableCell>
-              <TableCell>Motorista</TableCell>
-              <TableCell>Cidades|Destino</TableCell>
-              <TableCell>Hodometro</TableCell>
-              <TableCell>Data|Hora|Saída</TableCell>
-              <TableCell>Observação</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Id</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Data|Hora</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Cód|Entrega</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Número|NF</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Conferente</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Placa</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Motorista</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Cidades|Destino</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Hodometro</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Data|Hora|Saída</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Observação</TableCell>
               
           </TableRow>
       }

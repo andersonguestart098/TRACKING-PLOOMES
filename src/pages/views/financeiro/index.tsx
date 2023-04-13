@@ -176,36 +176,36 @@ function index() {
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
-
+      <br/>
       {/* //! TABELA CABEÇALHO */}
       {data.result.length ?
       <CustomTable 
       childrenCabecarioTable={
         <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell>Data|Hora</TableCell>
-              <TableCell>Vendedor</TableCell>
-              <TableCell>Orçamento</TableCell>
-              <TableCell>Cliente</TableCell>
-              <TableCell>Tipo|Faturamento</TableCell>
-              <TableCell>Valor</TableCell>
-              <TableCell>Forma|Pagamento</TableCell>
-              <TableCell>Parcelas</TableCell>
-              <TableCell>Venda|Frete</TableCell>
-              <TableCell>Retira|Entrega</TableCell>
-              <TableCell>Frete|Conta</TableCell>
-              <TableCell>Entrega|Cadastro</TableCell>
-              <TableCell>Local|Cobrança</TableCell>
-              <TableCell>Observações</TableCell>
-              <TableCell>Tipo|Frete</TableCell>
-              <TableCell>Valor|Frete</TableCell>
-              <TableCell>Data|Entrega</TableCell>
-              <TableCell>Número|NF</TableCell>
-              <TableCell>Status|NF</TableCell>
-              <TableCell>Operador|NF</TableCell>
-              <TableCell>Exped|Log</TableCell>
-              <TableCell>Responsável|NF</TableCell>
-              <TableCell>Observação</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Id</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Data|Hora</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Vendedor</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Orçamento</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Cliente</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Tipo|Faturamento</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Valor</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Forma|Pagamento</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Parcelas</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Venda|Frete</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Retira|Entrega</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Frete|Conta</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Entrega|Cadastro</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Local|Cobrança</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Observações</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Tipo|Frete</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Valor|Frete</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Data|Entrega</TableCell>
+              <TableCell style={{background: "#bedded"}}>Número|NF</TableCell>
+              <TableCell style={{background: "#bedded"}}>Status|NF</TableCell>
+              <TableCell style={{background: "#bedded"}}>Operador|NF</TableCell>
+              <TableCell style={{background: "#bedded"}}>Exped|Log</TableCell>
+              <TableCell style={{background: "#bedded"}}>Responsável|NF</TableCell>
+              <TableCell style={{background: "#bedded"}}>Observação</TableCell>
         </TableRow>
       }
       childrenRowTable={

@@ -116,6 +116,7 @@ function assinatura({}: Props) {
                   })
                 }
                 </div>
+                <br/>
               </div>
             <Button onClick={()=> setOpen(true)} variant="outlined">Abrir campo para edição de assinatura</Button>
             {!preenchido ? <Alert sx={{margin: 2}} severity="error">Assinatura ainda não desenhada</Alert> : <></>}

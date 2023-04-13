@@ -174,22 +174,23 @@ function index() {
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
       </div>
+      <br/>
     
     {data.result.length ?
     <CustomTable 
       childrenCabecarioTable={
         <TableRow>
-          <TableCell>Id (Financeiro)</TableCell>
-          <TableCell>Número NF (Financeiro)</TableCell>
-          <TableCell>Vendedor (Financeiro)</TableCell>
-          <TableCell>Cliente (Financeiro)</TableCell>
-          <TableCell>Valor(Financeiro)</TableCell>
-          <TableCell>Status (Financeiro)</TableCell>
-          <TableCell>Status (Expedicao)</TableCell>
-          <TableCell>Status (Expedicao 2)</TableCell>
-          <TableCell>Status (Logistica)</TableCell>
-          <TableCell>Status (Confirmacao Entrega)</TableCell>
-          <TableCell>Status (Canhoto)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Id (Financeiro)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Número NF (Financeiro)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Vendedor (Financeiro)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Cliente (Financeiro)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Valor(Financeiro)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Status (Financeiro)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Status (Expedicao)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Status (Expedicao 2)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Status (Logistica)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Status (Confirmacao Entrega)</TableCell>
+          <TableCell style={{background: "#e1ebf0"}}>Status (Canhoto)</TableCell>
         </TableRow>
       }
       childrenRowTable={
@@ -230,29 +231,34 @@ function index() {
 
 
 
-            <TableCell style={item?.expedicaoPassagem[0]?.statusNotaFiscal == undefined ? {background: "red"} : {}}>
-              {item?.expedicaoPassagem[0]?.statusNotaFiscal ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
+            <TableCell style={
+                      item?.expedicaoPassagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao.clienteRetirou : 
+                      item?.expedicaoPassagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao.pendente :{}
+                    }>{item?.expedicaoPassagem[0]?.statusNotaFiscal}</TableCell>
 
-            <TableCell style={item?.expedicao2Passagem[0]?.statusNotaFiscal == undefined ? {background: "red"} : {}}
-            >{item?.expedicao2Passagem[0]?.statusNotaFiscal ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
+            <TableCell style={
+                      item?.expedicao2Passagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao2.clienteRetirou :
+                      item?.expedicao2Passagem[0]?.statusNotaFiscal == "Aguardando Transportadora"? color.expedicao2.aguardandoTransportadora :
+                      item?.expedicao2Passagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao2.aguardandoCliente :{}
+                    }>{item?.expedicao2Passagem[0]?.statusNotaFiscal}</TableCell>
             
             <TableCell style={
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - ALEXANDRE"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - Dionathan"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - DOUGLAS"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - IGON"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - JULIANO"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - MATHEUS"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - PAULO ALEXANDRE"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - VANDERLEI"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - VILNEI"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - MAX"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - CRISTIANO"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - WILLIAM"? color.logistica.pendente :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Emitida" ? color.logistica.aguardandoRota :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Retornou" ? color.logistica.aguardandoVendedor :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.logistica.notaFiscalSendoEnviada : 
-                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Aguardando deposito" ? color.logistica.emTransito : 
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - ALEXANDRE"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - Dionathan"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - DOUGLAS"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - IGON"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - JULIANO"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - MATHEUS"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - PAULO ALEXANDRE"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - VANDERLEI"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - VILNEI"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - MAX"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - CRISTIANO"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - WILLIAM"? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Aguardando Rota" ? color.logistica.aguardandoRota :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Aguardando Vendedor" ? color.logistica.aguardandoVendedor :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.logistica.emTransito : 
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Em Transito" ? color.logistica.emTransito : 
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.cancelada : {}
                     }>{item?.logisticaPassagem[0]?.statusNotaFiscal}</TableCell>
 
