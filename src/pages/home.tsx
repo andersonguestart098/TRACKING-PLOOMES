@@ -141,10 +141,6 @@ export default function ResponsiveDrawer(props: any) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   const particlesInit = useCallback(async (engine: any) => {
-      console.log(engine);
-      // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
-      // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-      // starting from v2 you can add only the features you need reducing the bundle size
       await loadFull(engine);
   }, []);
 
@@ -274,6 +270,7 @@ export default function ResponsiveDrawer(props: any) {
                 valor={data?.result[1]} 
                 titulo="Concluído" 
               /> : <></>}
+              
               
             <CustomCard icon={
                 <BarChart sx={{fontSize: 70, color: "#45b4f5"}} />

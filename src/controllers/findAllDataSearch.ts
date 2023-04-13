@@ -17,7 +17,7 @@ export class findAllDataSearch {
                 })
             break;
             case "cruzamento":
-                resultFilter = await prisma.passagemDados.findMany({
+                let data = await prisma.passagemDados.findMany({
                     include: {
                         expedicao2Passagem: true,
                         expedicaoPassagem: true,
@@ -27,6 +27,28 @@ export class findAllDataSearch {
                     where: {
                         ...JSON.parse(req.body.stringSearch)
                     }
+                })
+                let dataTotalCanhoto: any[] = []
+                let dataTotalConfirmacao: any[] = []
+
+                for(let prop in data){
+                    let dataCanhoto = await prisma.canhoto.findFirst({
+                        where: {
+                            notaFiscal: data[prop]?.notaFiscal ?? 0
+                        }
+                    })
+                    let dataCorfirmacaoEntrega = await prisma.confirmacaoEntrega.findFirst({
+                        where: {
+                            notaFiscal: data[prop]?.notaFiscal ?? 0
+                        }
+                    })
+                    dataTotalCanhoto.push(dataCanhoto ?? {})
+                    dataTotalConfirmacao.push(dataCorfirmacaoEntrega ?? {})
+                }
+
+                return await res.status(200).json({ 
+                    result: data,
+                    nonFlux: [dataTotalCanhoto, dataTotalConfirmacao]
                 })
             break
             

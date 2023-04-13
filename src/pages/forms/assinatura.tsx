@@ -1,7 +1,7 @@
 import { Alert, Box, Button, Modal, TextField } from '@mui/material';
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import { ReactSketchCanvas } from 'react-sketch-canvas';
+import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import { sendThisToDatabase } from '@services/sendData';
 import { ModelAssinatura } from '@models/setoresInterface';
 import CustomSelect_Widget from '~/components/customSelect_widget';
@@ -10,7 +10,8 @@ type Props = {}
 
 
 function assinatura({}: Props) {
-  const canvasRef = React.useRef(null);
+  const canvasRef = React.createRef<ReactSketchCanvasRef>()
+
   const [open, setOpen] = React.useState(false);
   const [pincelWidth, setPincelWidth] = React.useState(4);
   const [preenchido, setPreenchido] = React.useState(false);
@@ -78,7 +79,7 @@ function assinatura({}: Props) {
                     }} variant="contained">+</Button>
                 </div>
                 <Button style={{width: "100%"}} onClick={()=> {
-                    canvasRef!.current!.exportImage("png")
+                    canvasRef?.current?.exportImage("png")
                     .then((data: string) => {
                         setImagemBase64(data)
                     })

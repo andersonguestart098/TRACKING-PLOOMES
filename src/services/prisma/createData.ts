@@ -1,5 +1,5 @@
 import { databaseRepositoryImpl } from "@repositories/databaseRepository_impl";
-import { ModelFinanceiro } from "@models/financeiro/financeiroSchema";
+import { ModelFinanceiro } from "@models/setoresInterface";
 
 export class createDataController {
     constructor(

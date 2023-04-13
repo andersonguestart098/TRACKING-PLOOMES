@@ -16,15 +16,13 @@ model PassagemDados {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  notaFiscal Int
+  notaFiscal Int?
   expedicao  String
 
   financeiroPassagem         Financeiro[]
   expedicaoPassagem          Expedicao[]
   expedicao2Passagem         Expedicao2[]
   logisticaPassagem          Logistica[]
-
-
 }
 
 model Assinatura {

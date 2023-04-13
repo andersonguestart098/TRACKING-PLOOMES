@@ -83,93 +83,8 @@ function index() {
       ]]} />
       
       {/* //! MAIS OPÇÔES DE FILTRO (ODF) */}
-      <div style={{textAlign: "center"}}>
-        <p>Filtrar ao digitar: </p>
-        <div>
-          <Chip onClick={() => {
-            setFilterInput("notaFiscalP")
-          }} sx={filterInput == "notaFiscalP" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
-          
-          <Chip onClick={() => { 
-            setFilterInput("cliente")
-          }} sx={filterInput == "cliente" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cliente"  variant="outlined" />
 
-          <Chip onClick={() => { 
-            setFilterInput("dataCriacao")
-          }} sx={filterInput == "dataCriacao" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Data"  variant="outlined" />
-        </div>
-        <p>Filtro rapido: </p>
-        <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Emitida", visualValue: "Notas Emitida", color: "#38f269"},
-            {value: "Pendente", visualValue: "Notas Pendente", color: "#f28538"},
-            {value: "Cancelada", visualValue: "Notas Cancelada", color: "#d62013"},
-            {value: "Retornou", visualValue: "Notas Retornou", color: "#d851f0"},
-            {value: "Boleto em aberto", visualValue: "Notas Boleto em aberto", color: "#eb8c34"},
-            {value: "Aguardando deposito", visualValue: "Notas Aguardando deposito", color: "#cc34eb"}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.financeiroPassagem = {}
-            currentFilter.financeiroPassagem.every = {}
-            currentFilter.financeiroPassagem.every.statusNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Status Nota Fiscal'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "expedicao", visualValue: "Expedicao"},
-            {value: "expedicao2", visualValue: "Expedicao 2"},
-            {value: "logistica", visualValue: "Logistica"}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.expedicao = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Expedicões'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Rosi", visualValue: "Rosi"},
-            {value: "Aprendiz", visualValue: "Aprendiz"},
-            {value: "Julia", visualValue: "Julia"},
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.financeiroPassagem = {}
-            currentFilter.financeiroPassagem.every = {}
-
-            currentFilter.financeiroPassagem.every.operadorNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Operador Nota Fiscal'}          
-          />
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Max", visualValue: "Max"},
-            {value: "Eduardo", visualValue: "Eduardo"},
-            {value: "Cristiano S.", visualValue: "Cristiano S."},
-            {value: "Manoel", visualValue: "Manoel"},
-            {value: "Cristinao D.", visualValue: "Cristinao D."}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            
-            currentFilter.financeiroPassagem = {}
-            currentFilter.financeiroPassagem.every = {}
-            currentFilter.financeiroPassagem.every.responsavelNotaFiscal = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Responsavel Nota Fiscal'}          
-          />
-        </div>
+      <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
         <Chip onClick={() => { 
             setSearchString("{}")
           }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
@@ -226,23 +141,26 @@ function index() {
                       item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.financeiro.boletoAberto : 
                       item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Aguardando deposito" ? color.financeiro.aguardadoDeposito : 
                       item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.pendente : {}
-                    }>{item?.financeiroPassagem[0]?.statusNotaFiscal}</TableCell>
-
-
-
+                    }>{item?.financeiroPassagem[0]?.statusNotaFiscal ?? "Não Enviado"}</TableCell>
 
             <TableCell style={
+                      item?.expedicaoPassagem[0]?.statusNotaFiscal == undefined ? {background: "#f57567"} :
+
                       item?.expedicaoPassagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao.clienteRetirou : 
                       item?.expedicaoPassagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao.pendente :{}
-                    }>{item?.expedicaoPassagem[0]?.statusNotaFiscal}</TableCell>
+                    }>{item?.expedicaoPassagem[0]?.statusNotaFiscal ?? "Não Enviado"}</TableCell>
 
             <TableCell style={
+                      item?.expedicao2Passagem[0]?.statusNotaFiscal == undefined ? {background: "#f57567"} :
+
                       item?.expedicao2Passagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao2.clienteRetirou :
                       item?.expedicao2Passagem[0]?.statusNotaFiscal == "Aguardando Transportadora"? color.expedicao2.aguardandoTransportadora :
                       item?.expedicao2Passagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao2.aguardandoCliente :{}
-                    }>{item?.expedicao2Passagem[0]?.statusNotaFiscal}</TableCell>
+                    }>{item?.expedicao2Passagem[0]?.statusNotaFiscal ?? "Não Enviado"}</TableCell>
             
             <TableCell style={
+                      item?.logisticaPassagem[0]?.statusNotaFiscal == undefined ? {background: "#f57567"} :
+
                       item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - ALEXANDRE"? color.logistica.emTransito :
                       item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - Dionathan"? color.logistica.emTransito :
                       item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - DOUGLAS"? color.logistica.emTransito :
@@ -260,17 +178,19 @@ function index() {
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.logistica.emTransito : 
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Em Transito" ? color.logistica.emTransito : 
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.cancelada : {}
-                    }>{item?.logisticaPassagem[0]?.statusNotaFiscal}</TableCell>
+                    }>{item?.logisticaPassagem[0]?.statusNotaFiscal ?? "Não enviado"}</TableCell>
 
             
             {/* //! o 1 do dado abaixo referencia ao confirmção entrega*/}
             <TableCell style={
+                      data.nonFlux[1][index].entregaConcluida == undefined ? {background: "#f57567"} :
                       data.nonFlux[1][index].entregaConcluida == "Sim" ? {background: "#38f269"} : {}
-                    }>{data.nonFlux[1][index].entregaConcluida}</TableCell>
+                    }>{data.nonFlux[1][index].entregaConcluida ?? "Nao Definido"}</TableCell>
             {/* //! o 0 do dado abaixo referencia ao canhoto*/}
             <TableCell style={
+                      data.nonFlux[0][index].statusCanhoto == undefined ? {background: "#f57567"} :
                       data.nonFlux[0][index].statusCanhoto == "Concluido" ? {background: "#38f269"} : {}
-                    }>{data.nonFlux[0][index].statusCanhoto}</TableCell>
+                    }>{data.nonFlux[0][index].statusCanhoto ?? "Nao Defindo"}</TableCell>
 
           </TableRow>
         }) 

@@ -285,6 +285,7 @@ function index() {
                   <TableCell>
                     <CustomInput 
                       key={item.id}
+                      bg={item.author?.notaFiscal != null ? undefined : "#f71900"}
                       typeInput="number"
                       item={item.author}
                       routerEdit="/api/methodsdatabase/editDataWhere"

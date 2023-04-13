@@ -1,4 +1,4 @@
-import { ModelFinanceiro } from "~/models/financeiro/financeiroSchema";
+import { ModelFinanceiro } from "@models/setoresInterface";
 import { databaseRepositoryImpl } from "~/repositories/databaseRepository_impl";
 
 interface typeItems {

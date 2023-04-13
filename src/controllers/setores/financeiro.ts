@@ -32,8 +32,7 @@ export class FinanceiroController {
                 bandeiraCartao: this.data.bandeiraCartao,
                 author: {
                     create: {
-                        expedicao: "ainda não definido",
-                        notaFiscal: 0
+                        expedicao: "ainda não definido"
                     }
                     
                 }

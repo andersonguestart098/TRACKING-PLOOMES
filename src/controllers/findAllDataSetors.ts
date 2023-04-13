@@ -118,12 +118,12 @@ export class findAllData {
                 for(let prop in data){
                     let dataCanhoto = await prisma.canhoto.findFirst({
                         where: {
-                            notaFiscal: data[prop]?.notaFiscal
+                            notaFiscal: data[prop]?.notaFiscal ?? 0
                         }
                     })
                     let dataCorfirmacaoEntrega = await prisma.confirmacaoEntrega.findFirst({
                         where: {
-                            notaFiscal: data[prop]?.notaFiscal
+                            notaFiscal: data[prop]?.notaFiscal ?? 0
                         }
                     })
                     dataTotalCanhoto.push(dataCanhoto ?? {})

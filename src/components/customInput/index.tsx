@@ -11,20 +11,21 @@ interface Props {
     typeInput?: React.HTMLInputTypeAttribute
     setor?: string
     valorPadrao?: string
+    bg?: string
 }
 
-const Index = ({routerEdit, item, metadata, typeInput, setor, valorPadrao}: Props) => {
+const Index = ({routerEdit, item, metadata, typeInput, setor, valorPadrao, bg}: Props) => {
     const { register, handleSubmit, getValues, reset, formState: { errors } } = useForm({
         defaultValues: {
-          [item.id+metadata]: item[metadata.replace("_", "")].toString()
+          [item.id+metadata]: item[metadata.replace("_", "")]?.toString()
         }
     })
 
     useEffect(() => {
         reset({
-            [item.id+metadata]: item[metadata.replace("_", "")].toString() 
+            [item.id+metadata]: item[metadata.replace("_", "")]?.toString() 
         })
-    }, [item[metadata.replace("_", "")].toString()])
+    }, [item[metadata.replace("_", "")]?.toString()])
 
     function onSubmit(sendThis: string, value: string) { 
         return new editDataController(
@@ -40,7 +41,7 @@ const Index = ({routerEdit, item, metadata, typeInput, setor, valorPadrao}: Prop
 
   return (
     <form onSubmit={handleSubmit(event => onSubmit(item.id+metadata, getValues(item.id+metadata)))}>
-        <input type={typeInput ?? "text"} style={{border: "none", background: "transparent"}} {...register(item.id+metadata, {required: true})} />
+        <input type={typeInput ?? "text"} style={{border: "none", background: bg ?? "transparent"}} {...register(item.id+metadata, {required: true})} />
     </form>
   )
 }

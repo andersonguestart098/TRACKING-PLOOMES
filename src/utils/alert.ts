@@ -4,7 +4,7 @@ export function customAlert(message: string, type: SweetAlertIcon , meta?: {
     timer?: number,
     position?: SweetAlertPosition 
 }) {
-    document!.activeElement!.blur()
+    (document.activeElement as HTMLElement).blur();
     const Toast = Swal.mixin({
         toast: true,
         position: meta?.position ?? 'top-right',
