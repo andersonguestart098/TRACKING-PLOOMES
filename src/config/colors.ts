@@ -14,13 +14,15 @@ const color = {
         clienteRetirou: {background: "#38f269"},
         aguardandoCliente: {background: "#f2c335"},
         notaFiscalSendoEnviada: {background: "#cc34eb"},
+        naoDefinido: {background: "#f2c335"}
     },
     expedicao2: {
         pendente: {background: "#f2c335"},
         clienteRetirou: {background: "#38f269"},
         aguardandoCliente: {background: "#f2c335"},
         aguardandoTransportadora: {background: "#d851f0"},
-        notaFiscalSendoEnviada: {background: "#cc34eb"}
+        notaFiscalSendoEnviada: {background: "#cc34eb"},
+        naoDefinido: {background: "#f2c335"}
     },
     logistica: {
         pendente: {background: "#f2c335"},

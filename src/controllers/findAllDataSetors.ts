@@ -151,6 +151,22 @@ export class findAllData {
                 }
 
                 switch(dataAuthDB?.setor) {
+                    case "adm":
+                        return await res.status(200).send(
+                            {result: [(await prisma.financeiro.findMany({
+                                where: {
+                                    statusNotaFiscal: "Pendente"
+                                }
+                            })).length, (await prisma.financeiro.findMany({
+                                where: {
+                                    statusNotaFiscal: "Emitida"
+                                }
+                            })).length, (
+                                await prisma.financeiro.findMany()
+                            ).length],
+                            setor: "adm"})
+                    break
+
                     case "logistica": 
                         return await res.status(200).send(
                             {result: [(await prisma.logistica.findMany({

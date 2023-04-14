@@ -97,7 +97,7 @@ export default function ResponsiveDrawer(props: any) {
         </Box>
       </div>
       </Toolbar>
-      <List>
+      <List> 
           <ListItem disablePadding>
           <ListItemButton onClick={() => {
                   Swal.fire({
@@ -106,7 +106,22 @@ export default function ResponsiveDrawer(props: any) {
                     padding: '3em',
                     html:
                       'Click nos setores disponiveis abaixo: <br/><br/>'+
+                      (data?.setor == "adm" ? 
+                      '<a style="color: red" target="_blank" href="/views/cruzamento">TABELA FLUXO DADOS</a><br/><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/financeiro">TABELA FINANCEIRO</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/expedicao">TABELA EXPEDIÇÃO</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/expedicao2">TABELA EXPEDIÇÃO 2</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/logistica">TABELA LOGISTICA</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/saida">TABELA SAIDA</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/confirmacaoEntrega">TABELA CONFIRMAÇÃO ENTREGA</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/retorno">TABELA RETORNO</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/canhoto">TABELA CANHOTO</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/assinatura">TABELA ASSINATURA</a><br/>'
+                      : data?.setor == "financeiro" ?
+                      '<a style="color: red" target="_blank" href="/views/cruzamento">TABELA FLUXO DADOS</a><br/><br/>'+
+                      '<a style="color: red" target="_blank" href="/views/assinatura">TABELA ASSINATURA</a><br/>'+
                       '<a style="color: red" target="_blank" href="/views/'+data?.setor+'">'+data?.setor.toUpperCase()+'</a>'
+                      :'<a style="color: red" target="_blank" href="/views/'+data?.setor+'">'+data?.setor.toUpperCase()+'</a>')
                   })
               }}>
               <ListItemIcon><BackupTableIcon /></ListItemIcon>
@@ -121,7 +136,17 @@ export default function ResponsiveDrawer(props: any) {
                     padding: '3em',
                     html:
                       'Click nos setores disponiveis abaixo: <br/><br/>'+
-                      '<a style="color: red" target="_blank" href="/forms/'+data?.setor+'"> FORMULARIO '+data?.setor.toUpperCase()+'</a>'
+                      (data?.setor == "adm" ? 
+                      '<a style="color: red" target="_blank" href="/forms/financeiro">FORMULARIO FINANCEIRO</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/forms/saida">FORMULARIO SAIDA</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/forms/confirmacaoEntrega">FORMULARIO CONFIRMAÇÃO ENTREGA</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/forms/retorno">FORMULARIO RETORNO</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/forms/canhoto">FORMULARIO CANHOTO</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/forms/assinatura">FORMULARIO ASSINATURA</a><br/>'
+                      : data?.setor == "financeiro" ? 
+                      '<a style="color: red" target="_blank" href="/forms/'+data?.setor+'">'+data?.setor.toUpperCase()+'</a><br/>'+
+                      '<a style="color: red" target="_blank" href="/forms/assinatura">FORMULARIO ASSINATURA</a><br/>'
+                      : '<a style="color: red" target="_blank" href="/forms/'+data?.setor+'">'+data?.setor.toUpperCase()+'</a>')
                   })
               }}>
               <ListItemIcon><DesignServicesIcon /></ListItemIcon>
@@ -208,7 +233,7 @@ export default function ResponsiveDrawer(props: any) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            {data?.setor?.toUpperCase()}
+            {data?.setor?.toUpperCase() == "ADM" ? "ADMINISTRADOR" : data?.setor?.toUpperCase()}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -260,7 +285,7 @@ export default function ResponsiveDrawer(props: any) {
                 <ClearIcon sx={{fontSize: 70, color: "#eb1c15"}} />
             } 
               valor={data?.result[0]}
-              titulo="Pendente"  
+              titulo="Pendente"
             /> : <></>}
 
             {data?.result[0] != "N/D" ?

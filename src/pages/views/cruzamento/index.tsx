@@ -64,7 +64,7 @@ function index() {
 
   return (
     <>
-      <CustomNavBar setor="CRUZAMENTO"
+      <CustomNavBar setor="RASTREAMENTO"
       setSearchString={setSearchString}
       setValueInputChange={setValueInputChange}
       searchString={searchString}
@@ -146,7 +146,8 @@ function index() {
             <TableCell style={
                       item?.expedicaoPassagem[0]?.statusNotaFiscal == undefined ? {background: "#f57567"} :
 
-                      item?.expedicaoPassagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao.clienteRetirou : 
+                      item?.expedicaoPassagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao.clienteRetirou :
+                      item?.expedicaoPassagem[0]?.statusNotaFiscal == "não definido"? color.expedicao.naoDefinido :
                       item?.expedicaoPassagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao.pendente :{}
                     }>{item?.expedicaoPassagem[0]?.statusNotaFiscal ?? "Não Enviado"}</TableCell>
 
@@ -155,6 +156,7 @@ function index() {
 
                       item?.expedicao2Passagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao2.clienteRetirou :
                       item?.expedicao2Passagem[0]?.statusNotaFiscal == "Aguardando Transportadora"? color.expedicao2.aguardandoTransportadora :
+                      item?.expedicao2Passagem[0]?.statusNotaFiscal == "não definido"? color.expedicao.naoDefinido :
                       item?.expedicao2Passagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao2.aguardandoCliente :{}
                     }>{item?.expedicao2Passagem[0]?.statusNotaFiscal ?? "Não Enviado"}</TableCell>
             
@@ -185,12 +187,12 @@ function index() {
             <TableCell style={
                       data.nonFlux[1][index].entregaConcluida == undefined ? {background: "#f57567"} :
                       data.nonFlux[1][index].entregaConcluida == "Sim" ? {background: "#38f269"} : {}
-                    }>{data.nonFlux[1][index].entregaConcluida ?? "Nao Definido"}</TableCell>
+                    }>{data.nonFlux[1][index].entregaConcluida ?? "Não Enviado"}</TableCell>
             {/* //! o 0 do dado abaixo referencia ao canhoto*/}
             <TableCell style={
                       data.nonFlux[0][index].statusCanhoto == undefined ? {background: "#f57567"} :
                       data.nonFlux[0][index].statusCanhoto == "Concluido" ? {background: "#38f269"} : {}
-                    }>{data.nonFlux[0][index].statusCanhoto ?? "Nao Defindo"}</TableCell>
+                    }>{data.nonFlux[0][index].statusCanhoto ?? "Não Enviado"}</TableCell>
 
           </TableRow>
         }) 

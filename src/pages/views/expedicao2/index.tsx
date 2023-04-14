@@ -170,6 +170,7 @@ function index() {
                     item.statusNotaFiscal ==  "Aguardando Transportadora" ? color.expedicao2.aguardandoTransportadora :
                     item.statusNotaFiscal ==  "Cliente Retirou" ? color.expedicao2.clienteRetirou :
                     item.statusNotaFiscal ==  "Nota fiscal sendo encaminhada para o setor" ? color.expedicao2.notaFiscalSendoEnviada :
+                    item.statusNotaFiscal ==  "não definido" ? color.expedicao2.naoDefinido :
                     item.statusNotaFiscal ==  "a definir" ? color.expedicao2.pendente : {}
                   }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
