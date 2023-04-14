@@ -71,12 +71,7 @@ function index() {
       filter={filterInput}
       setSearch={setTravarAuto}
       dados={dataAuth} 
-      filterData={[["dataCriacao", "cliente"],[
-        {
-          updatedAt: {
-            gte: new Date(valueInputChange)
-          }
-        },
+      filterData={[["cliente"],[
         {financeiroPassagem:{every:{cliente: {
             contains: valueInputChange
         }}}}
@@ -178,7 +173,8 @@ function index() {
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Aguardando Rota" ? color.logistica.aguardandoRota :
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Aguardando Vendedor" ? color.logistica.aguardandoVendedor :
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.logistica.emTransito : 
-                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Em Transito" ? color.logistica.emTransito : 
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Em Transito" ? color.logistica.emTransito :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "não definido" ? color.logistica.naoDefinido :
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.cancelada : {}
                     }>{item?.logisticaPassagem[0]?.statusNotaFiscal ?? "Não enviado"}</TableCell>
 

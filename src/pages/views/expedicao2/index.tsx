@@ -99,9 +99,7 @@ function index() {
             setFilterInput("notaFiscal")
           }} sx={filterInput == "notaFiscal" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
           
-          <Chip onClick={() => { 
-            setFilterInput("dataCriacao")
-          }} sx={filterInput == "dataCriacao" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Data"  variant="outlined" />
+
         </div>
         <p>Filtro rapido: </p>
         <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>

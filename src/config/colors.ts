@@ -31,6 +31,7 @@ const color = {
         notaFiscalSendoEnviada: {background: "#cc34eb"},
         emTransito: {background: "#38f269"},
         cancelada: {background: "#d62013"},
+        naoDefinido: {background: "#f2c335"}
     },
     confirmacaoEntrega: {
         sim: {background: "#38f269"},

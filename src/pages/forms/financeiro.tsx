@@ -288,9 +288,9 @@ const financeiro = ({}: Props) => {
                   { value: "Outros", visualValue: "Outros" }
                 ]}
                 /> : <></>}
+                
                 <br/><br/>
                
-                {vendaFreteSIM ? <CustomInputMask register={setValorFreteInput} placeHolder='Valor do Frete' />: <></>}
               
                 {entregaRetiraEI || entregaRetiraEA ? <CustomRadio
                 register={register("entregaCadastro")}
@@ -299,6 +299,9 @@ const financeiro = ({}: Props) => {
                   { value: "Sim", visualValue: "Sim" },  
                   { value: "Não", visualValue: "Não" }
                 ]} /> : <></> }
+
+                {vendaFreteSIM ? <CustomInputMask register={setValorFreteInput} placeHolder='Valor do Frete' />: <></>}
+                <br/>
                 {entregaRetiraEA ? <CustomRadio
                 register={register("dataAgendada")}
                 labelText={'Foi agendado uma data? '}

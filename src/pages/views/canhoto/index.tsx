@@ -81,25 +81,16 @@ function index() {
       filter={filterInput}
       setSearch={setTravarAuto}
       dados={dataAuth} 
-      filterData={[["dataCriacao", "cliente"],[
+      filterData={[["dataCriacao"],[
         {
           updatedAt: {
             gte: new Date(valueInputChange)
           }
         },
-        {cliente: {
-            contains: valueInputChange
-        }}
       ]]} 
       />
       {/* //! MAIS OPÇÔES DE FILTRO (ODF) */}
       <div style={{textAlign: "center"}}>
-        <p>Filtrar ao digitar: </p>
-        <div>
-          <Chip onClick={() => {
-            setFilterInput("notaFiscalP")
-          }} sx={filterInput == "notaFiscalP" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
-        </div>
         <p>Filtro rapido: </p>
         <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
           <CustomSelect_Widget 
