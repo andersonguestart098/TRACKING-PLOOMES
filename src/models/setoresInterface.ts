@@ -4,6 +4,7 @@ interface Passagem {
     notaFiscal: number,
     expedicao: string,
     updatedAt: string,
+    cliente: string 
 }
 
 export interface ModelCruzamento {
@@ -28,12 +29,12 @@ export interface ModelFinanceiro {
     author?: Passagem
     id?: string
     setor?: string
+    cliente?: string 
     authorId?: string
     createdAt?: string
     bandeiraCartao: string
     vendedor: string 
     orcamento: string 
-    cliente: string 
     tipoFaturamento: string 
     valor: string 
     formaPagamento: string 

@@ -26,6 +26,7 @@ const CustomRadio = (props: Props) => {
             return (
                 <>
                     <input 
+                        key={item.value}
                         {...register}
                         className={style.input} 
                         onChange={(e) => props.onchange?.(e) ?? {}}  

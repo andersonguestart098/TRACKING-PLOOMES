@@ -182,6 +182,7 @@ function index() {
               <TableCell style={{background: "#e1ebf0"}}>Tipo|Faturamento</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Valor</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Forma|Pagamento</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Bandeira</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Parcelas</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Venda|Frete</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Retira|Entrega</TableCell>
@@ -231,7 +232,7 @@ function index() {
                   <TableCell>
                   <CustomInput 
                       key={item.id}
-                      item={item}
+                      item={item.author}
                       routerEdit="/api/methodsdatabase/editDataWhere"
                       metadata="_cliente"
                     />
@@ -246,7 +247,8 @@ function index() {
                   </TableCell>
                   <TableCell>{item.valor}</TableCell>
                   <TableCell>{item.formaPagamento}</TableCell>
-                  <TableCell>{item.parcelas}</TableCell>
+                  <TableCell>{item.bandeiraCartao == "" ? "Nao definido" : item.bandeiraCartao}</TableCell>
+                  <TableCell>{item.parcelas == "" ? "Nao definido" : item.parcelas}</TableCell>
                   <TableCell>
                     <CustomSelect 
                       key={item.id}
@@ -324,7 +326,7 @@ function index() {
                       metadata="_responsavelNotaFiscal"
                       value="responsavelNotaFiscal"
                       tags={[
-                        "Max", "Eduardo", "Cristiano S.", "Manoel", "Cristinao D."
+                        "Max", "Eduardo", "Cristiano S.", "Manoel", "Cristinao D.", "Dieimes"
                       ]}
                       />
                   </TableCell>

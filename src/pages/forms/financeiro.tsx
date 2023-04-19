@@ -23,8 +23,10 @@ const financeiro = ({}: Props) => {
 
   const [vendaFreteSIM , setVendaFreteSIM] = useState(false)
   const [agendadoDataSim , setAgendadoDataSim] = useState(false)
+
   const [formaPGOAV , setFormaPGOAV] = useState(false)
   const [formaPGOCartao , setFormaPGOCartao] = useState(false)
+  const [formaPGOFaturado , setFormaPGOFaturado] = useState(false)
 
   const [disabilitarBotao, setDisabilitarBotao] = useState(false)
 
@@ -47,7 +49,7 @@ const financeiro = ({}: Props) => {
       entregaCadastro: data.entregaCadastro == "Sim" ? true : false ?? false,
       vendaFrete: data.vendaFrete == "Sim" ? true : false ?? false,
       localCobranca: data.localCobranca ?? "",
-      observacao: data.obs ?? "",
+      observacao: data.obs == ""? "Nenhuma Observação" : data.obs,
       orcamento: data.orcamento ?? "",
       parcelas: data.parcelas ?? "",
       responsavelNotaFiscal: "...",
@@ -164,7 +166,7 @@ const financeiro = ({}: Props) => {
                   { value: "Bndes", visualValue: "Bndes" }
                 ]} /> : <></>}
                 <br/>
-                {!tipoFaturamentoRM && !tipoFaturamentoN && !tipoFaturamentoOther ? <CustomRadio 
+                {formaPGOFaturado != true || tipoFaturamentoRM && !tipoFaturamentoN && !tipoFaturamentoOther ? <CustomRadio 
                     register={register("localCobranca")}
                     labelText={'Local de Cobrança: '} 
                     items={[
@@ -218,9 +220,17 @@ const financeiro = ({}: Props) => {
                         case "Cartão": 
                           setFormaPGOCartao(true)
                           setFormaPGOAV(false)
-                        break
+                          setFormaPGOFaturado(false)
+                          break
                         case "Á Vista": 
                           setFormaPGOAV(true)
+                          setFormaPGOCartao(false)
+                          setFormaPGOFaturado(false)
+                          break
+                        case "Faturado": 
+
+                          setFormaPGOFaturado(true)
+                          setFormaPGOAV(false)
                           setFormaPGOCartao(false)
                         break
                         default: 
@@ -318,8 +328,7 @@ const financeiro = ({}: Props) => {
                 items={[
                   { value: "Sim", visualValue: "Sim" },  
                   { value: "Não", visualValue: "Não" }
-                ]} /> : <></> }
-                                 
+                ]} /> : <></> }       
             </div>
                 
         </div>

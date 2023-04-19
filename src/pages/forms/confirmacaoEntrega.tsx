@@ -28,7 +28,7 @@ const confirmacaoEntrega = (props: Props) => {
           motorista: e.motorista,
           cidade: e.cidade,
           entregaConcluida: e.entregaConcluida,
-          obs: e.obs,
+          obs: e.obs == "" ? "Nenhuma observação" : e.obs,
           setor: "confirmacao entrega"
         }
         await sendThisToDatabase("/api/methodsdatabase/create", dadosConfirmacaoEntrega, 300)
@@ -106,7 +106,7 @@ const confirmacaoEntrega = (props: Props) => {
                   <TextField 
                   {...register("obs")} 
                   sx={{width: 250}} 
-                  type="text" required 
+                  type="text" 
                   id="obs" label="Observações" 
                   variant="outlined" />
                   <br/><br/>

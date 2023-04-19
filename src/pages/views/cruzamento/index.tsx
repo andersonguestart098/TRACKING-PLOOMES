@@ -136,27 +136,24 @@ function index() {
                       item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.financeiro.boletoAberto : 
                       item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Aguardando deposito" ? color.financeiro.aguardadoDeposito : 
                       item?.financeiroPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.pendente : {}
-                    }>{item?.financeiroPassagem[0]?.statusNotaFiscal ?? "Não Enviado"}</TableCell>
+                    }>{item?.financeiroPassagem[0]?.statusNotaFiscal}</TableCell>
 
             <TableCell style={
-                      item?.expedicaoPassagem[0]?.statusNotaFiscal == undefined ? {background: "#f57567"} :
 
                       item?.expedicaoPassagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao.clienteRetirou :
-                      item?.expedicaoPassagem[0]?.statusNotaFiscal == "não definido"? color.expedicao.naoDefinido :
+                      item?.expedicaoPassagem[0]?.statusNotaFiscal == "a definir"? color.expedicao.naoDefinido :
                       item?.expedicaoPassagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao.pendente :{}
-                    }>{item?.expedicaoPassagem[0]?.statusNotaFiscal ?? "Não Enviado"}</TableCell>
+                    }>{item?.expedicaoPassagem[0]?.statusNotaFiscal}</TableCell>
 
             <TableCell style={
-                      item?.expedicao2Passagem[0]?.statusNotaFiscal == undefined ? {background: "#f57567"} :
 
                       item?.expedicao2Passagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao2.clienteRetirou :
                       item?.expedicao2Passagem[0]?.statusNotaFiscal == "Aguardando Transportadora"? color.expedicao2.aguardandoTransportadora :
-                      item?.expedicao2Passagem[0]?.statusNotaFiscal == "não definido"? color.expedicao.naoDefinido :
+                      item?.expedicao2Passagem[0]?.statusNotaFiscal == "a definir"? color.expedicao.naoDefinido :
                       item?.expedicao2Passagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao2.aguardandoCliente :{}
-                    }>{item?.expedicao2Passagem[0]?.statusNotaFiscal ?? "Não Enviado"}</TableCell>
+                    }>{item?.expedicao2Passagem[0]?.statusNotaFiscal}</TableCell>
             
             <TableCell style={
-                      item?.logisticaPassagem[0]?.statusNotaFiscal == undefined ? {background: "#f57567"} :
 
                       item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - ALEXANDRE"? color.logistica.emTransito :
                       item?.logisticaPassagem[0]?.statusNotaFiscal == "Em Transito - Dionathan"? color.logistica.emTransito :
@@ -174,21 +171,19 @@ function index() {
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Aguardando Vendedor" ? color.logistica.aguardandoVendedor :
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.logistica.emTransito : 
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Em Transito" ? color.logistica.emTransito :
-                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "não definido" ? color.logistica.naoDefinido :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "a definir" ? color.logistica.naoDefinido :
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.cancelada : {}
-                    }>{item?.logisticaPassagem[0]?.statusNotaFiscal ?? "Não enviado"}</TableCell>
+                    }>{item?.logisticaPassagem[0]?.statusNotaFiscal}</TableCell>
 
             
             {/* //! o 1 do dado abaixo referencia ao confirmção entrega*/}
             <TableCell style={
-                      data.nonFlux[1][index].entregaConcluida == undefined ? {background: "#f57567"} :
                       data.nonFlux[1][index].entregaConcluida == "Sim" ? {background: "#38f269"} : {}
-                    }>{data.nonFlux[1][index].entregaConcluida ?? "Não Enviado"}</TableCell>
+                    }>{data.nonFlux[1][index].entregaConcluida}</TableCell>
             {/* //! o 0 do dado abaixo referencia ao canhoto*/}
             <TableCell style={
-                      data.nonFlux[0][index].statusCanhoto == undefined ? {background: "#f57567"} :
                       data.nonFlux[0][index].statusCanhoto == "Concluido" ? {background: "#38f269"} : {}
-                    }>{data.nonFlux[0][index].statusCanhoto ?? "Não Enviado"}</TableCell>
+                    }>{data.nonFlux[0][index].statusCanhoto}</TableCell>
 
           </TableRow>
         }) 

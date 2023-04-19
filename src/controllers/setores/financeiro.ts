@@ -9,7 +9,6 @@ export class FinanceiroController {
     async execute() {
         await prisma.financeiro.create({
             data: {
-                cliente: this.data.cliente,
                 dataEntrega: this.data.dataEntrega,
                 entregaCadastro: this.data.entregaCadastro,
                 formaPagamento: this.data.formaPagamento,
@@ -32,7 +31,8 @@ export class FinanceiroController {
                 bandeiraCartao: this.data.bandeiraCartao,
                 author: {
                     create: {
-                        expedicao: "ainda não definido"
+                        expedicao: "ainda não definido",
+                        cliente: this.data.cliente
                     }
                     
                 }

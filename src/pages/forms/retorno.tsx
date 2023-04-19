@@ -28,7 +28,7 @@ const retorno = (props: Props) => {
           placa: e.placa,
           hodometro: e.hodometro,
           data: e.data,
-          obs: e.obs,
+          obs: e.obs == "" ? "Nenhuma Observação" : e.obs,
           setor: "retorno"
         }
         await sendThisToDatabase("/api/methodsdatabase/create", dadosRetorno, 300)
@@ -102,7 +102,7 @@ const retorno = (props: Props) => {
                   <TextField 
                   {...register("obs")} 
                   sx={{width: 250}} 
-                  type="text" required 
+                  type="text" 
                   id="obs" label="Observações" 
                   variant="outlined" />
                   <br/><br/>

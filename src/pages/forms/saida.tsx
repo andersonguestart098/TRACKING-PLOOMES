@@ -31,7 +31,7 @@ const retorno = (props: Props) => {
           hodometro: e.hodometro,
           nomeConferente: e.conferente,
           dataHoraSaida: e.dataHoraSaida,
-          obs: e.obs,
+          obs: e.obs == "" ? "Nenhuma Observação" : e.obs,
           placa: e.placa,
           setor: "saida"
         }
@@ -161,7 +161,7 @@ const retorno = (props: Props) => {
                   <TextField 
                   {...register("obs")} 
                   sx={{width: 250, height: 350}} 
-                  type="text" required 
+                  type="text" 
                   id="obs" label="Observação" 
                   variant="outlined" />
                   <br/><br/>

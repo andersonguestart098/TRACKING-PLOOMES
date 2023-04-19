@@ -18,6 +18,7 @@ model PassagemDados {
 
   notaFiscal Int?
   expedicao  String
+  cliente    String
 
   financeiroPassagem         Financeiro[]
   expedicaoPassagem          Expedicao[]
@@ -45,7 +46,6 @@ model Financeiro {
 
   vendedor              String
   orcamento             Int
-  cliente               String
   tipoFaturamento       String
   valor                 String
   formaPagamento        String

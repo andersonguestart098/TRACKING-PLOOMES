@@ -159,6 +159,7 @@ function index() {
               <TableCell style={{background: "#e1ebf0"}}>Id</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Data|Hora</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Número|NF</TableCell>
+              <TableCell style={{background: "#e1ebf0"}}>Cliente</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Responsável|NF</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Status|NF</TableCell>
               
@@ -202,6 +203,7 @@ function index() {
                   <TableCell>{new Date(String(item.createdAt)).getDate()}/{new Date(String(item.createdAt)).getMonth()+1}/{new Date(String(item.createdAt)).getFullYear()} 
                   <br/> {new Date(String(item.createdAt)).getHours()}:{new Date(String(item.createdAt)).getMinutes()}</TableCell>
                   <TableCell>{item.author?.notaFiscal}</TableCell>
+                  <TableCell>{item.author?.cliente}</TableCell>
                   <TableCell><CustomSelect 
                       key={item.id}
                       item={item}
