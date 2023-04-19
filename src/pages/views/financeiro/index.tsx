@@ -80,9 +80,10 @@ function index() {
       setSearch={setTravarAuto}
       dados={dataAuth} 
       filterData={[["cliente"],[
-        {cliente: {
+        {author: {
+          cliente: {
             contains: valueInputChange
-        }}
+        }}}
       ]]} 
       />
 
@@ -229,48 +230,16 @@ function index() {
                   <br/> {new Date(String(item.createdAt)).getHours()}:{new Date(String(item.createdAt)).getMinutes()}</TableCell>
                   <TableCell>{item.vendedor}</TableCell>
                   <TableCell>{item.orcamento}</TableCell>
-                  <TableCell>
-                  <CustomInput 
-                      key={item.id}
-                      item={item.author}
-                      routerEdit="/api/methodsdatabase/editDataWhere"
-                      metadata="_cliente"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <CustomInput 
-                      key={item.id}
-                      item={item}
-                      routerEdit="/api/methodsdatabase/editDataWhere"
-                      metadata="_tipoFaturamento"
-                    />
-                  </TableCell>
+                  <TableCell>{item.author?.cliente}</TableCell>
+                  <TableCell>{item.tipoFaturamento}</TableCell>
                   <TableCell>{item.valor}</TableCell>
                   <TableCell>{item.formaPagamento}</TableCell>
                   <TableCell>{item.bandeiraCartao == "" ? "Nao definido" : item.bandeiraCartao}</TableCell>
                   <TableCell>{item.parcelas == "" ? "Nao definido" : item.parcelas}</TableCell>
-                  <TableCell>
-                    <CustomSelect 
-                      key={item.id}
-                      item={item}
-                      routerEdit="/api/methodsdatabase/editDataWhere"
-                      metadata="_vendaFrete"
-                      value="vendaFrete"
-                      tags={["boolean"]}
-                      />
-                  </TableCell>
+                  <TableCell>{item.vendaFrete}</TableCell>
                   <TableCell>{item.retiraEntrega}</TableCell>
                   <TableCell>{item.freteConta}</TableCell>
-                  <TableCell>
-                    <CustomSelect 
-                      key={item.id}
-                      item={item}
-                      routerEdit="/api/methodsdatabase/editDataWhere"
-                      metadata="_entregaCadastro"
-                      value="entregaCadastro"
-                      tags={["boolean"]}
-                      />
-                  </TableCell>
+                  <TableCell>{item.entregaCadastro}</TableCell>
                   <TableCell>{item.localCobranca}</TableCell>
                   <TableCell>{item.observacao}</TableCell>
                   <TableCell>{item.tipoFrete}</TableCell>

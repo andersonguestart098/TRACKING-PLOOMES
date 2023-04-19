@@ -195,6 +195,7 @@ function index() {
                     item.statusNotaFiscal ==  "Aguardando Rota" ? color.logistica.aguardandoRota :
                     item.statusNotaFiscal ==  "não definido" ? color.logistica.pendente : 
                     item.statusNotaFiscal ==  "Aguardando Vendedor" ? color.logistica.aguardandoVendedor : 
+                    item.statusNotaFiscal ==  "Em Separação" ? color.logistica.emSeparacao : 
                     item.statusNotaFiscal ==  "" ? {background: "#f28538"} : {}
                   }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -227,7 +228,7 @@ function index() {
                         "Em Transito - IGON", "Em Transito - JULIANO", "Em Transito - MATHEUS",
                         "Em Transito - PAULO ALEXANDRE", "Em Transito - VANDERLEI", "Em Transito - VILNEI",
                         "Em Transito - MAX", "Em Transito - CRISTIANO", "Em Transito - WILLIAM",
-                        "Nota fiscal sendo encaminhada para o setor"
+                        "Nota fiscal sendo encaminhada para o setor", "Em Separação"
                       ]}
                       setor="logistica"
                     /></TableCell>

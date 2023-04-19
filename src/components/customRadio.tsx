@@ -5,6 +5,7 @@ import { ChangeHandler } from 'react-hook-form'
 interface itemI {
     value: string
     visualValue: string
+    checked?: boolean
 }
 
 type Props = {
@@ -32,6 +33,7 @@ const CustomRadio = (props: Props) => {
                         onChange={(e) => props.onchange?.(e) ?? {}}  
                         type="radio" 
                         value={item.value} 
+                        checked={item.checked}
                         required />
                     <label 
                     style={{fontSize: "small"}}

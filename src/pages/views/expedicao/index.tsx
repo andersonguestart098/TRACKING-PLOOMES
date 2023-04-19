@@ -169,6 +169,7 @@ function index() {
                     item.statusNotaFiscal == "Aguardando Cliente" ? color.expedicao.aguardandoCliente : 
                     item.statusNotaFiscal ==  "Aguardando Transportadora" ? color.expedicao.aguardandoCliente :
                     item.statusNotaFiscal ==  "Cliente Retirou" ? color.expedicao.clienteRetirou :
+                    item.statusNotaFiscal ==  "Em Separação" ? color.expedicao.emSeparacao : 
                     item.statusNotaFiscal ==  "não definido" ? color.expedicao.naoDefinido :
                     item.statusNotaFiscal ==  "a definir" ? color.expedicao.pendente : {}
                   }
@@ -198,7 +199,8 @@ function index() {
                       value="statusNotaFiscal"
                       tags={[
                         "Aguardando Cliente", 
-                        "Cliente Retirou"
+                        "Cliente Retirou",
+                        "Em Separação",
                       ]}
                       setor="expedicao"
                     /></TableCell>

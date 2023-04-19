@@ -19,19 +19,19 @@ const financeiro = ({}: Props) => {
 
   const [entregaRetiraEI , setEntregaRetiraEI] = useState(false)
   const [entregaRetiraEA , setEntregaRetiraEA] = useState(false)
-  const [_ , setEntregaRetiraT] = useState(false)
+  const [entregaRetiraT , setEntregaRetiraT] = useState(false)
 
   const [vendaFreteSIM , setVendaFreteSIM] = useState(false)
   const [agendadoDataSim , setAgendadoDataSim] = useState(false)
 
   const [formaPGOAV , setFormaPGOAV] = useState(false)
   const [formaPGOCartao , setFormaPGOCartao] = useState(false)
-  const [formaPGOFaturado , setFormaPGOFaturado] = useState(false)
 
   const [disabilitarBotao, setDisabilitarBotao] = useState(false)
 
   const [valorVendaInput, setValorVendaInput] = useState("")
   const [valorFreteInput, setValorFreteInput] = useState("")
+  const [formaDePagamento, setFormaDePagamento] = useState("")
 
   
   useEffect(() => {
@@ -43,7 +43,7 @@ const financeiro = ({}: Props) => {
 
     let dadosFinanceiro: ModelFinanceiro = {
       cliente: data.cliente,
-      formaPagamento: data.formaPagamentoAVista ?? data.formaPagamento ?? "",
+      formaPagamento: formaDePagamento,
       bandeiraCartao: data.bandeira ?? "",
       dataEntrega: data.dataEntrega ?? "",
       entregaCadastro: data.entregaCadastro == "Sim" ? true : false ?? false,
@@ -60,7 +60,7 @@ const financeiro = ({}: Props) => {
       observacaoFinanceiro: "...",
       operadorNotaFiscal: "...",
       statusNotaFiscal: "Pendente",
-      freteConta: "",
+      freteConta: data.freteConta,
       valorFrete: valorFreteInput ?? "",
       vendedor: data.vendedor ?? "",
       setor: "financeiro"
@@ -146,6 +146,22 @@ const financeiro = ({}: Props) => {
                 {formaPGOAV ?<CustomRadio 
                 register={register("formaPagamentoAVista")} 
                 labelText={'Forma de Pagamento Á vista: '} 
+                onchange={(e) => {
+                  switch (e.target.value) {
+                    case "Depósito":
+                      setFormaDePagamento("Depósito")
+                    break;
+                    case "Pix":
+                      setFormaDePagamento("Pix")
+                    break;
+                    case "Dinheiro":
+                      setFormaDePagamento("Dinheiro")
+                    break;
+                    case "Pago com crédito":
+                      setFormaDePagamento("Pago com crédito")
+                    break;
+                  }
+                }}
                 items={[
                   { value: "Depósito", visualValue: "Depósito" },  
                   { value: "Pix", visualValue: "Pix" },
@@ -166,7 +182,7 @@ const financeiro = ({}: Props) => {
                   { value: "Bndes", visualValue: "Bndes" }
                 ]} /> : <></>}
                 <br/>
-                {formaPGOFaturado != true || tipoFaturamentoRM && !tipoFaturamentoN && !tipoFaturamentoOther ? <CustomRadio 
+                {formaPGOCartao == true || formaPGOAV == true ? <CustomRadio 
                     register={register("localCobranca")}
                     labelText={'Local de Cobrança: '} 
                     items={[
@@ -218,18 +234,32 @@ const financeiro = ({}: Props) => {
                     onchange={(e) => {
                       switch(e.target.value) {
                         case "Cartão": 
+                          setFormaDePagamento("Cartão")
                           setFormaPGOCartao(true)
                           setFormaPGOAV(false)
-                          setFormaPGOFaturado(false)
                           break
                         case "Á Vista": 
+                          setFormaDePagamento("Á Vista")
                           setFormaPGOAV(true)
                           setFormaPGOCartao(false)
-                          setFormaPGOFaturado(false)
                           break
                         case "Faturado": 
-
-                          setFormaPGOFaturado(true)
+                          setFormaDePagamento("Faturado")
+                          setFormaPGOAV(false)
+                          setFormaPGOCartao(false)
+                        break
+                        case "Sem Pagamento": 
+                          setFormaDePagamento("Sem Pagamento")
+                          setFormaPGOAV(false)
+                          setFormaPGOCartao(false)
+                        break
+                        case "Depósito Programado": 
+                          setFormaDePagamento("Depósito Programado")
+                          setFormaPGOAV(false)
+                          setFormaPGOCartao(false)
+                        break
+                        case "Cheque Programado": 
+                          setFormaDePagamento("Cheque Programado")
                           setFormaPGOAV(false)
                           setFormaPGOCartao(false)
                         break
@@ -246,8 +276,7 @@ const financeiro = ({}: Props) => {
                       { value: "Cartão", visualValue: "Cartão" },
                       { value: "Sem Pagamento", visualValue: "Sem Pagamento" },
                       { value: "Depósito Programado", visualValue: "Depósito Programado" },
-                      { value: "Cheque Programado", visualValue: "Cheque Programado" },
-                      { value: "Cartão na sala de vendas", visualValue: "Cartão na sala de vendas" }
+                      { value: "Cheque Programado", visualValue: "Cheque Programado" }
                     ]} /> : <></>}
                     <br/>
                {!tipoFaturamentoN || tipoFaturamentoRM ? <CustomRadio 
@@ -282,6 +311,15 @@ const financeiro = ({}: Props) => {
                   { value: "Retira", visualValue: "Retira" },
                   { value: "Transportadora", visualValue: "Transportadora" }
                 ]} /> : <></>}
+                <br/>
+                <br/>
+                {entregaRetiraT ? <CustomRadio
+                register={register("freteConta")}
+                labelText={'Frente por conta: '}
+                items={[
+                  { value: "Cemear", visualValue: "Cemear" },  
+                  { value: "Cliente", visualValue: "Cliente", checked: true }
+                ]} /> : <></> }
                 <br/>
                 <br/>
                 {formaPGOCartao ? <CustomSelect_Widget

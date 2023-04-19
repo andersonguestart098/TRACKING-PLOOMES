@@ -14,7 +14,8 @@ const color = {
         clienteRetirou: {background: "#38f269"},
         aguardandoCliente: {background: "#f2c335"},
         notaFiscalSendoEnviada: {background: "#cc34eb"},
-        naoDefinido: {background: "#f2c335"}
+        naoDefinido: {background: "#f2c335"},
+        emSeparacao: {background: "#86f7aa"}
     },
     expedicao2: {
         pendente: {background: "#f2c335"},
@@ -22,7 +23,8 @@ const color = {
         aguardandoCliente: {background: "#f2c335"},
         aguardandoTransportadora: {background: "#d851f0"},
         notaFiscalSendoEnviada: {background: "#cc34eb"},
-        naoDefinido: {background: "#f2c335"}
+        naoDefinido: {background: "#f2c335"},
+        emSeparacao: {background: "#86f7aa"}
     },
     logistica: {
         pendente: {background: "#f2c335"},
@@ -31,7 +33,8 @@ const color = {
         notaFiscalSendoEnviada: {background: "#cc34eb"},
         emTransito: {background: "#38f269"},
         cancelada: {background: "#d62013"},
-        naoDefinido: {background: "#f2c335"}
+        naoDefinido: {background: "#f2c335"},
+        emSeparacao: {background: "#86f7aa"}
     },
     confirmacaoEntrega: {
         sim: {background: "#38f269"},
