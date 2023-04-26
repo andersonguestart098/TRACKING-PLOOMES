@@ -140,7 +140,7 @@ function index() {
               <TableCell>Id</TableCell>
               <TableCell>Data</TableCell>
               <TableCell>Reponsavel</TableCell>
-              <TableCell>Cliente</TableCell>
+              <TableCell>Número|NF</TableCell>
               <TableCell>Assinatura</TableCell>
           </TableRow>
       }

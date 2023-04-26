@@ -1,6 +1,6 @@
 import { ModelConfirmacaoEntrega} from '@models/setoresInterface';
 import prisma from '@utils/prismaInstance';
-import { number } from 'zod';
+
 
 export class confirmacaoEntregaController {
 

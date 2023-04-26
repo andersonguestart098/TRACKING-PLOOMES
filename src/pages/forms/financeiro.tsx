@@ -10,33 +10,47 @@ import { sendThisToDatabase } from '~/services/sendData'
 type Props = {}
 
 const financeiro = ({}: Props) => {
-  const { register, handleSubmit, formState: { errors } } = useForm()
-  const [widthScreen, setWidthScreen] = useState(0)
+  const { register, handleSubmit, reset, formState: { errors } } = useForm()
+  const [widthScreen, setWidthScreen] =                    useState(0)
 
   const [tipoFaturamentoOther , setTipoFaturamentoOther] = useState(false)
-  const [tipoFaturamentoRM , setTipoFaturamentoRM] = useState(false)
-  const [tipoFaturamentoN , setTipoFaturamentoN] = useState(false)
+  const [tipoFaturamentoRM , setTipoFaturamentoRM] =       useState(false)
+  const [tipoFaturamentoN , setTipoFaturamentoN] =         useState(false)
 
-  const [entregaRetiraEI , setEntregaRetiraEI] = useState(false)
-  const [entregaRetiraEA , setEntregaRetiraEA] = useState(false)
-  const [entregaRetiraT , setEntregaRetiraT] = useState(false)
+  const [entregaRetiraEI , setEntregaRetiraEI] =           useState(false)
+  const [entregaRetiraEA , setEntregaRetiraEA] =           useState(false)
+  const [entregaRetiraT , setEntregaRetiraT] =             useState(false)
 
-  const [vendaFreteSIM , setVendaFreteSIM] = useState(false)
-  const [agendadoDataSim , setAgendadoDataSim] = useState(false)
+  const [vendaFreteSIM , setVendaFreteSIM] =               useState(false)
+  const [agendadoDataSim , setAgendadoDataSim] =           useState(false)
 
-  const [formaPGOAV , setFormaPGOAV] = useState(false)
-  const [formaPGOCartao , setFormaPGOCartao] = useState(false)
+  const [formaPGOAV , setFormaPGOAV] =                     useState(false)
+  const [formaPGOCartao , setFormaPGOCartao] =             useState(false)
 
-  const [disabilitarBotao, setDisabilitarBotao] = useState(false)
+  const [disabilitarBotao, setDisabilitarBotao] =          useState(false)
 
-  const [valorVendaInput, setValorVendaInput] = useState("")
-  const [valorFreteInput, setValorFreteInput] = useState("")
-  const [formaDePagamento, setFormaDePagamento] = useState("")
+  const [valorVendaInput, setValorVendaInput] =            useState("")
+  const [valorFreteInput, setValorFreteInput] =            useState("")
+  const [formaDePagamento, setFormaDePagamento] =          useState("")
+
+  const [parcelas, setParcelas] =          useState("")
+  const [bandeira, setBandeira] =          useState("")
 
   
   useEffect(() => {
     setWidthScreen(window.innerWidth)
   },[])
+
+  useEffect(() => {
+    switch (formaDePagamento) {
+      case "Cartão":
+      break;
+      default:
+        setParcelas("")
+        setBandeira("")
+      break;
+    }
+  },[formaDePagamento])
 
   const onSubmit = async (data: any) => {
     await setDisabilitarBotao(true) 
@@ -44,14 +58,14 @@ const financeiro = ({}: Props) => {
     let dadosFinanceiro: ModelFinanceiro = {
       cliente: data.cliente,
       formaPagamento: formaDePagamento,
-      bandeiraCartao: data.bandeira ?? "",
+      bandeiraCartao: bandeira ?? "",
       dataEntrega: data.dataEntrega ?? "",
       entregaCadastro: data.entregaCadastro == "Sim" ? true : false ?? false,
       vendaFrete: data.vendaFrete == "Sim" ? true : false ?? false,
       localCobranca: data.localCobranca ?? "",
-      observacao: data.obs == ""? "Nenhuma Observação" : data.obs,
+      observacao: data.obs == "" ? "Nenhuma Observação" : data.obs,
       orcamento: data.orcamento ?? "",
-      parcelas: data.parcelas ?? "",
+      parcelas: parcelas ?? "",
       responsavelNotaFiscal: "...",
       retiraEntrega: data.entregaRetira ?? "",
       tipoFaturamento: data.tipoFaturamento ?? "",
@@ -60,7 +74,7 @@ const financeiro = ({}: Props) => {
       observacaoFinanceiro: "...",
       operadorNotaFiscal: "...",
       statusNotaFiscal: "Pendente",
-      freteConta: data.freteConta,
+      freteConta: data.freteConta ?? "",
       valorFrete: valorFreteInput ?? "",
       vendedor: data.vendedor ?? "",
       setor: "financeiro"
@@ -172,6 +186,7 @@ const financeiro = ({}: Props) => {
                 
                 {formaPGOCartao ? <CustomRadio 
                 register={register("bandeira")} 
+                onchange={(e) => setBandeira(e.target.value)}
                 labelText={'Bandeira: '} 
                 items={[
                   { value: "Visa", visualValue: "Visa" },  
@@ -324,6 +339,7 @@ const financeiro = ({}: Props) => {
                 <br/>
                 {formaPGOCartao ? <CustomSelect_Widget
                 labelText={'Número de Parcelas:'} 
+                onChangeValue={(e) => setParcelas(e.target.value)}
                 register={register("parcelas")} 
                 itens={[
                   { value: "...", visualValue: "..." },

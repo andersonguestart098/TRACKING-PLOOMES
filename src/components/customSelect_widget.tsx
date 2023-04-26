@@ -26,10 +26,12 @@ const CustomSelect_Widget = ({itens, labelText, register, onChangeValue, bg}: Pr
             onChange={(e) => onChangeValue?.(e)}
             id="demo-simple-select"
             label={labelText}
+
+            defaultValue = ""
         >
             <MenuItem disabled value=""></MenuItem>
             {itens.map((item: itensI, index: number) => {
-                return <MenuItem style={{background: item.color ?? "#ffff"}} key={index} value={item.value}>{item.visualValue}</MenuItem>
+                return <MenuItem key={index} style={{background: item.color ?? "#ffff"}} value={item.value}>{item.visualValue}</MenuItem>
             })}
         </Select>
     </FormControl>

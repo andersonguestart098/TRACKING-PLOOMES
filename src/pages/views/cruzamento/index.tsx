@@ -123,8 +123,8 @@ function index() {
             <TableCell style={item?.financeiroPassagem[0]?.vendedor == undefined ? {background: "red"} : {}}>
                           {item?.financeiroPassagem[0]?.vendedor ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
 
-            <TableCell style={item?.financeiroPassagem[0]?.cliente == undefined ? {background: "yellow"} : {}}>
-                          {item?.financeiroPassagem[0]?.cliente ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
+            <TableCell style={item?.cliente == undefined ? {background: "yellow"} : {}}>
+                          {item?.cliente ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
 
             <TableCell style={item?.financeiroPassagem[0]?.valor == undefined ? {background: "yellow"} : {}}>
                           {item?.financeiroPassagem[0]?.valor ?? "NAO ENVIADO A ESSE SETOR" }</TableCell>
@@ -142,6 +142,7 @@ function index() {
 
                       item?.expedicaoPassagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao.clienteRetirou :
                       item?.expedicaoPassagem[0]?.statusNotaFiscal == "a definir"? color.expedicao.naoDefinido :
+                      item?.expedicaoPassagem[0]?.statusNotaFiscal == "Em Separação"? color.expedicao.emSeparacao :
                       item?.expedicaoPassagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao.pendente :{}
                     }>{item?.expedicaoPassagem[0]?.statusNotaFiscal}</TableCell>
 
@@ -150,6 +151,7 @@ function index() {
                       item?.expedicao2Passagem[0]?.statusNotaFiscal == "Cliente Retirou"? color.expedicao2.clienteRetirou :
                       item?.expedicao2Passagem[0]?.statusNotaFiscal == "Aguardando Transportadora"? color.expedicao2.aguardandoTransportadora :
                       item?.expedicao2Passagem[0]?.statusNotaFiscal == "a definir"? color.expedicao.naoDefinido :
+                      item?.expedicao2Passagem[0]?.statusNotaFiscal == "Em Separação"? color.expedicao.emSeparacao :
                       item?.expedicao2Passagem[0]?.statusNotaFiscal ==  "Aguardando Cliente" ? color.expedicao2.aguardandoCliente :{}
                     }>{item?.expedicao2Passagem[0]?.statusNotaFiscal}</TableCell>
             
@@ -172,6 +174,7 @@ function index() {
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Boleto em aberto" ? color.logistica.emTransito : 
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Em Transito" ? color.logistica.emTransito :
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "a definir" ? color.logistica.naoDefinido :
+                      item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Em Separação" ? color.logistica.emSeparacao :
                       item?.logisticaPassagem[0]?.statusNotaFiscal ==  "Pendente" ? color.financeiro.cancelada : {}
                     }>{item?.logisticaPassagem[0]?.statusNotaFiscal}</TableCell>
 

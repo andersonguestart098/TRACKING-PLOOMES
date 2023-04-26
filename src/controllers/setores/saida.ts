@@ -1,6 +1,5 @@
 import { ModelSaida } from '@models/setoresInterface';
 import prisma from '@utils/prismaInstance';
-import { number } from 'zod';
 
 export class SaidaController {
 
@@ -18,9 +17,7 @@ export class SaidaController {
                 motorista: this.data.motorista,
                 cidadeDestino: this.data.cidadeDestino,
                 hodometro: Number(this.data.hodometro),
-                dataHoraSaida: this.data.dataHoraSaida,
-                obs: this.data.obs
-
+                obs: this.data.obs,   
             }
         })
     }

@@ -32,7 +32,7 @@ export class FinanceiroController {
                 author: {
                     create: {
                         expedicao: "ainda não definido",
-                        cliente: this.data.cliente
+                        cliente: this!.data!.cliente ?? ""
                     }
                     
                 }

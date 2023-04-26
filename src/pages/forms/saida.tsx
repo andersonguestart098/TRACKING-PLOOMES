@@ -30,7 +30,6 @@ const retorno = (props: Props) => {
           codigoEntrega: e.codigoEntrega,
           hodometro: e.hodometro,
           nomeConferente: e.conferente,
-          dataHoraSaida: e.dataHoraSaida,
           obs: e.obs == "" ? "Nenhuma Observação" : e.obs,
           placa: e.placa,
           setor: "saida"
@@ -150,13 +149,6 @@ const retorno = (props: Props) => {
                   variant="outlined" />
                   <br/><br/>
 
-                  <TextField 
-                  {...register("dataHoraSaida")} 
-                  sx={{width: 250}} 
-                  type="datetime-local" required 
-                  id="dataHoraSaida" 
-                  variant="outlined" />
-                  <br/><br/>
 
                   <TextField 
                   {...register("obs")} 

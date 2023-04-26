@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -114,7 +114,6 @@ model Saida {
   motorista      String
   cidadeDestino  String
   hodometro      Int
-  dataHoraSaida  String
   obs            String
 }
 

@@ -25,9 +25,9 @@ const CustomRadio = (props: Props) => {
             >{labelText}</label><br /><br />
         {items.map((item: itemI) => {
             return (
-                <>
+                <div key={React.useId()}>
                     <input 
-                        key={item.value}
+                        key={React.useId()}
                         {...register}
                         className={style.input} 
                         onChange={(e) => props.onchange?.(e) ?? {}}  
@@ -36,9 +36,10 @@ const CustomRadio = (props: Props) => {
                         checked={item.checked}
                         required />
                     <label 
+                    key={React.useId()}
                     style={{fontSize: "small"}}
                     id="option">{item.visualValue}</label><br />
-                </>
+                </div>
             )
         })}
     </div>

@@ -196,6 +196,7 @@ function index() {
                     item.statusNotaFiscal ==  "não definido" ? color.logistica.pendente : 
                     item.statusNotaFiscal ==  "Aguardando Vendedor" ? color.logistica.aguardandoVendedor : 
                     item.statusNotaFiscal ==  "Em Separação" ? color.logistica.emSeparacao : 
+                    item.statusNotaFiscal ==  "a definir" ? color.logistica.aDefinir : 
                     item.statusNotaFiscal ==  "" ? {background: "#f28538"} : {}
                   }
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

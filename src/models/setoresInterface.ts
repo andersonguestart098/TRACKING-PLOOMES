@@ -98,7 +98,6 @@ export interface ModelSaida {
     motorista: string
     cidadeDestino: string
     hodometro: number
-    dataHoraSaida: string
     obs: string
     
 }

@@ -65,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: item.createdAt,
         vendedor: item.vendedor, 
         orcamento: item.orcamento, 
-        cliente: item.cliente, 
+        cliente: item.author.cliente, 
         tipoFaturamento: item.tipoFaturamento,
         valor: item.valor == "" ? "Não Definido" : item.valor,
         parcelas: item.parcelas == "" ? "Não Definido" : item.parcelas,
@@ -195,7 +195,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         motorista: item.motorista,
         cidadeDestino: item.cidadeDestino,
         hodometro: item.hodometro,
-        dataHoraSaida: item.dataHoraSaida,
         obs: item.obs,
       });
     })

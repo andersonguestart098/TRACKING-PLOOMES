@@ -113,7 +113,6 @@ function index() {
               <TableCell style={{background: "#e1ebf0"}}>Motorista</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Cidades|Destino</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Hodometro</TableCell>
-              <TableCell style={{background: "#e1ebf0"}}>Data|Hora|Saída</TableCell>
               <TableCell style={{background: "#e1ebf0"}}>Observação</TableCell>
               
           </TableRow>
@@ -193,7 +192,6 @@ function index() {
                       setor="saida"
                     />
                   </TableCell>
-                  <TableCell>{item.dataHoraSaida}</TableCell>
                   <TableCell>
                   <CustomInput 
                       key={item.id}
