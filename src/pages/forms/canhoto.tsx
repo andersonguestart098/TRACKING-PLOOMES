@@ -86,14 +86,13 @@ const retorno = (props: Props) => {
                register={register("motorista")} 
                itens={[
                 {value: "ALEXANDRE", visualValue: "ALEXANDRE"},
-                {value: "DIONATHA", visualValue: "DIONATHA"},
+                {value: "DIONATHAN", visualValue: "DIONATHAN"},
                 {value: "DOUGLAS", visualValue: "DOUGLAS"},
                 {value: "IGON", visualValue: "IGON"},
                 {value: "JULIANO", visualValue: "JULIANO"},
-                {value: "MATHEUS", visualValue: "MATHEUS"},
+                {value: "CLAUDEMIR", visualValue: "CLAUDEMIR"},
                 {value: "VANDERLEI", visualValue: "VANDERLEI"},
                 {value: "VILNEI", visualValue: "VILNEI"},
-                {value: "WILLIAM", visualValue: "WILLIAM"},
                 {value: "PAULO ALEXANDRE", visualValue: "PAULO ALEXANDRE"},
                 {value: "OUTROS", visualValue: "OUTROS"},
                ]}  

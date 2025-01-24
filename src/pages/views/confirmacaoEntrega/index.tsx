@@ -1,202 +1,341 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
 import { useFetch } from "@hooks/useFetch";
-import { ModelConfirmacaoEntrega} from '@models/setoresInterface';
-import CustomTable from "@components/customtable"
-import CustomNavBar from "@components/customAppBar"
-import CustomInput from '@components/customInput';
-import CustomSelect from '@components/customSelect';
-import { motion } from 'framer-motion';
-import { Chip, CircularProgress, Pagination, TableCell, TableRow } from "@mui/material";
-import { getSession, useSession } from 'next-auth/react';
-import { GetServerSideProps } from 'next/types';
-import Loader from '~/components/loader';
-import CustomSelect_Widget from '~/components/customSelect_widget';
-import color from '~/config/colors';
-import ItemNaoEncontrado from '~/components/itemNaoEncontrado';
+import { ModelConfirmacaoEntrega } from "@models/setoresInterface";
+import CustomTable from "@components/customtable";
+import CustomNavBar from "@components/customAppBar";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import {
+  Button,
+  Chip,
+  CircularProgress,
+  Pagination,
+  TableCell,
+  TableRow,
+} from "@mui/material";
+import { getSession, useSession } from "next-auth/react";
+import { GetServerSideProps } from "next/types";
+import Loader from "~/components/loader";
+import CustomSelect_Widget from "~/components/customSelect_widget";
+import color from "~/config/colors";
+import ItemNaoEncontrado from "~/components/itemNaoEncontrado";
 
 interface typeDB {
-    result: ModelConfirmacaoEntrega[]
-    lengthDB: number
+  result: [ModelConfirmacaoEntrega[], any];
+  lengthDB: number;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getSession(ctx)
+  const session = await getSession(ctx);
 
-  if(!session) {
+  if (!session) {
     return {
       redirect: {
         destination: "/",
-        permanent: false
-      }
-    }
+        permanent: false,
+      },
+    };
   }
 
   return {
-    props:{
-      session
-    }
-  }
-}
+    props: {
+      session,
+    },
+  };
+};
 
 function index() {
-  const { data: dataAuth } = useSession()
-  const [pagina, setPagina ] = useState(0)
+  const { data: dataAuth } = useSession();
+  const [pagina, setPagina] = useState(0);
 
-  const [travarAuto, setTravarAuto ] = useState(false)
-  const [searchString, setSearchString ] = useState("{}")
+  const [travarAuto, setTravarAuto] = useState(false);
+  const [searchString, setSearchString] = useState("{}");
 
   //! VALOR PADRAO DE FILTRO DE PESQUISA (VALOR DO DB)
-  const [filterInput, setFilterInput ] = useState('notaFiscalP')
-  
-  const [valueInputChange, setValueInputChange ] = useState('')
+  const [filterInput, setFilterInput] = useState("notaFiscalP");
+  const [imgGigante, setImgGigante] = useState("");
+
+  const [valueInputChange, setValueInputChange] = useState("");
 
   React.useEffect(() => {
-    if(searchString == "{}") {
-      setTravarAuto(false)
+    if (searchString == "{}") {
+      setTravarAuto(false);
     }
-  }, [searchString])
+  }, [searchString]);
 
-  const { data, isLoading } = travarAuto ?
-  useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "confirmacaoEntrega", searchString) :
-  useFetch<typeDB>("/api/methodsdatabase/getall", pagina, "confirmacaoEntrega")
-
-
+  const { data, isLoading } = travarAuto
+    ? useFetch<typeDB>(
+        "/api/methodsdatabase/getall",
+        pagina,
+        "confirmacaoEntrega",
+        searchString
+      )
+    : useFetch<typeDB>(
+        "/api/methodsdatabase/getall",
+        pagina,
+        "confirmacaoEntrega"
+      );
 
   //! LOADER DE CARREGAMENTO
-  if(isLoading) {
-    return (
-      <Loader />
-    )
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
     <>
-      <CustomNavBar setor="CONFIRMAÇÃO DE ENTREGA" 
-      setSearchString={setSearchString}
-      setValueInputChange={setValueInputChange}
-      searchString={searchString}
-      filter={filterInput}
-      setSearch={setTravarAuto}
-      dados={dataAuth} 
-      filterData={[["cidade"],[
-        {cidade: {
-            contains: valueInputChange
-        }}
-      ]]} 
+      {imgGigante.length ? (
+        <div
+          style={{
+            zIndex: 5,
+            position: "fixed",
+            left: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            top: 0,
+            background: "#00000080",
+            width: "100vw",
+            height: "100vh",
+          }}
+        >
+          <div style={{ background: "#fff" }}>
+            <Image
+              alt="Imagem gigante"
+              width={500}
+              height={500}
+              src={imgGigante}
+            />
+          </div>
+          <Button
+            sx={{
+              position: "absolute",
+              right: 10,
+              top: 10,
+            }}
+            color="error"
+            onClick={() => setImgGigante("")}
+            variant="contained"
+          >
+            X
+          </Button>
+        </div>
+      ) : (
+        <></>
+      )}
+      <CustomNavBar
+        setor="CONFIRMAÇÃO DE ENTREGA"
+        setSearchString={setSearchString}
+        setValueInputChange={setValueInputChange}
+        searchString={searchString}
+        filter={filterInput}
+        setSearch={setTravarAuto}
+        dados={dataAuth}
+        filterData={[
+          ["cidade"],
+          [
+            {
+              cidade: {
+                contains: valueInputChange,
+              },
+            },
+          ],
+        ]}
       />
 
       {/* //! MAIS OPÇÔES DE FILTRO (ODF) */}
-      <div style={{textAlign: "center"}}>
+      <div style={{ textAlign: "center" }}>
         <p>Filtrar ao digitar: </p>
         <div>
-          <Chip onClick={() => {
-            setFilterInput("notaFiscal")
-          }} sx={filterInput == "notaFiscal" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Numero de Nota Fiscal"  variant="outlined" />
-          
-          <Chip onClick={() => { 
-            setFilterInput("cidade")
-          }} sx={filterInput == "cidade" ? {marginLeft: 2, background: "#6d6e6d80"} : {marginLeft: 2}} label="Cidade"  variant="outlined" />
+          <Chip
+            onClick={() => {
+              setFilterInput("notaFiscal");
+            }}
+            sx={
+              filterInput == "notaFiscal"
+                ? { marginLeft: 2, background: "#6d6e6d80" }
+                : { marginLeft: 2 }
+            }
+            label="Numero de Nota Fiscal"
+            variant="outlined"
+          />
+
+          <Chip
+            onClick={() => {
+              setFilterInput("cidade");
+            }}
+            sx={
+              filterInput == "cidade"
+                ? { marginLeft: 2, background: "#6d6e6d80" }
+                : { marginLeft: 2 }
+            }
+            label="Cidade"
+            variant="outlined"
+          />
         </div>
         <p>Filtro rapido: </p>
-        <div style={{display: "flex", justifyContent: "space-between", marginLeft: 15, marginRight: 15}}>
-          <CustomSelect_Widget 
-          itens={[
-            {value: "Sim", visualValue: "Sim"},
-            {value: "Não", visualValue: "Não"},
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.entregaConcluida = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginLeft: 15,
+            marginRight: 15,
           }}
-          labelText={'Entrega Concluida'}          
+        >
+          <CustomSelect_Widget
+            itens={[
+              { value: "Sim", visualValue: "Sim" },
+              { value: "Não", visualValue: "Não" },
+            ]}
+            onChangeValue={(e) => {
+              let currentFilter = JSON.parse(searchString);
+              currentFilter.entregaConcluida = e.target.value;
+              setSearchString(JSON.stringify(currentFilter));
+              setTravarAuto(true);
+            }}
+            labelText={"Entrega Concluida"}
           />
-          <CustomSelect_Widget 
-          itens={[
-              {value: "ALEXANDRE", visualValue: "ALEXANDRE"},
-              {value: "DIONATHA", visualValue: "DIONATHA"},
-              {value: "DOUGLAS", visualValue: "DOUGLAS"},
-              {value: "IGON", visualValue: "IGON"},
-              {value: "JULIANO", visualValue: "JULIANO"},
-              {value: "MATHEUS", visualValue: "MATHEUS"},
-              {value: "PAULO", visualValue: "PAULO"},
-              {value: "VANDERLEI", visualValue: "VANDERLEI"},
-              {value: "VILNEI", visualValue: "VILNEI"},
-              {value: "MAX", visualValue: "MAX"},
-              {value: "PAULO VITOR", visualValue: "PAULO VITOR"},
-              {value: "CRISTIANO", visualValue: "CRISTIANO"},
-              {value: "WILLIAM", visualValue: "WILLIAM"},
-              {value: "PAULO ALEXANDRE", visualValue: "PAULO ALEXANDRE"}
-          ]} 
-          onChangeValue={(e) => {
-            let currentFilter = JSON.parse(searchString)
-            currentFilter.motorista = e.target.value
-            setSearchString(JSON.stringify(currentFilter))
-            setTravarAuto(true)
-          }}
-          labelText={'Motorista'}          
+          <CustomSelect_Widget
+            itens={[
+              { value: "ALEXANDRE", visualValue: "ALEXANDRE" },
+              { value: "DIONATHA", visualValue: "DIONATHA" },
+              { value: "DOUGLAS", visualValue: "DOUGLAS" },
+              { value: "IGON", visualValue: "IGON" },
+              { value: "JULIANO", visualValue: "JULIANO" },
+              { value: "MATHEUS", visualValue: "MATHEUS" },
+              { value: "PAULO", visualValue: "PAULO" },
+              { value: "VANDERLEI", visualValue: "VANDERLEI" },
+              { value: "VILNEI", visualValue: "VILNEI" },
+              { value: "MAX", visualValue: "MAX" },
+              { value: "PAULO VITOR", visualValue: "PAULO VITOR" },
+              { value: "CRISTIANO", visualValue: "CRISTIANO" },
+              { value: "WILLIAM", visualValue: "WILLIAM" },
+              { value: "PAULO ALEXANDRE", visualValue: "PAULO ALEXANDRE" },
+            ]}
+            onChangeValue={(e) => {
+              let currentFilter = JSON.parse(searchString);
+              currentFilter.motorista = e.target.value;
+              setSearchString(JSON.stringify(currentFilter));
+              setTravarAuto(true);
+            }}
+            labelText={"Motorista"}
           />
         </div>
-        <Chip onClick={() => { 
-            setSearchString("{}")
-          }} sx={{marginTop: 2}} label="Tirar Todos Filtros" variant="outlined" />
+        <Chip
+          onClick={() => {
+            setSearchString("{}");
+          }}
+          sx={{ marginTop: 2 }}
+          label="Tirar Todos Filtros"
+          variant="outlined"
+        />
       </div>
-      <br/>
-    {data.result.length ?  
-    <CustomTable 
-      childrenCabecarioTable={
-        <TableRow>
-              <TableCell style={{background: "#e1ebf0"}}>Id</TableCell>
-              <TableCell style={{background: "#e1ebf0"}}>Data|Hora</TableCell>
-              <TableCell style={{background: "#e1ebf0"}}>Motorista</TableCell>
-              <TableCell style={{background: "#e1ebf0"}}>Nota Fiscal</TableCell>
-              <TableCell style={{background: "#e1ebf0"}}>Cidade</TableCell>
-              <TableCell style={{background: "#e1ebf0"}}>Entrega|Concluída</TableCell>
-              <TableCell style={{background: "#e1ebf0"}}>Observação</TableCell>
-              
-          </TableRow>
-      }
-      childrenRowTable={
-        data!.result.map((item: ModelConfirmacaoEntrega) => {
-            return (
-              <TableRow
+      <br />
+      {data.result.length ? (
+        <CustomTable
+          childrenCabecarioTable={
+            <TableRow>
+              <TableCell style={{ background: "#e1ebf0" }}>Id</TableCell>
+              <TableCell style={{ background: "#e1ebf0" }}>Data|Hora</TableCell>
+              <TableCell style={{ background: "#e1ebf0" }}>Motorista</TableCell>
+              <TableCell style={{ background: "#e1ebf0" }}>
+                Nota Fiscal
+              </TableCell>
+              <TableCell style={{ background: "#e1ebf0" }}>Cidade</TableCell>
+              <TableCell style={{ background: "#e1ebf0" }}>
+                Entrega|Concluída
+              </TableCell>
+              <TableCell style={{ background: "#e1ebf0" }}>Fotos</TableCell>
+              <TableCell style={{ background: "#e1ebf0" }}>
+                Observação
+              </TableCell>
+            </TableRow>
+          }
+          childrenRowTable={data!.result[0].map(
+            (item: ModelConfirmacaoEntrega, idx: number) => {
+              return (
+                <TableRow
                   component={motion.div}
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
                     duration: 0.8,
                     delay: 0.5,
-                    ease: [0, 0.71, 0.2, 1.01]
+                    ease: [0, 0.71, 0.2, 1.01],
                   }}
                   key={item.id}
                   style={
-                    item.entregaConcluida == "Sim" ? color.confirmacaoEntrega.sim : color.confirmacaoEntrega.nao
+                    item.entregaConcluida == "ENTREGUE"
+                      ? color.confirmacaoEntrega.sim
+                      : color.confirmacaoEntrega.nao
                   }
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{new Date(String(item.createdAt)).getDate()}/{new Date(String(item.createdAt)).getMonth()+1}/{new Date(String(item.createdAt)).getFullYear()} 
-                  <br/> {new Date(String(item.createdAt)).getHours()}:{new Date(String(item.createdAt)).getMinutes()}</TableCell>
+                  <TableCell>
+                    {new Date(String(item.createdAt)).getDate()}/
+                    {new Date(String(item.createdAt)).getMonth() + 1}/
+                    {new Date(String(item.createdAt)).getFullYear()}
+                    <br /> {new Date(String(item.createdAt)).getHours()}:
+                    {new Date(String(item.createdAt)).getMinutes()}
+                  </TableCell>
                   <TableCell>{item.motorista}</TableCell>
                   <TableCell>{item.notaFiscal}</TableCell>
                   <TableCell>{item.cidade}</TableCell>
                   <TableCell>{item.entregaConcluida}</TableCell>
-                  <TableCell>{item.obs}</TableCell>
+                  <TableCell>
+                    {item.images != null ? (
+                      <div
+                        style={{
+                          width: 120,
+                          height: 120,
+                          borderRadius: 15,
+                          overflowY: "scroll",
+                        }}
+                      >
+                        {data.result[1][idx].map((itemImg: string) => {
+                          return (
+                            <img
+                              style={{ borderRadius: 15 }}
+                              src={itemImg}
+                              width={100}
+                              height={100}
+                              onClick={() => setImgGigante(itemImg)}
+                            />
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <>Não contém imagem</>
+                    )}
+                  </TableCell>
 
+                  <TableCell>{item.obs}</TableCell>
                 </TableRow>
-            )
-          })
-      } paginacao={
-        <Pagination onChange={(_, value) => { 
-            value = value -1
-            setPagina(value)
-          }} style={{display: "flex", justifyContent: "center", alignItems: "center", padding: 50}} count={Math.ceil(data.lengthDB/40)} />
-      }/>
-    : <ItemNaoEncontrado />}
+              );
+            }
+          )}
+          paginacao={
+            <Pagination
+              onChange={(_, value) => {
+                value = value - 1;
+                setPagina(value);
+              }}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 50,
+              }}
+              count={Math.ceil(data.lengthDB / 40)}
+            />
+          }
+        />
+      ) : (
+        <ItemNaoEncontrado />
+      )}
     </>
-  )
+  );
 }
 
-export default index
+export default index;

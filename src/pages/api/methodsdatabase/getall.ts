@@ -3,17 +3,25 @@ import { findAllData } from "@controllers/findAllDataSetors";
 import { findAllDataSearch } from "@controllers/findAllDataSearch";
 import NextCors from "nextjs-cors";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};
 
-    await NextCors(req, res, {
-        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-        origin: '*',
-        optionsSuccessStatus: 200,
-     });
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  await NextCors(req, res, {
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200,
+  });
 
-    if(req.body.stringSearch == "" || req.body.setor == "home"){
-        return await new findAllData().execute(req, res)
-    }
-
-    return await new findAllDataSearch().execute(req, res)
+  if (req.body.stringSearch == "" || req.body.setor == "home") {
+    return await new findAllData().execute(req, res);
+  }
+  console.log(req.body.stringSearch);
+  return await new findAllDataSearch().execute(req, res);
 }

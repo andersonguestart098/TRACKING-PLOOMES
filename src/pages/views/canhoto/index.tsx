@@ -164,8 +164,8 @@ function index() {
                       metadata="_motorista"
                       value="motorista"
                       tags={[
-                        "ALEXANDRE", "DIONATHA", "DOUGLAS", "IGON", "JULIANO", "MATHEUS",
-                        "PAULO", "VANDERLEI", "VILNEI", "MAX", "CRISTIANO", "WILLIAM",
+                        "ALEXANDRE", "DIONATHA", "DOUGLAS", "IGON", "JULIANO", "CLAUDEMIR",
+                        "VANDERLEI", "VILNEI", "MAX", "CRISTIANO", 
                         "PAULO ALEXANDRE"
                       ]}
                       setor="canhoto"

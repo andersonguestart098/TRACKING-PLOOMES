@@ -46,14 +46,23 @@ const Index = (props: Props) => {
             </Typography>
             {dados.user.name}
           </div>
+          <form
+          style={{width: "98%"}}
+          onSubmit={(e) => {
+            e.preventDefault()
+            setSearchString(stringSearch)
+            setSearch(true) 
+          }}>
           <TextField
             style={{
+              width: "98%",
               background: "white",
               borderRadius: 8,
               margin: 25
             }}
             onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                   console.log(event.target.value)
+                  console.log(filter);
                   setValueInputChange(event.target.value)
                   let json = JSON.parse(searchString)
                   
@@ -84,7 +93,9 @@ const Index = (props: Props) => {
             type={filter.includes("notaFiscal") ? "number" : filter.includes("dataCriacao") ? "date" : "text"}
             size="small"
           />
-          <IconButton onClick={() => {
+          </form>
+          <IconButton 
+          onClick={() => {
             setSearchString(stringSearch)
             setSearch(true) 
           }}>

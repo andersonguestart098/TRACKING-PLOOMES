@@ -1,51 +1,42 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["orderByNulls"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model PassagemDados {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  notaFiscal Int?
-  expedicao  String
-  cliente    String
-
-  financeiroPassagem         Financeiro[]
-  expedicaoPassagem          Expedicao[]
-  expedicao2Passagem         Expedicao2[]
-  logisticaPassagem          Logistica[]
+  id                 Int          @id @default(autoincrement())
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  notaFiscal         Int?
+  expedicao          String
+  cliente            String
+  expedicaoPassagem  Expedicao[]
+  expedicao2Passagem Expedicao2[]
+  financeiroPassagem Financeiro[]
+  logisticaPassagem  Logistica[]
 }
 
 model Assinatura {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  notaFiscal Int
-  responsavel String
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  notaFiscal     Int
+  responsavel    String
   assinatura_img String
 }
 
 model Financeiro {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  author   PassagemDados @relation(fields: [authorId], references: [id])
-  authorId Int
-
+  id                    Int           @id @default(autoincrement())
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  authorId              Int
   vendedor              String
-  orcamento             Int
+  orcamento             String
   tipoFaturamento       String
   valor                 String
   formaPagamento        String
@@ -64,49 +55,46 @@ model Financeiro {
   statusNotaFiscal      String
   operadorNotaFiscal    String
   responsavelNotaFiscal String
+  precisaEncomendar     String        @default("")
+  descreva              String        @default("")
+  precisaRecuperar      String        @default("")
+  author                PassagemDados @relation(fields: [authorId], references: [id])
 }
 
 model Expedicao {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  author   PassagemDados @relation(fields: [authorId], references: [id])
-  authorId Int
-
+  id                    Int           @id @default(autoincrement())
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  authorId              Int
   responsavelNotaFiscal String
   statusNotaFiscal      String
+  author                PassagemDados @relation(fields: [authorId], references: [id])
 }
 
 model Expedicao2 {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  author   PassagemDados @relation(fields: [authorId], references: [id])
-  authorId Int
-
+  id                    Int           @id @default(autoincrement())
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  authorId              Int
   responsavelNotaFiscal String
   statusNotaFiscal      String
+  author                PassagemDados @relation(fields: [authorId], references: [id])
 }
 
 model Logistica {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  author   PassagemDados @relation(fields: [authorId], references: [id])
-  authorId Int
-
+  id                    Int           @id @default(autoincrement())
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  authorId              Int
   responsavelNotaFiscal String
   statusNotaFiscal      String
+  author                PassagemDados @relation(fields: [authorId], references: [id])
 }
 
 model Saida {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
   notaFiscal     Int
   codigoEntrega  Int
   nomeConferente String
@@ -115,41 +103,81 @@ model Saida {
   cidadeDestino  String
   hodometro      Int
   obs            String
+  images         String?
 }
 
 model ConfirmacaoEntrega {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
   motorista        String
   notaFiscal       Int
   cidade           String
   entregaConcluida String
   obs              String
+  images           String?
 }
 
 model Retorno {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  notaFiscal    Int
-  placa         String
-  hodometro     Int
-  data          String
-  obs           String
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  notaFiscal Int
+  placa      String
+  hodometro  Int
+  data       String
+  obs        String
 }
 
 model Canhoto {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id                 Int      @id @default(autoincrement())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
   notaFiscal         Int
   motorista          String
   statusCanhoto      String
   responsavelCanhoto String
+}
+
+model CanhotoRetirado {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  notaFiscal  Int
+  responsavel String
+  motivo      String
+}
+
+model Ocorrencia {
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  descricao        String
+  problemaNota     String
+  notaFiscal       String
+  gravidade        String
+  responsavel      String
+  departamento     String
+  prioridade       String
+  status           String
+  causa            String
+  resolucao        String
+  gerouCusto       String
+  dataEncerramento String
+  obs              String
+  especifique      String?
+}
+
+model FeedBack {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  nome      String
+  avalie    String
+  nota      String
+  pontos    String
+  gostaria  String
+  obs       String
 }
 
 model Account {
@@ -165,8 +193,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -187,6 +214,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  refreshToken  String    @default("")
   accounts      Account[]
   sessions      Session[]
 }

@@ -28,6 +28,8 @@ const Index = ({routerEdit, item, metadata, typeInput, setor, valorPadrao, bg}: 
     }, [item[metadata.replace("_", "")]?.toString()])
 
     function onSubmit(sendThis: string, value: string) { 
+      console.log("OK");
+      
         return new editDataController(
           new databaseRepository
         ).execute({
